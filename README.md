@@ -19,3 +19,21 @@ Sensor is driven by an AVR ATTiny85 microcontroller which is programmed using:
 
 Printed Circuit Board (PCB) has been designed using:
  * [Fritzing software](http://fritzing.org)
+
+## Code structure
+
+RSL code is based on 32 bits.
+
+They are organized like this:
+
+| 32-31                     | 30-29                          | 28-25                                 | 24-1                      |
+|:--------------------------|:-------------------------------|:--------------------------------------|:--------------------------|
+| Remote command identifier | Remote command switch position | Switch state to enable (on/off/onoff) | Remote command identifier |
+
+The 4 bits from 25 to 28 never takes value *1111* thus [CYTHS](https://github.com/cyosp/CYTHS) code is organized like this:
+
+| 32-31         | 30-29            | 28-25 | 24-18       | 17-11    | 10-1        |
+|:--------------|:-----------------|:------|:------------|:---------|:------------|
+| Battery level | Protocol version | 1111  | Sensor code | Humidity | Temperature |
+
+
