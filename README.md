@@ -61,7 +61,7 @@ Where:
 
  * Sensor id
 	* The sensor identifier
-	Value between 0 and 127
+	Value between 1 and 127
 
  * Humidity
 	* Value between 0 and 100
