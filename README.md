@@ -24,12 +24,12 @@ Printed Circuit Board (PCB) has been designed using:
 
 Components used are:
 
-| Description                     | Reference     | Web link |
-|:--------------------------------|:--------------|----------|
-| Temperature and humidity sensor | DHT22         |          |
-| Microcontroller                 | ATTiny85      |          |
-| 433 MHz transmitter             |               |          |
-| Battery                         | Saft LS 14500 |          |
+| Description                     | Reference                                                                 |
+|:--------------------------------|:--------------------------------------------------------------------------|
+| Temperature and humidity sensor | [DHT22](http://www.humiditycn.com/cp22.html)                              |
+| Microcontroller                 | [ATTiny85](http://www.atmel.com/devices/attiny85.aspx)                    |
+| 433 MHz transmitter             | [433 MHz transmitter](http://www.seeedstudio.com/wiki/433Mhz_RF_link_kit) |
+| Battery                         | [Saft LS 14500](www.saftbatteries.com/force_download/LS14500.pdf)         |
 
 ## Code structure
 
@@ -77,6 +77,7 @@ Where:
 			It means value betwenn 0 and 1024
 
 	At the end it produces the following matching:
+
 		* 0 <=> -40.0 °C
 		* ...
 		* 40 <=> 0.0 °C
