@@ -1,6 +1,8 @@
 # CYTHS
 A 433 MHz Temperature and Humidity Sensor
 
+![CYTHS](/doc/images/CYTHS.jpg?raw=true "CYTHS")
+
 ## Description
 
 CYTHS is a sensor which is able to send through 433 MHz transmitter a temperature thus a humidity value.
@@ -83,3 +85,19 @@ Where:
 		* 40 <=> 0.0 °C
 		* ...
 		* 1024 <=> 62.4 °C
+
+## Arduino
+
+### Configuration
+
+These steps will configure Arduino software in order to use the microcontroller running at 8 Mhz:
+ * Tools -> Board-> ATtiny
+ * Tools -> Processor-> ATtiny85
+ * Tools -> Clock-> 8 MHz (internal)
+ * Tools -> Programmer-> USBtinyISP
+
+Then it's necessary to burn fuses of the microcontroller to set this configuration.
+Steps are:
+ * Plug a microcontroller on the [Tiny AVR Programmer](https://www.sparkfun.com/products/11801)
+ * Plug the [Tiny AVR Programmer](https://www.sparkfun.com/products/11801) to the computer
+ * Tools -> Burn Bootloader
