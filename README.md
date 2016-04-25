@@ -1,7 +1,7 @@
 # CYTHS
 A 433 MHz Temperature and Humidity Sensor
 
-![CYTHS](/doc/images/CYTHS.jpg?raw=true "CYTHS")
+![CYTHS-PCB](/doc/images/CYTHS-PCB.png?raw=true "CYTHS-PCB")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](/doc/images/CYTHS.jpg?raw=true "CYTHS")
 
 ## Description
 
