@@ -1,11 +1,14 @@
 //
 // Temperature and humidity sensor using RSL protocol
 //
-// @hardware ATTiny85
+// @hardware ATtiny85
 // @author CYOSP
-// @version 1.0.1
+// @version 1.0.2
 
 
+// V 1.0.2 21/05/2016
+//  Random generator is now initialized with a DHT read
+//  It improves the random generation of sensor id
 // V 1.0.1 14/04/2016
 //  Improve battery life which now respects the project aim
 //  Battery life is estimated around 3.5 years
@@ -103,15 +106,12 @@ unsigned long sensorIdInEEPROM = 0 + sizeof( resetSensorIdInEEPROM );
 void setup()
 {
   // Set microcontroller to low frequency
-  // TO ENABLE AT THE END BECAUSE AFTER IT'S MORE DIFFICULT TO PROGRAM AGAIN ATTiny85
+  // TO ENABLE AT THE END BECAUSE AFTER IT'S MORE DIFFICULT TO PROGRAM AGAIN ATtiny85
   //setLowFreq();
-  
+
   // Disable ADC
   ADCSRA = 0;
   
-  // Init random generator
-  randomSeed( analogRead( UNCONNECTED_PIN_FOR_RANDOM_INIT ) );
-
   // Define pin states
   pinMode( POWER_PIN                        , OUTPUT );
   pinMode( DHT_PIN                          , INPUT  );
@@ -175,12 +175,13 @@ void setup()
   // A new sensor id must be generated
   if( sensorId == 0 )
   {
-    // Define max value in random values
-    int maxRandom = 1024;
-    // Get a random value
-    sensorId = random( maxRandom ); 
-    // Random value is converted between 1 and 127 (7bits)
-    sensorId = map( sensorId , 0 , maxRandom , 1 , 127 );
+    // Init random generator with a DHT read
+    DHT.read22( DHT_PIN );
+    randomSeed( DHT.temperature * DHT.humidity );
+ 
+    // Get a new sensor identifier
+    sensorId = random( 1 , 127 );
+ 
     // Store sensor id in EEPROM
     EEPROM.put( sensorIdInEEPROM , sensorId );
   }

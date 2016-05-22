@@ -1,6 +1,9 @@
 # CYTHS
 A 433 MHz Temperature and Humidity Sensor
 
+![Stable version](https://img.shields.io/badge/stable-1.0.2-blue.svg)
+[![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
+
 ![CYTHS-PCB](/doc/images/CYTHS-PCB.png?raw=true "CYTHS-PCB")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](/doc/images/CYTHS.jpg?raw=true "CYTHS")
 
 ## Description
@@ -101,3 +104,9 @@ Steps are:
  * Plug a microcontroller on the [Tiny AVR Programmer](https://www.sparkfun.com/products/11801)
  * Plug the [Tiny AVR Programmer](https://www.sparkfun.com/products/11801) to the computer
  * Tools -> Burn Bootloader
+
+## License
+
+**[CYTHS](https://github.com/cyosp/CYTHS)** is released under the BSD 3-Clause License.
+
+See the bundled `LICENSE.md` for details.
