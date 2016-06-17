@@ -1,7 +1,7 @@
 # CYTHS
 A 433 MHz Temperature and Humidity Sensor
 
-![Stable version](https://img.shields.io/badge/stable-1.0.2-blue.svg)
+![Stable version](https://img.shields.io/badge/stable-1.0.3-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
 ![CYTHS-PCB](/doc/images/CYTHS-PCB.png?raw=true "CYTHS-PCB")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](/doc/images/CYTHS.jpg?raw=true "CYTHS")
@@ -10,7 +10,7 @@ A 433 MHz Temperature and Humidity Sensor
 
 CYTHS is a sensor which is able to send through 433 MHz transmitter a temperature thus a humidity value.
 
-These information are coded on 32 bits and transmitted using the RSL protocol each 10 minutes.
+These information are coded on 32 bits and transmitted using the RSL protocol each 5 minutes.
 
 Sensor is low energy consumption allowing to have it working several months/years with a single 3.6V battery.
 

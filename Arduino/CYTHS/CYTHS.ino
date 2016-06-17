@@ -3,9 +3,12 @@
 //
 // @hardware ATtiny85
 // @author CYOSP
-// @version 1.0.2
+// @version 1.0.3
 
 
+// V 1.0.3 15/06/2016
+//  Transmission period is now set to 5 minutes and repeat transmission is
+//  divided by two in order to preserve power consumption
 // V 1.0.2 21/05/2016
 //  Random generator is now initialized with a DHT read
 //  It improves the random generation of sensor id
@@ -64,8 +67,8 @@
 #define UNCONNECTED_PIN_FOR_RANDOM_INIT   5
 
 // Low power consumption values
-#define WATCHDOG      9   // 9 => 8 seconds
-#define WATCHDOB_NBR  75  // 75 <=> 10 minutes (600 seconds)
+#define WATCHDOG      9   // 9 => 8,3 seconds
+#define WATCHDOB_NBR  36  // 36 <=> 5 minutes (299 seconds)
 
 // Low and maximum battery level
 #define MAX_POWER 3550 // In mV
@@ -134,7 +137,7 @@ void setup()
   // 2 <=> rc-rsl protocol
   mySwitch.setProtocol( 2 ); 
   // Set number of transmission repetitions
-  mySwitch.setRepeatTransmit( 10 );
+  mySwitch.setRepeatTransmit( 5 );
 
   //
   // Manage sensor id reset part
