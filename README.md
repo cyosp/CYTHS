@@ -1,12 +1,24 @@
 # CYTHS
-A 433 MHz Temperature and Humidity Sensor
+
+A 433 MHz Temperature and Humidity Solution
+
+This project is divided in several parts:
+ * A sensor which measures and sends temperature and humidity
+ * A hardware part connected to a [Raspberry Pi](https://www.raspberrypi.org/products/) in order to:
+    * Receive sensors information
+    * Drive RSL switch connected to electric heaters
+ * A software part hosted by the [Raspberry Pi](https://www.raspberrypi.org/products/) which:
+  * Stores sensors data received
+  * Drives RSL switches
+
+## 433 MHz Temperature and Humidity Sensor
 
 ![Stable version](https://img.shields.io/badge/stable-1.0.3-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
 ![CYTHS-PCB](/doc/images/CYTHS-PCB.png?raw=true "CYTHS-PCB")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](/doc/images/CYTHS.jpg?raw=true "CYTHS")
 
-## Description
+### Description
 
 CYTHS is a sensor which is able to send through 433 MHz transmitter a temperature thus a humidity value.
 
@@ -16,7 +28,7 @@ Sensor is low energy consumption allowing to have it working several months/year
 
 Each sensor has an identifier initialized at the first power on which can be changed if power is unplugged and plugged 3 times in a dedicated time frame.
 
-## Hardware
+### Hardware
 
 Sensor is driven by an AVR ATTiny85 microcontroller which is programmed using:
  * The [Tiny AVR Programmer](https://www.sparkfun.com/products/11801)
@@ -25,7 +37,7 @@ Sensor is driven by an AVR ATTiny85 microcontroller which is programmed using:
 Printed Circuit Board (PCB) has been designed using:
  * [Fritzing software](http://fritzing.org)
 
-### Components
+#### Components
 
 Components used are:
 
@@ -36,7 +48,7 @@ Components used are:
 | 433 MHz transmitter             | [433 MHz transmitter](http://www.seeedstudio.com/wiki/433Mhz_RF_link_kit) |
 | Battery                         | [Saft LS 14500](www.saftbatteries.com/force_download/LS14500.pdf)         |
 
-## Code structure
+### Code structure
 
 RSL code is based on 32 bits.
 
@@ -89,9 +101,9 @@ Where:
 		* ...
 		* 1024 <=> 62.4 °C
 
-## Arduino
+### Arduino
 
-### Configuration
+#### Configuration
 
 These steps will configure Arduino software in order to use the microcontroller running at 8 Mhz:
  * Tools -> Board-> ATtiny
