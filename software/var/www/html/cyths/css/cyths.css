@@ -1,0 +1,20 @@
+/*.bootstrap-switch-red
+{
+	color:white;
+	background: #FF4000;
+}
+.bootstrap-switch-green
+{
+	color:white;
+	background: #04B431;
+}*/
+
+/* Remove button border halo */
+.bootstrap-switch.bootstrap-switch-focused
+{
+	border-color: #cacaca;
+    outline: 0 !important;
+    border-radius: 0 !important;   
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
