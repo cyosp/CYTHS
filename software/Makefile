@@ -15,6 +15,14 @@ install:
 			cp etc/cyths/config.json /etc/cyths ; \
 			chown www-data:www-data /etc/cyths/config.json ; \
 		fi;
+		# cyths-receiver as a service
+		if [ ! -e /etc/default/cyths-receiver ] ; \
+		then \
+			cp etc/default/cyths-receiver /etc/default ; \
+		fi;
+		cp etc/systemd/system/cyths-receiver.service /etc/systemd/system
+		systemctl enable /etc/systemd/system/cyths-receiver.service
+		systemctl start cyths-receiver.service
 		# web folder
 		cp -r var/www/html/cyths /var/www/html
 		# Add config.json to web folder
@@ -22,5 +30,11 @@ install:
 		ln -s /etc/cyths/config.json /var/www/html/cyths/data
 
 uninstall:
-		$(RM) $(prefix)/bin/cyths-receiver
+		# web folder
 		$(RM) -r /var/www/html/cyths
+		# Remove cyths-receiver as a service
+		systemctl stop cyths-receiver.service
+		systemctl disable /etc/systemd/system/cyths-receiver.service
+		$(RM) /etc/systemd/system/cyths-receiver.service
+		# cyths-receiver
+		$(RM) $(prefix)/bin/cyths-receiver

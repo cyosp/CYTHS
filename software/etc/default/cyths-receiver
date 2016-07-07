@@ -1,0 +1,4 @@
+# Default settings for cyths-receiver
+
+# Options to pass to cyths-receiver
+CYTHS_RECEIVER_OPTS=/etc/cyths/config.json
