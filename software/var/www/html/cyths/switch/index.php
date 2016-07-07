@@ -11,7 +11,7 @@
 //     - state : Switch state to set (on|off)
 //     - info : Switch additional info to set (a not empty string)
 //
-// 2016/07/01 V 1.0.0
+// 2016/07/07 V 1.0.0
 //  - First release
 //
 
