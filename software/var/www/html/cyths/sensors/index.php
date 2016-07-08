@@ -1,8 +1,16 @@
 <html>
 	<?php
+	// V 1.1.0 2016-07-08
+	//  - It's now possible to restrict display to only one sensor
+	//    given sensor identifier as 'id' parameter
 	// V 1.0.0 2016-07-08
 	//  - First release
 	?>
+
+	<?php
+		$sensorId = $_GET[ 'id' ];
+	?>
+
         <head>
                 <script src="//cdnjs.cloudflare.com/ajax/libs/dygraph/1.1.1/dygraph-combined.js"></script>
         </head>
@@ -16,7 +24,7 @@
 				// For each switch
 				foreach( $obj->{'switchesList'} as $mySwitch )
 				{
-					if( $mySwitch->sensorId )
+					if( $mySwitch->sensorId && ( $sensorId == "" || $sensorId == $mySwitch->sensorId ) )
 					{
 						//<!-- style="width:800px; height:300px;" -->
 
