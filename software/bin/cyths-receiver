@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.0.0                                                              #
+# Version: 1.0.1                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -24,6 +24,9 @@
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.0.1 - 2016-07-08                                                          #
+#  - RRD and CSV files moved to /var/lib/cyths base folder                    #
+#  - Add rrdtool and rrdupdate output to log file                             #
 # 1.0.0 - 2016-07-06                                                          #
 #  - First version                                                            #
 #    Data are retreived using serial port: /dev/ttyACM0                       #
@@ -55,7 +58,7 @@ LOG_FILE_PATH=/var/log/$SOLUTION_NAME/${FILE_BASENAME}.log
 LOG_DIRNAME=$(dirname "$LOG_FILE_PATH")
 
 # Define data folders
-DATA_FOLDER="$HOME/.config/$SOLUTION_NAME"
+DATA_FOLDER="/var/lib/$SOLUTION_NAME"
 RRD_FOLDER="$DATA_FOLDER/rrd"
 CSV_FOLDER="$DATA_FOLDER/csv"
 
@@ -165,14 +168,14 @@ do
 				then
 					# 1 entry each 10 minutes
 					# Keep 366 days
-					rrdtool create "$SENSOR_RRD_FILE_PATH" -s 600 -b $(date +%s) DS:temperature:GAUGE:1200:-40:62.4 DS:humidity:GAUGE:1200:0:100 RRA:AVERAGE:0.5:1:52704
+					rrdtool create "$SENSOR_RRD_FILE_PATH" -s 600 -b $(date +%s) DS:temperature:GAUGE:1200:-40:62.4 DS:humidity:GAUGE:1200:0:100 RRA:AVERAGE:0.5:1:52704 2>&1 >> $LOG_FILE_PATH
 					# Wait all is up and running
 					# Needed for rrdupdate
 					sleep 1	
 				fi
 
 				# Update RRD database
-				rrdupdate "$SENSOR_RRD_FILE_PATH" $(/bin/date +%s):$TEMPERATURE:$HUMIDITY
+				rrdupdate "$SENSOR_RRD_FILE_PATH" $(/bin/date +%s):$TEMPERATURE:$HUMIDITY 2>&1 >> $LOG_FILE_PATH
 
 				# Define CSV file path
 				SENSOR_RRD_CSV_FILE="$CSV_FOLDER/${SENSOR_ID}.rrd.csv"
