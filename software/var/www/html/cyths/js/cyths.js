@@ -1,5 +1,10 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.0.0";
+var projectVersion = "1.1.0";
+
+// 2016-07-10 V 1.1.0
+//- Add a graphic link to each sensor
+// 2016-07-07 V 1.0.0
+// - Initial release
 
 $( document ).ready(function()
 {
@@ -56,7 +61,13 @@ function init()
 			switchesListToAdd += '>';
 			// END : Manage switch state
 			switchesListToAdd += '  </p>';
-			switchesListToAdd += '  <h2 class="h6">' + (switchToDrive.info ? switchToDrive.info : '') + '</h2>';
+			switchesListToAdd += '  <h2 class="h6">';
+			if( switchToDrive.info )
+			{
+				if( switchToDrive.sensorId )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensorId + '">' + switchToDrive.info + '</a>';
+				else							switchesListToAdd += switchToDrive.info;
+			}
+			switchesListToAdd += '  </h2>';
 			switchesListToAdd += '</div>';
 		});
 		
