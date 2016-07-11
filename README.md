@@ -4,19 +4,25 @@ A 433 MHz Temperature and Humidity Solution
 
 This project is divided in several parts:
  * A sensor which measures and sends temperature and humidity
+
+ ![CYTHS-PCB](doc/images/CYTHS-PCB.png?raw=true "CYTHS-PCB")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](doc/images/CYTHS.jpg?raw=true "CYTHS")
+
  * A hardware part connected to a [Raspberry Pi](https://www.raspberrypi.org/products/) in order to:
     * Receive sensors information
     * Drive RSL switch connected to electric heaters
+
+
  * A software part hosted by the [Raspberry Pi](https://www.raspberrypi.org/products/) which:
-  * Stores sensors data received
-  * Drives RSL switches
+    * Drives RSL switches
+
+    ![software-main-web-page](doc/images/software-main-web-page.png?raw=true "software-main-web-page")
+    * Stores sensors data received
+
 
 ## 433 MHz Temperature and Humidity Sensor
 
 ![Stable version](https://img.shields.io/badge/stable-1.0.3-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
-
-![CYTHS-PCB](/doc/images/CYTHS-PCB.png?raw=true "CYTHS-PCB")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](/doc/images/CYTHS.jpg?raw=true "CYTHS")
 
 ### Description
 
