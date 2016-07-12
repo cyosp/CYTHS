@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.0.1                                                              #
+# Version: 1.0.2                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -24,6 +24,8 @@
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.0.2 - 2016-07-12                                                          #
+#  - Update data format sent to switch URL                                    #
 # 1.0.1 - 2016-07-08                                                          #
 #  - RRD and CSV files moved to /var/lib/cyths base folder                    #
 #  - Add rrdtool and rrdupdate output to log file                             #
@@ -159,7 +161,7 @@ do
 				# Get humidity in base 10
 				HUMIDITY=$(echo "ibase=2; $BIN_HUMIDITY" | bc 2>&1)
 
-				echo "  - $TEMPERATURE°C @ $HUMIDITY% for sensor: $SENSOR_ID" >> $LOG_FILE_PATH
+				echo "  - $TEMPERATURE° @ $HUMIDITY% for sensor: $SENSOR_ID" >> $LOG_FILE_PATH
 
 				SENSOR_RRD_FILE_PATH="$RRD_FOLDER/${SENSOR_ID}.rrd"
 
@@ -189,8 +191,8 @@ do
 				sed -i '$ d' "$SENSOR_RRD_CSV_FILE"
 
 				# Update "info" section in configuration file using HTTP request
-				# Example: 18.5°C / 65% @ 08:35:10 
-				curl --silent --data "rcId=${config[$SENSOR_ID:$RC_ID]}&channel=${config[$SENSOR_ID:$CHANNEL]}&info=$TEMPERATURE°C / $HUMIDITY% @ ${RECEIVED_DATE:11:8}" "http://localhost/$SOLUTION_NAME/switch/" 2>&1 >/dev/null
+				# Example: 18.5° / 65% • 08:35:10 
+				curl --silent --data "rcId=${config[$SENSOR_ID:$RC_ID]}&channel=${config[$SENSOR_ID:$CHANNEL]}&info=$TEMPERATURE° / $HUMIDITY% • ${RECEIVED_DATE:11:8}" "http://localhost/$SOLUTION_NAME/switch/" 2>&1 >/dev/null
 			else
 				echo "  - Sensor identifier not registred in configuration: $SENSOR_ID" >> $LOG_FILE_PATH
 			fi

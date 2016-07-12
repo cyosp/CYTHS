@@ -16,7 +16,10 @@ This project is divided in several parts:
     * Drives RSL switches
 
     ![software-main-web-page](doc/images/software-main-web-page.png?raw=true "software-main-web-page")
+
     * Stores sensors data received
+
+        ![software-sensor-graph](doc/images/software-sensor-graph.png?raw=true "software-sensor-graph")
 
 
 ## 433 MHz Temperature and Humidity Sensor

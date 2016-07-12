@@ -19,7 +19,7 @@
 			"sensorId": "20"
         },
         {
-            "label": "External sensor",
+            "label": "Outdoor sensor",
             "channel": "3",
             "rcId": "123456",
             "state": "unknown",
