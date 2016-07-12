@@ -15,7 +15,7 @@ This project is divided in several parts:
  * A software part hosted by the [Raspberry Pi](https://www.raspberrypi.org/products/) which:
     * Drives RSL switches
 
-    ![software-main-web-page](doc/images/software-main-web-page.png?raw=true "software-main-web-page")
+        ![software-main-web-page](doc/images/software-main-web-page.png?raw=true "software-main-web-page")
 
     * Stores sensors data received
 
