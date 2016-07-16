@@ -115,7 +115,15 @@ Where:
 #### Configuration
 
 These steps will configure Arduino software in order to use the microcontroller running at 8 Mhz:
- * Tools -> Board-> ATtiny
+ * File -> Preferences
+  * In *Additional Boards Manager URLs:*
+  * Enter *https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json*
+  * And *OK* button
+ * Tools -> Board-> Boards Manager...
+    * Search in the list and select: **attiny** by **David A. Mellis**
+    * Click *Install*
+    * And *Close* button
+ * Tools -> Board-> ATtiny25/45/85
  * Tools -> Processor-> ATtiny85
  * Tools -> Clock-> 8 MHz (internal)
  * Tools -> Programmer-> USBtinyISP
