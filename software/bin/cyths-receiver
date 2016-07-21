@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.0.2                                                              #
+# Version: 1.1.0                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -15,7 +15,6 @@
 #                                                                             #
 # Dependencies:                                                               #
 #  - jq (https://github.com/stedolan/jq)                                      #
-#  - stty (Debian coreutils package)                                          #
 #  - bc (Debian bc package)                                                   #
 #  - rrdtool (Debian rrdtool package)                                         #
 #  - rrdupdate (Debian rrdtool package)                                       #
@@ -24,6 +23,8 @@
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.1.0 - 2016-07-16                                                          #
+#  - Switch serial port from /dev/ttyACM0 to /dev/ttyAMA0                     #
 # 1.0.2 - 2016-07-12                                                          #
 #  - Update data format sent to switch URL                                    #
 # 1.0.1 - 2016-07-08                                                          #
@@ -46,6 +47,9 @@ then
 	echo "jq is missing. Please install it"
 	exit 1
 fi
+
+# Disable default process attached to the serial port
+sudo systemctl stop serial-getty@ttyAMA0.service
 
 # Define a variable for the configuration file
 CONFIG_FILE_PATH="$1"
@@ -204,5 +208,6 @@ do
 		echo "  - VALUE RECEIVED: $CODE" >> $LOG_FILE_PATH
 	fi
 
-done < <((stty 115200 cs8 -ixon; cat) < /dev/ttyACM0)
+done < <(cat /dev/ttyAMA0)
+#done < <((stty 115200 cs8 -ixon; cat) < /dev/ttyACM0)
 

@@ -23,6 +23,8 @@ install:
 		cp etc/systemd/system/cyths-receiver.service /etc/systemd/system
 		systemctl enable /etc/systemd/system/cyths-receiver.service
 		systemctl start cyths-receiver.service
+		# cyths-receiver log rotation
+		cp etc/logrotate.d/cyths-receiver /etc/logrotate.d
 		# web folder
 		cp -r var/www/html/cyths /var/www/html
 		# Add config.json to web folder
@@ -38,5 +40,7 @@ uninstall:
 		systemctl stop cyths-receiver.service
 		systemctl disable /etc/systemd/system/cyths-receiver.service
 		$(RM) /etc/systemd/system/cyths-receiver.service
+		# Remove cyths-receiver log rotation
+		$(RM) /etc/logrotate.d/cyths-receiver
 		# cyths-receiver
 		$(RM) $(prefix)/bin/cyths-receiver
