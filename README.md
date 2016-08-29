@@ -5,7 +5,7 @@ A 433 MHz Temperature and Humidity Solution
 This project is divided in several parts:
  * A sensor which measures and sends temperature and humidity
 
- ![CYTHS-PCB](doc/images/CYTHS-PCB.png?raw=true "CYTHS-PCB")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](doc/images/CYTHS.jpg?raw=true "CYTHS")
+ ![CYTHS-2.0-PCB-F](doc/images/CYTHS-2.0-PCB-F.png?raw=true "CYTHS-2.0-PCB-F")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS](doc/images/CYTHS-2.0-PCB-B.png?raw=true "CYTHS-2.0-PCB-B")
 
  * A hardware part connected to a [Raspberry Pi](https://www.raspberrypi.org/products/) in order to:
     * Receive sensors information
