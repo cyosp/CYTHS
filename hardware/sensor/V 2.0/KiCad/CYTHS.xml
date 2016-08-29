@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<export version="D">
+  <design>
+    <source>/home/cyosp/GitHub/CYTHS/hardware/sensor/V 2.0/KiCad/CYTHS.sch</source>
+    <date>dim. 21 août 2016 22:20:03 CEST</date>
+    <tool>Eeschema 4.0.2+dfsg1-2~bpo8+1-stable</tool>
+    <sheet number="1" name="/" tstamps="/">
+      <title_block>
+        <title/>
+        <company/>
+        <rev/>
+        <date/>
+        <source>CYTHS.sch</source>
+        <comment number="1" value=""/>
+        <comment number="2" value=""/>
+        <comment number="3" value=""/>
+        <comment number="4" value=""/>
+      </title_block>
+    </sheet>
+  </design>
+  <components>
+    <comp ref="IC1">
+      <value>ATTINY85-S</value>
+      <footprint>SMD_Packages:SOIC-8-N</footprint>
+      <libsource lib="atmel" part="ATTINY85-S"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57A25814</tstamp>
+    </comp>
+    <comp ref="TH1">
+      <value>DHT22_Temperature_Humidity</value>
+      <footprint>Sensors:DHT22_Temperature_Humidity</footprint>
+      <libsource lib="sensors" part="DHT22_Temperature_Humidity"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57A25AE9</tstamp>
+    </comp>
+    <comp ref="RF1">
+      <value>RF_Transmitter_433_MHz</value>
+      <footprint>Sensors:RF_Transmitter_433_MHz</footprint>
+      <libsource lib="sensors" part="RF_Transmitter_433_MHz"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57A25B62</tstamp>
+    </comp>
+    <comp ref="J1">
+      <value>CYOSP-VCC</value>
+      <footprint>CYOSP:CYOSP-VCC</footprint>
+      <libsource lib="cyosp" part="CYOSP-VCC"/>
+      <sheetpath names="/" tstamps="/"/>
+      <tstamp>57AC757D</tstamp>
+    </comp>
+  </components>
+  <libparts>
+    <libpart lib="atmel" part="ATTINY25-S">
+      <aliases>
+        <alias>ATTINY45-S</alias>
+        <alias>ATTINY85-S</alias>
+      </aliases>
+      <description>SO8 Wide, 2k Flash, 128B SRAM, 128B EEPROM, Debug Wire</description>
+      <docs>http://www.atmel.com/images/atmel-2586-avr-8-bit-microcontroller-attiny25-attiny45-attiny85_datasheet.pdf</docs>
+      <fields>
+        <field name="Reference">IC</field>
+        <field name="Value">ATTINY25-S</field>
+        <field name="Footprint">SO8-200</field>
+      </fields>
+      <pins>
+        <pin num="1" name="PB5(~RESET~/dW/ADC0/PCINT5)" type="BiDi"/>
+        <pin num="2" name="PB3(XTAL1/CLKI/OC1B/ADC3/PCINT3)" type="BiDi"/>
+        <pin num="3" name="PB4(XTAL2/CLKO/OC1B/ADC2/PCINT4)" type="BiDi"/>
+        <pin num="4" name="GND" type="power_in"/>
+        <pin num="5" name="PB0(MOSI/DI/SDA/AIN0/OC0A/OC1A/AREF/PCINT0)" type="BiDi"/>
+        <pin num="6" name="PB1(MISO/DO/AIN1/OC0B/OC1A/PCINT1)" type="BiDi"/>
+        <pin num="7" name="PB2(SCK/USCK/SCL/T0/INT0/ADC1/PCINT2)" type="BiDi"/>
+        <pin num="8" name="VCC" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="cyosp" part="CYOSP-VCC">
+      <fields>
+        <field name="Reference">J</field>
+        <field name="Value">CYOSP-VCC</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VCC" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="sensors" part="DHT22_Temperature_Humidity">
+      <description>A DHT22 temperature and humidity sensor</description>
+      <fields>
+        <field name="Reference">TH</field>
+        <field name="Value">DHT22_Temperature_Humidity</field>
+      </fields>
+      <pins>
+        <pin num="1" name="VDD" type="power_in"/>
+        <pin num="2" name="DATA" type="input"/>
+        <pin num="3" name="NULL" type="NotConnected"/>
+        <pin num="4" name="GND" type="power_in"/>
+      </pins>
+    </libpart>
+    <libpart lib="sensors" part="RF_Transmitter_433_MHz">
+      <description>An RF transmitter at 433 MHz</description>
+      <fields>
+        <field name="Reference">RF</field>
+        <field name="Value">RF_Transmitter_433_MHz</field>
+      </fields>
+      <pins>
+        <pin num="1" name="DATA" type="input"/>
+        <pin num="2" name="VCC" type="power_in"/>
+        <pin num="3" name="GND" type="power_in"/>
+      </pins>
+    </libpart>
+  </libparts>
+  <libraries>
+    <library logical="sensors">
+      <uri>/home/cyosp/GitHub/CYTHS/hardware/sensor/V 2.0/kicad-lib/sensors.lib</uri>
+    </library>
+    <library logical="atmel">
+      <uri>/usr/share/kicad/library/atmel.lib</uri>
+    </library>
+  </libraries>
+  <nets>
+    <net code="1" name="Net-(IC1-Pad5)">
+      <node ref="IC1" pin="5"/>
+      <node ref="RF1" pin="1"/>
+    </net>
+    <net code="2" name="GND">
+      <node ref="IC1" pin="4"/>
+      <node ref="TH1" pin="4"/>
+      <node ref="RF1" pin="3"/>
+    </net>
+    <net code="3" name="Net-(J1-Pad1)">
+      <node ref="J1" pin="1"/>
+    </net>
+    <net code="4" name="Net-(TH1-Pad3)">
+      <node ref="TH1" pin="3"/>
+    </net>
+    <net code="5" name="Net-(IC1-Pad2)">
+      <node ref="IC1" pin="2"/>
+    </net>
+    <net code="6" name="Net-(IC1-Pad3)">
+      <node ref="IC1" pin="3"/>
+    </net>
+    <net code="7" name="Net-(IC1-Pad6)">
+      <node ref="IC1" pin="6"/>
+      <node ref="TH1" pin="2"/>
+    </net>
+    <net code="8" name="Net-(IC1-Pad7)">
+      <node ref="IC1" pin="7"/>
+    </net>
+    <net code="9" name="Net-(IC1-Pad1)">
+      <node ref="IC1" pin="1"/>
+    </net>
+    <net code="10" name="Net-(IC1-Pad8)">
+      <node ref="TH1" pin="1"/>
+      <node ref="RF1" pin="2"/>
+      <node ref="IC1" pin="8"/>
+    </net>
+  </nets>
+</export>
