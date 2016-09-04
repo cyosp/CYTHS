@@ -1,0 +1,262 @@
+EESchema Schematic File Version 2
+LIBS:power
+LIBS:device
+LIBS:transistors
+LIBS:conn
+LIBS:linear
+LIBS:regul
+LIBS:74xx
+LIBS:cmos4000
+LIBS:adc-dac
+LIBS:memory
+LIBS:xilinx
+LIBS:microcontrollers
+LIBS:dsp
+LIBS:microchip
+LIBS:analog_switches
+LIBS:motorola
+LIBS:texas
+LIBS:intel
+LIBS:audio
+LIBS:interface
+LIBS:digital-audio
+LIBS:philips
+LIBS:display
+LIBS:cypress
+LIBS:siliconi
+LIBS:opto
+LIBS:atmel
+LIBS:contrib
+LIBS:valves
+LIBS:sensors
+LIBS:piTransceiver-cache
+EELAYER 25 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 1
+Title ""
+Date ""
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L RF_Receiver_433_MHz RF2
+U 1 1 57C5E674
+P 9750 1700
+F 0 "RF2" H 9750 2350 60  0000 C CNN
+F 1 "RF_Receiver_433_MHz" H 9750 2250 60  0000 C CNN
+F 2 "Sensors:RF_Receiver_433_MHz" H 9850 1700 60  0001 C CNN
+F 3 "" H 9850 1700 60  0000 C CNN
+	1    9750 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L RF_Transmitter_433_MHz RF1
+U 1 1 57C5E6DB
+P 1800 1850
+F 0 "RF1" H 1800 2650 60  0000 C CNN
+F 1 "RF_Transmitter_433_MHz" H 1800 2550 60  0000 C CNN
+F 2 "Sensors:RF_Transmitter_433_MHz" H 1800 1850 60  0001 C CNN
+F 3 "" H 1800 1850 60  0000 C CNN
+	1    1800 1850
+	1    0    0    -1  
+$EndComp
+$Comp
+L ATTINY85-S IC1
+U 1 1 57C5E77A
+P 5800 3250
+F 0 "IC1" H 4650 3650 50  0000 C CNN
+F 1 "ATTINY85-S" H 6800 2850 50  0000 C CNN
+F 2 "Power_Integrations:PDIP-8" H 6750 3250 50  0000 C CIN
+F 3 "" H 5800 3250 50  0000 C CNN
+	1    5800 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L LED D1
+U 1 1 57C5E819
+P 4450 2800
+F 0 "D1" H 4450 2900 50  0000 C CNN
+F 1 "LED" H 4450 2700 50  0000 C CNN
+F 2 "LEDs:LED-5MM" H 4450 2800 50  0001 C CNN
+F 3 "" H 4450 2800 50  0000 C CNN
+	1    4450 2800
+	0    1    1    0   
+$EndComp
+$Comp
+L R R1
+U 1 1 57C5E871
+P 4150 3300
+F 0 "R1" V 4230 3300 50  0000 C CNN
+F 1 "R" V 4150 3300 50  0000 C CNN
+F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM10mm" V 4080 3300 50  0001 C CNN
+F 3 "" H 4150 3300 50  0000 C CNN
+	1    4150 3300
+	0    1    1    0   
+$EndComp
+$Comp
+L R R2
+U 1 1 57C5E8C8
+P 4450 2450
+F 0 "R2" V 4530 2450 50  0000 C CNN
+F 1 "R" V 4450 2450 50  0000 C CNN
+F 2 "Resistors_ThroughHole:Resistor_Horizontal_RM10mm" V 4380 2450 50  0001 C CNN
+F 3 "" H 4450 2450 50  0000 C CNN
+	1    4450 2450
+	1    0    0    -1  
+$EndComp
+$Comp
+L +3.3V #PWR01
+U 1 1 57C5E9B6
+P 3050 1700
+F 0 "#PWR01" H 3050 1550 50  0001 C CNN
+F 1 "+3.3V" H 3050 1840 50  0000 C CNN
+F 2 "" H 3050 1700 50  0000 C CNN
+F 3 "" H 3050 1700 50  0000 C CNN
+	1    3050 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L +5V #PWR02
+U 1 1 57C5EA3C
+P 3550 1700
+F 0 "#PWR02" H 3550 1550 50  0001 C CNN
+F 1 "+5V" H 3550 1840 50  0000 C CNN
+F 2 "" H 3550 1700 50  0000 C CNN
+F 3 "" H 3550 1700 50  0000 C CNN
+	1    3550 1700
+	1    0    0    -1  
+$EndComp
+$Comp
+L GND #PWR03
+U 1 1 57C5EAB6
+P 3750 1900
+F 0 "#PWR03" H 3750 1650 50  0001 C CNN
+F 1 "GND" H 3750 1750 50  0000 C CNN
+F 2 "" H 3750 1900 50  0000 C CNN
+F 3 "" H 3750 1900 50  0000 C CNN
+	1    3750 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	8250 1150 8250 3000
+Wire Wire Line
+	8250 3000 7150 3000
+Wire Wire Line
+	7800 1900 7800 3500
+Wire Wire Line
+	7800 3500 7150 3500
+Connection ~ 3750 1900
+Wire Wire Line
+	3550 1900 9950 1900
+Wire Wire Line
+	3050 1700 2850 1700
+Wire Wire Line
+	2850 1700 2850 1150
+Wire Wire Line
+	2850 1150 8250 1150
+Wire Wire Line
+	1700 1850 1700 2200
+Wire Wire Line
+	1700 2200 3050 2200
+Wire Wire Line
+	1800 1850 1800 2000
+Wire Wire Line
+	1800 2000 2400 2000
+Wire Wire Line
+	2400 2000 2400 800 
+Wire Wire Line
+	2400 800  4350 800 
+Wire Wire Line
+	4350 800  4350 1700
+Wire Wire Line
+	3550 1700 9650 1700
+Wire Wire Line
+	1900 1850 1900 2600
+Wire Wire Line
+	1900 2600 4150 2600
+Wire Wire Line
+	4150 2600 4150 1900
+Connection ~ 4150 1900
+Wire Wire Line
+	3550 2100 4000 2100
+Wire Wire Line
+	4000 2100 4000 3300
+Wire Wire Line
+	4300 3300 4450 3300
+Wire Wire Line
+	4450 2300 4450 1900
+Connection ~ 4450 1900
+Wire Wire Line
+	9850 1700 9850 4200
+Wire Wire Line
+	9850 4200 2800 4200
+Wire Wire Line
+	2800 4200 2800 3100
+Wire Wire Line
+	2800 3100 4450 3100
+Wire Wire Line
+	9950 1900 9950 1700
+Connection ~ 7800 1900
+Connection ~ 4350 1700
+$Comp
+L CONN_01X01 P1
+U 1 1 57CC197E
+P 3050 1900
+F 0 "P1" H 3050 2000 50  0000 C CNN
+F 1 "3.3V" V 3150 1900 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01" H 3050 1900 50  0001 C CNN
+F 3 "" H 3050 1900 50  0000 C CNN
+	1    3050 1900
+	0    1    1    0   
+$EndComp
+$Comp
+L CONN_01X01 P2
+U 1 1 57CC22A8
+P 3050 2400
+F 0 "P2" H 3050 2500 50  0000 C CNN
+F 1 "Tx-433" V 3150 2400 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01" H 3050 2400 50  0001 C CNN
+F 3 "" H 3050 2400 50  0000 C CNN
+	1    3050 2400
+	0    1    1    0   
+$EndComp
+$Comp
+L CONN_01X01 P5
+U 1 1 57CC2460
+P 3550 2300
+F 0 "P5" H 3550 2400 50  0000 C CNN
+F 1 "Tx-Serial" V 3650 2300 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01" H 3550 2300 50  0001 C CNN
+F 3 "" H 3550 2300 50  0000 C CNN
+	1    3550 2300
+	0    1    1    0   
+$EndComp
+$Comp
+L CONN_01X01 P3
+U 1 1 57CC27FA
+P 3350 1700
+F 0 "P3" H 3350 1800 50  0000 C CNN
+F 1 "5V" V 3450 1700 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01" H 3350 1700 50  0001 C CNN
+F 3 "" H 3350 1700 50  0000 C CNN
+	1    3350 1700
+	-1   0    0    1   
+$EndComp
+$Comp
+L CONN_01X01 P4
+U 1 1 57CC28E9
+P 3350 1900
+F 0 "P4" H 3350 2000 50  0000 C CNN
+F 1 "GND" V 3450 1900 50  0000 C CNN
+F 2 "Pin_Headers:Pin_Header_Straight_1x01" H 3350 1900 50  0001 C CNN
+F 3 "" H 3350 1900 50  0000 C CNN
+	1    3350 1900
+	-1   0    0    1   
+$EndComp
+$EndSCHEMATC
