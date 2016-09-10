@@ -3,11 +3,11 @@
 A 433 MHz Temperature and Humidity Solution
 
 This project is divided in several parts:
- * [A sensor](hardware/sensor/V 2.0/README.md) which measures and sends temperature and humidity
+ * [A sensor](hardware/sensor/V 2.0) which measures and sends temperature and humidity
 
  ![CYTHS-2.0-PCB-F](doc/images/CYTHS-2.0-PCB-F.png?raw=true "CYTHS-2.0-PCB-F")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS-2.0-PCB-B](doc/images/CYTHS-2.0-PCB-B.png?raw=true "CYTHS-2.0-PCB-B")
 
- * [A hardware](hardware/piTransceiver/V 1.0/README.md) part connected to a [Raspberry Pi](https://www.raspberrypi.org/products/) in order to:
+ * [A hardware](hardware/piTransceiver/V 1.0) part connected to a [Raspberry Pi](https://www.raspberrypi.org/products/) in order to:
     * Receive sensors information
     * Drive RSL switch connected to electric heaters
 
