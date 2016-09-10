@@ -22,6 +22,12 @@ Sensor is driven by an AVR ATTiny85 microcontroller which is programmed using:
 Printed Circuit Board (PCB) has been designed using:
  * [KiCad](http://kicad-pcb.org)
 
+#### PCB
+
+Sensor is composed of a double layer PCB:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS-2.0-PCB-F](../../../doc/images/CYTHS-2.0-PCB-F.png?raw=true "CYTHS-2.0-PCB-F")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS-2.0-PCB-B](../../../doc/images/CYTHS-2.0-PCB-B.png?raw=true "CYTHS-2.0-PCB-B")
+
 #### Components
 
 Components used are:
