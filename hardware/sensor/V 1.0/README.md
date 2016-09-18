@@ -3,6 +3,8 @@
 ![Stable version](https://img.shields.io/badge/stable-1.0.3-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
+![CYTHS](CYTHS.jpg?raw=true "CYTHS")
+
 ### Description
 
 CYTHS is a sensor which is able to send through 433 MHz transmitter a temperature thus a humidity value.
