@@ -3,6 +3,8 @@
 ![Stable version](https://img.shields.io/badge/stable-2.0.0-blue.svg)
 [![BSD-3 license](https://img.shields.io/badge/license-BSD--3--Clause-428F7E.svg)](https://tldrlegal.com/license/bsd-3-clause-license-%28revised%29)
 
+<img src="CYTHS-2.0_1.jpg" alt="CYTHS-2.0_1" style="height: 150px;"/>&nbsp;&nbsp;&nbsp;<img src="CYTHS-2.0_2.jpg" alt="CYTHS-2.0_2" style="height: 150px;"/>&nbsp;&nbsp;&nbsp;<img src="CYTHS-2.0_3.jpg" alt="CYTHS-2.0_3" style="height: 150px;"/>
+
 ### Description
 
 CYTHS is a sensor which is able to send through 433 MHz transmitter a temperature thus a humidity value.
@@ -26,7 +28,7 @@ Printed Circuit Board (PCB) has been designed using:
 
 Sensor is composed of a double layer PCB:
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS-2.0-PCB-F](../../../doc/images/CYTHS-2.0-PCB-F.png?raw=true "CYTHS-2.0-PCB-F")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS-2.0-PCB-B](../../../doc/images/CYTHS-2.0-PCB-B.png?raw=true "CYTHS-2.0-PCB-B")
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS-2.0-PCB-F](CYTHS-2.0-PCB-F.png?raw=true "CYTHS-2.0-PCB-F")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![CYTHS-2.0-PCB-B](CYTHS-2.0-PCB-B.png?raw=true "CYTHS-2.0-PCB-B")
 
 #### Components
 
