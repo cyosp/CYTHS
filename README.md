@@ -5,7 +5,7 @@ A 433 MHz Temperature and Humidity Solution
 This project is divided in several parts:
  * [A sensor](hardware/sensor/V 2.0) which measures and sends temperature and humidity
 
- <img src="hardware/sensor/V 2.0/CYTHS-2.0_1.jpg" alt="CYTHS-2.0_1" style="height: 150px;"/>
+ ![CYTHS-2.0_1](hardware/sensor/V 2.0/CYTHS-2.0_1.jpg?raw=true)
 
  * [A hardware](hardware/piTransceiver/V 1.0) part connected to a [Raspberry Pi](https://www.raspberrypi.org/products/) in order to:
     * Receive sensors information
