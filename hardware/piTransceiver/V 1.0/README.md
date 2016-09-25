@@ -19,3 +19,14 @@ piTransceiver is composed of a double layer PCB:
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![piTransceiver-1.0-PCB-F](../../../doc/images/piTransceiver-1.0-PCB-F.png?raw=true "piTransceiver-1.0-PCB-F")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![piTransceiver-1.0-PCB-B](../../../doc/images/piTransceiver-1.0-PCB-B.png?raw=true "piTransceiver-1.0-PCB-B")
 
 ### Components
+
+Components used are:
+
+| Component | Reference           |
+|:----------|:--------------------|
+| R1        | 2.2 KΩ 5%           |
+| R2        | 27 Ω 5%             |
+| LED       | Yellow LED          |
+| IC1       | ATtiny85-20PU       |
+| RF1       | 433 MHz transmitter |
+| RF2       | 433 MHz receiver    |
