@@ -11,7 +11,7 @@ This project is divided in several parts:
     * Receive sensors information
     * Drive RSL switch connected to electric heaters
 
-    ![piTransceiver-1.0-PCB-F](doc/images/piTransceiver-1.0-PCB-F.png?raw=true "piTransceiver-1.0-PCB-F")&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;![piTransceiver-1.0-PCB-B](doc/images/piTransceiver-1.0-PCB-B.png?raw=true "piTransceiver-1.0-PCB-B")
+    ![piTransceiver-1.0_1](hardware/piTransceiver/V 1.0/piTransceiver-1.0_1.jpg?raw=true)
 
 
  * A software part hosted by the [Raspberry Pi](https://www.raspberrypi.org/products/) which:
