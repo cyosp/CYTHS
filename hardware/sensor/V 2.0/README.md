@@ -15,13 +15,27 @@ CYTHS is a sensor which is able to send through 433 MHz transmitter a temperatur
 
 These information are coded on 32 bits and transmitted using the RSL protocol each 5 minutes.
 
-Sensor is low energy consumption allowing to have it working several months/years with three 1.5V batteries.
+Sensor is low energy consumption allowing to have it working around 1000 days (~2.8 years) with three 1.5V batteries.
 
 Each sensor has an identifier initialized at the first power on which can be changed if power is unplugged and plugged 3 times in a dedicated time frame.
 
+### Lifetime
+
+Sensor lifetime is calculated using [Oregon Embedded](http://oregonembedded.com/batterycalc.htm) web site and the following information:
+
+| Description                                     | Value |
+|:------------------------------------------------|:------|
+| Capacity rating of battery (mAh)                | 1250  |
+| Current consumption of device during sleep (mA) | 0.02  |
+| Current consumption of device during wake (mA)  | 15    |
+| Number of wakeups per hour                      | 11    |
+| Duration of wake time (ms)                      | 500   |
+
+Estimated battery life is: **1032.29 days, or 2.83 years**.
+
 ### Hardware
 
-Sensor is driven by an AVR ATTiny85 microcontroller which is programmed using:
+Sensor is driven by an AVR ATtiny85 microcontroller which is programmed using:
  * The [Tiny AVR Programmer](https://www.sparkfun.com/products/11801)
  * [Arduino IDE](http://www.arduino.org/)
 
@@ -41,8 +55,9 @@ Components used are:
 | Description                     | Reference                                                                 |
 |:--------------------------------|:--------------------------------------------------------------------------|
 | Temperature and humidity sensor | [DHT22](http://www.humiditycn.com/cp22.html)                              |
-| Microcontroller                 | [ATTiny85](http://www.atmel.com/devices/attiny85.aspx)                    |
+| Microcontroller                 | [ATtiny85](http://www.atmel.com/devices/attiny85.aspx) (CMS package)      |
 | 433 MHz transmitter             | [433 MHz transmitter](http://www.seeedstudio.com/wiki/433Mhz_RF_link_kit) |
+| 3x 1.5V AAA batteries           | [Camelion batteries](http://camelionbatteries.com/primary/plus.html)      |
 
 ### Code structure
 
@@ -101,7 +116,7 @@ Where:
 
 #### Configuration
 
-These steps will configure Arduino software in order to use the microcontroller running at 8 Mhz:
+These steps will configure Arduino software in order to use the microcontroller running at 16 Mhz:
  * File -> Preferences
   * In *Additional Boards Manager URLs:*
   * Enter *https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json*
@@ -112,7 +127,7 @@ These steps will configure Arduino software in order to use the microcontroller 
     * And *Close* button
  * Tools -> Board-> ATtiny25/45/85
  * Tools -> Processor-> ATtiny85
- * Tools -> Clock-> 8 MHz (internal)
+ * Tools -> Clock-> Internal 16 MHz
  * Tools -> Programmer-> USBtinyISP
 
 Then it's necessary to burn fuses of the microcontroller to set this configuration.
