@@ -1,10 +1,13 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.1.0";
+var projectVersion = "1.2.0";
 
+// 2016-09-28 V 1.2.0
+//   - Disable switch if remote command
+//     identifier and channel are empty
 // 2016-07-10 V 1.1.0
-//- Add a graphic link to each sensor
+//   - Add a graphic link to each sensor
 // 2016-07-07 V 1.0.0
-// - Initial release
+//   - Initial release
 
 $( document ).ready(function()
 {
@@ -58,8 +61,10 @@ function init()
 				// Nothing to do
 			}
 			else	switchesListToAdd += 'data-indeterminate="true"';
-			switchesListToAdd += '>';
 			// END : Manage switch state
+			// Disable switch if remote command identifier and channel are empty
+			if( switchToDrive.rcId == "" && switchToDrive.channel == "" )	switchesListToAdd += ' disabled';
+			switchesListToAdd += '>';
 			switchesListToAdd += '  </p>';
 			switchesListToAdd += '  <h2 class="h6">';
 			if( switchToDrive.info )
