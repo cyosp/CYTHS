@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.1.0                                                              #
+# Version: 1.1.1                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -20,9 +20,12 @@
 #  - rrdupdate (Debian rrdtool package)                                       #
 #  - rrd2csv (https://github.com/williamrh/rrd2csv)                           #
 #  - curl (Debian curl package)                                               #
+#  - head (Debian coreutils package)                                          #
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.1.1 - 2016-09-29                                                          #
+#  - Manage cURL return code                                                  #
 # 1.1.0 - 2016-07-16                                                          #
 #  - Switch serial port from /dev/ttyACM0 to /dev/ttyAMA0                     #
 # 1.0.2 - 2016-07-12                                                          #
@@ -196,7 +199,11 @@ do
 
 				# Update "info" section in configuration file using HTTP request
 				# Example: 18.5° / 65% • 08:35:10 
-				curl --silent --data "rcId=${config[$SENSOR_ID:$RC_ID]}&channel=${config[$SENSOR_ID:$CHANNEL]}&info=$TEMPERATURE° / $HUMIDITY% • ${RECEIVED_DATE:11:8}" "http://localhost/$SOLUTION_NAME/switch/" 2>&1 >/dev/null
+				OUTPUT=`curl -i --silent --data "rcId=${config[$SENSOR_ID:$RC_ID]}&channel=${config[$SENSOR_ID:$CHANNEL]}&info=$TEMPERATURE° / $HUMIDITY% • ${RECEIVED_DATE:11:8}" "http://localhost/$SOLUTION_NAME/switch/" 2>&1`
+				if [ `echo "$OUTPUT" | head -1 | grep " 200 " > /dev/null 2>&1; echo $?` -ne 0 ]
+				then
+					echo "  - [ERROR] Fail to update user interface. Details: $OUTPUT" >> $LOG_FILE_PATH
+				fi 
 			else
 				echo "  - Sensor identifier not registred in configuration: $SENSOR_ID" >> $LOG_FILE_PATH
 			fi
