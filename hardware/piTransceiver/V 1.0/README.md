@@ -22,14 +22,14 @@ piTransceiver is composed of a double layer PCB:
 
 Components used are:
 
-| Component | Reference           |
-|:----------|:--------------------|
-| R1        | 2.2 KΩ 5%           |
-| R2        | 27 Ω 5%             |
-| LED       | Yellow LED          |
-| IC1       | ATtiny85-20PU       |
-| RF1       | 433 MHz transmitter |
-| RF2       | 433 MHz receiver    |
+| Component | Reference                            |
+|:----------|:-------------------------------------|
+| R1        | 2.2 KΩ 5%                            |
+| R2        | 27 Ω 5%                              |
+| LED       | Yellow LED                           |
+| IC1       | ATtiny85-20PU                        |
+| RF1       | 433 MHz transmitter + spring antenna |
+| RF2       | 433 MHz receiver + spring antenna    |
 
 #### Configuration
 
