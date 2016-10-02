@@ -1,6 +1,8 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.2.0";
+var projectVersion = "1.2.1";
 
+// 2016-10-02 V 1.2.1
+//  - Fix: call to "switch" URL API
 // 2016-09-28 V 1.2.0
 //   - Disable switch if remote command
 //     identifier and channel are empty
@@ -88,7 +90,7 @@ function init()
 			// Disable switch until post answer
 			switchObj.bootstrapSwitch( 'disabled' , true );
 			
-			$.post( 'switch/' ,
+			$.post( 'API/set/switch/' ,
 			{
 				emitterWiringPiNumber	: emitterWiringPiNumber,
 				rcId    				: $(this).attr("rcId"),
