@@ -6,6 +6,8 @@ empty:
 	true
 
 install:
+		# cyths-transmitter
+		install -m 755 bin/cyths-transmitter $(prefix)/bin
 		# cyths-receiver
 		install -m 755 bin/cyths-receiver $(prefix)/bin
         # config.json
@@ -44,3 +46,5 @@ uninstall:
 		$(RM) /etc/logrotate.d/cyths-receiver
 		# cyths-receiver
 		$(RM) $(prefix)/bin/cyths-receiver
+		# cyths-transmitter
+		$(RM) $(prefix)/bin/cyths-transmitter
