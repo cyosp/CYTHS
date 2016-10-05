@@ -7,6 +7,10 @@
             "channel": "1",
             "rcId": "123456",
             "state": "on",
+            "crontab": [
+            	{"entry": "0 19 * * * on"},
+            	{"entry": "0  6 * * * off"}
+            ],
             "info": "20.0° / 50% • 08:37:25",
 			"sensorId": "10"
         },
