@@ -31,7 +31,7 @@
 						 // Add 'header'
 						 $content .= '<ul><li><h5>'.$mySwitch->label.'</h5></li></ul>';
 
-						 $content .= '<div id="'.$mySwitch->sensorId.'"></div>';
+						 $content .= '<div id="'.$mySwitch->sensorId.'" style="width: 98%;"></div>';
 						 $content .= '<script type="text/javascript">';
 						 $content .= '  g3 = new Dygraph(';
 						 $content .= '        document.getElementById("'.$mySwitch->sensorId.'"),';
