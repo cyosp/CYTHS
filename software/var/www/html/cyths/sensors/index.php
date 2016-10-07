@@ -1,5 +1,7 @@
 <html>
 	<?php
+	// V 1.1.1 2016-10-07
+	//  - Sensor graph takes now all page width
 	// V 1.1.0 2016-07-08
 	//  - It's now possible to restrict display to only one sensor
 	//    given sensor identifier as 'id' parameter
