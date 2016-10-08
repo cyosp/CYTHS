@@ -1,5 +1,7 @@
-var pageVersion = "1.0.0";
+var pageVersion = "1.0.1";
 
+// 2016-10-08 V 1.0.1
+//   - Manage new crontab format
 // 2016-10-06 V 1.0.0
 //   - Initial release
 
@@ -38,9 +40,9 @@ function init()
 				crontabsListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
 				crontabsListToAdd += '  <p>';
 				crontabsListToAdd += '   <ul>';
-				$.each( switchToDrive.crontab , function( index , cron )
+				$.each( switchToDrive.crontab , function( index , entry )
 				{
-					crontabsListToAdd += '    <li>' + cron.entry + '</li>';
+					crontabsListToAdd += '    <li>' + entry.cron + ' ' + entry.state + '</li>';
 				});
 				crontabsListToAdd += '   </ul>';
 				crontabsListToAdd += '  </p>';

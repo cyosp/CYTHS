@@ -8,8 +8,14 @@
             "rcId": "123456",
             "state": "on",
             "crontab": [
-            	{"entry": "0 19 * * * on"},
-            	{"entry": "0  6 * * * off"}
+            	{
+            		"cron": "0 19 * * *",
+            		"state": "on"
+            	},
+            	{
+            		"cron": "0 6 * * *",
+            		"state": "off"
+            	}
             ],
             "info": "20.0° / 50% • 08:37:25",
 			"sensorId": "10"
