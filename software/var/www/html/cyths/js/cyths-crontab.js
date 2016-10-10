@@ -1,5 +1,7 @@
-var pageVersion = "1.0.1";
+var pageVersion = "1.0.2";
 
+// 2016-10-10 V 1.0.2
+//   - Manage cronwtf library
 // 2016-10-08 V 1.0.1
 //   - Manage new crontab format
 // 2016-10-06 V 1.0.0
@@ -42,7 +44,13 @@ function init()
 				crontabsListToAdd += '   <ul>';
 				$.each( switchToDrive.crontab , function( index , entry )
 				{
-					crontabsListToAdd += '    <li>' + entry.cron + ' ' + entry.state + '</li>';
+					// Get cron string
+					var cronString = entry.cron + ' ' + entry.state;
+					// Convert cron as a human readable string
+					var cronHumanString = CronWTF.entry( cronString );
+					
+					// Add entry in HTML page
+					crontabsListToAdd += '    <li>' + cronString + '<br/>' + cronHumanString.message +'</li>';
 				});
 				crontabsListToAdd += '   </ul>';
 				crontabsListToAdd += '  </p>';
