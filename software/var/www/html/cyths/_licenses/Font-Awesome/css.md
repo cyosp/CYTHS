@@ -1,0 +1,5 @@
+# Code License
+
+License: MIT License
+
+URL: http://opensource.org/licenses/mit-license.html
