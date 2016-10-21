@@ -30,7 +30,6 @@ install:
 		# web folder
 		cp -r var/www/html/cyths /var/www/html
 		# Add config.json to web folder
-		mkdir /var/www/html/cyths/data
 		ln -s /etc/cyths/config.json /var/www/html/cyths/data
 		# Add CSV folder to web folder
 		ln -s /var/lib/cyths/csv /var/www/html/cyths/data
