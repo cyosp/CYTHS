@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <!-- Author: CYOSP       -->
 <!-- Created: 2016-07-07 -->
-<!-- Version: 1.1.0      -->
+<!-- Version: 1.2.0      -->
 
-<!-- 2016-10-16 V 1.1.0      -->
-<!--  * Add bootstrap navbar -->
+<!-- 2016-10-21 V 1.2.0          -->
+<!--  * Use internationalization -->
+<!-- 2016-10-16 V 1.1.0          -->
+<!--  * Add bootstrap navbar     -->
 <html>
   <head>
     <meta charset="utf-8">
@@ -16,7 +18,7 @@
     <!-- CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <link href="css/bootstrap-switch.min.css" rel="stylesheet">
-    <link href="css/cyths.css" rel="stylesheet">
+    <link href="css/cyths.css" rel="stylesheet">  
     <!-- JavaScript -->
     <script src="js/jquery.min.js"></script>
     <script src="js/bootstrap.min.js"></script>
@@ -25,6 +27,12 @@
     <!-- cyths.js must be include before main.js -->
     <script src="js/cyths.js"></script>
     <script src="js/main.js"></script>
+    <!-- i18n -->
+	<script src="js/i18next.min.js"></script>
+	<script src="js/i18nextXHRBackend.min.js"></script>
+	<script src="js/jquery-i18next.min.js"></script>			
+	<script>var i18nextLoadPath="data/i18n/cyths.{{lng}}.json";</script>
+	<script src="js/cyths-i18n.js"></script>
   </head>
   <body>
     <div id="content">
@@ -41,7 +49,8 @@
 			</div>
 			  <div id="navbar" class="navbar-collapse collapse">
 			    <ul class="nav navbar-nav navbar-right">
-			      <li><a href="display/crontab">Crontab</a></li>
+			      <li><a href="sensors"><span data-i18n="sensors.label">Sensors</span></a></li>
+			      <li><a href="display/crontab"><span data-i18n="crontab.label">Crontab</span></a></li>
 			    </ul>
 			  </div>
 			</div>

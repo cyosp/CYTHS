@@ -1,6 +1,8 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.2.1";
+var projectVersion = "1.3.0";
 
+// 2016-10-21 V 1.3.0
+//- Add internationalization
 // 2016-10-02 V 1.2.1
 //  - Fix: call to "switch" URL API
 // 2016-09-28 V 1.2.0

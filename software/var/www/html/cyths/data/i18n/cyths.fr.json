@@ -1,0 +1,12 @@
+{
+   "crontab":
+   {
+     "label": "Planification",
+     "title": "CYTHS - Planification"
+   },
+   "sensors":
+   {
+     "label": "Capteurs",
+     "title": "CYTHS - Capteurs"
+   }
+}

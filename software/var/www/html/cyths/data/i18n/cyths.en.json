@@ -1,0 +1,12 @@
+{
+   "crontab":
+   {
+   	 "label": "Scheduler",
+     "title": "CYTHS - Scheduler"
+   },
+   "sensors":
+   {
+     "label": "Sensors",
+     "title": "CYTHS - Sensors"
+   }
+}
