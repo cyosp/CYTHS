@@ -1,3 +1,12 @@
+//
+// Author: CYOSP
+// Created: 2016-10-21
+// Version: 1.1.0
+//
+
+// 2016-10-22 V 1.1.0
+//   - Execute cythsInit function (if it exists)
+//     after internationalization 
 // 2016-10-21 V 1.0.0
 //   - Initial release
 
@@ -27,4 +36,11 @@ i18next.use( i18nextXHRBackend ).init( i18nextOptions , function(err, t)
 
 	// Start localizing, details: https://github.com/i18next/jquery-i18next#usage-of-selector-function
 	$( 'head, body' ).localize();
+
+	// Internationalization is performed
+	// Call CYTHS init function if defined
+	if( typeof cythsInit !== 'undefined' && $.isFunction( cythsInit ) )
+	{
+		cythsInit();
+	}
 });
