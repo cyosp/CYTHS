@@ -18,6 +18,96 @@ $( document ).ready(function()
 	init();
 });
 
+function addSwitch( switchToDrive )
+{
+	// Define switch id
+	var switchId = "switch-" + switchToDrive.channel + "-" + switchToDrive.rcId;
+
+	// Add switch if it doesn't exist in the page
+	if( $( '#' + switchId ).length == 0 )
+	{
+		//
+		// Compute piece of HTML to insert
+		//
+		var switchesListToAdd = '<div class="col-xs-6 col-lg-3 switch">';
+		switchesListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
+		switchesListToAdd += '  <p>';
+		switchesListToAdd += '    <input id="' + switchId + '" name="' + switchId + '" rcId="' + switchToDrive.rcId + '" channel="' + switchToDrive.channel + '" type="checkbox" data-on-color="info" data-off-color="warning" data-size="normal" data-handle-width="50" ';
+		// START : Manage switch state
+		if( switchToDrive.state == "on" )
+		{
+			switchesListToAdd += "checked";
+		}
+		else if( switchToDrive.state == "off" )
+		{
+			// Nothing to do
+		}
+		else	switchesListToAdd += 'data-indeterminate="true"';
+		// END : Manage switch state
+		// Disable switch if remote command identifier and channel are empty
+		if( switchToDrive.rcId == "" && switchToDrive.channel == "" )	switchesListToAdd += ' disabled';
+		switchesListToAdd += '>';
+		switchesListToAdd += '  </p>';
+		switchesListToAdd += '  <h2 class="h6">';
+		if( switchToDrive.info )
+		{
+			if( switchToDrive.sensorId )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensorId + '">' + switchToDrive.info + '</a>';
+			else							switchesListToAdd += switchToDrive.info;
+		}
+		switchesListToAdd += '  </h2>';
+		switchesListToAdd += '</div>';
+
+		// Insert piece of HTML
+		$( switchesListToAdd ).insertBefore( ".row" );
+
+		// Register switch change
+		$( '#' + switchId ).on( 'switchChange.bootstrapSwitch', function( event , state )
+		{
+			// Get switch 'object'
+			var switchObj = $( '#' + $(this).attr( "id" ) );
+
+			// Disable switch until post answer
+			switchObj.bootstrapSwitch( 'disabled' , true );
+		
+			$.post( 'API/set/switch/' ,
+			{
+				emitterWiringPiNumber	: emitterWiringPiNumber,
+				rcId    				: $(this).attr("rcId"),
+				channel					: $(this).attr("channel"),
+				state					: (state ? "on" : "off")
+			}).done(function( data )
+			{
+				// Get JSON object
+				var response = jQuery.parseJSON( data );
+			
+				// Manage error case
+				if( response.result == "error")
+				{
+					var msg = "ERROR\n";
+					msg += response.cmd + "\n";
+					msg += response.message;
+				
+					// Display command executed and error to the user
+					alert( msg );
+
+					// Enable switch to be able to toggle state
+					switchObj.bootstrapSwitch( 'disabled' , false );
+					// Restore previous switch state with no event called
+					switchObj.bootstrapSwitch( 'toggleState' , true );
+				}
+			}).fail(function(jqxhr, textStatus, error)
+			{
+				// Alert user
+				alert( textStatus + ": " + error );
+			}).always(function()
+			{
+				// Enable switch in all cases
+				switchObj.bootstrapSwitch( 'disabled' , false );
+			});
+		});
+	}
+}
+
 function init()
 {
 	//
@@ -37,96 +127,13 @@ function init()
 		// Set page titles
 		$(document).prop( 'title' , $(document).prop( 'title' ) + " - " + projectVersion );
 		$( "div.container h1").text( root.pageTitle );
-		  
-		var switchesListToAdd = '';
-		
+	
 		//
-		// For each switch configured
+		// Add each switch configured
 		//
 		$.each( root.switchesList , function( index , switchToDrive )
 		{
-			// Define switch id
-			var switchId = "switch-" + switchToDrive.channel + "-" + switchToDrive.rcId;
-			
-			//
-			// Compute piece of HTML to insert
-			//
-			switchesListToAdd += '<div class="col-xs-6 col-lg-3 switch">';
-			switchesListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
-			switchesListToAdd += '  <p>';
-			switchesListToAdd += '    <input id="' + switchId + '" name="' + switchId + '" rcId="' + switchToDrive.rcId + '" channel="' + switchToDrive.channel + '" type="checkbox" data-on-color="info" data-off-color="warning" data-size="normal" data-handle-width="50" ';
-			// START : Manage switch state
-			if( switchToDrive.state == "on" )
-			{
-				switchesListToAdd += "checked";
-			}
-			else if( switchToDrive.state == "off" )
-			{
-				// Nothing to do
-			}
-			else	switchesListToAdd += 'data-indeterminate="true"';
-			// END : Manage switch state
-			// Disable switch if remote command identifier and channel are empty
-			if( switchToDrive.rcId == "" && switchToDrive.channel == "" )	switchesListToAdd += ' disabled';
-			switchesListToAdd += '>';
-			switchesListToAdd += '  </p>';
-			switchesListToAdd += '  <h2 class="h6">';
-			if( switchToDrive.info )
-			{
-				if( switchToDrive.sensorId )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensorId + '">' + switchToDrive.info + '</a>';
-				else							switchesListToAdd += switchToDrive.info;
-			}
-			switchesListToAdd += '  </h2>';
-			switchesListToAdd += '</div>';
-		});
-		
-		// Insert piece of HTML
-		$( switchesListToAdd ).insertAfter( ".row" );
-		
-		// Register switch change
-		$( 'input' ).on( 'switchChange.bootstrapSwitch', function( event , state )
-		{
-			// Get switch 'object'
-			var switchObj = $( '#' + $(this).attr( "id" ) );
-
-			// Disable switch until post answer
-			switchObj.bootstrapSwitch( 'disabled' , true );
-			
-			$.post( 'API/set/switch/' ,
-			{
-				emitterWiringPiNumber	: emitterWiringPiNumber,
-				rcId    				: $(this).attr("rcId"),
-				channel					: $(this).attr("channel"),
-				state					: (state ? "on" : "off")
-			}).done(function( data )
-			{
-				// Get JSON object
-				var response = jQuery.parseJSON( data );
-				
-				// Manage error case
-				if( response.result == "error")
-				{
-					var msg = "ERROR\n";
-					msg += response.cmd + "\n";
-					msg += response.message;
-					
-					// Display command executed and error to the user
-					alert( msg );
-
-					// Enable switch to be able to toggle state
-					switchObj.bootstrapSwitch( 'disabled' , false );
-					// Restore previous switch state with no event called
-					switchObj.bootstrapSwitch( 'toggleState' , true );
-				}
-			}).fail(function(jqxhr, textStatus, error)
-			{
-				// Alert user
-				alert( textStatus + ": " + error );
-			}).always(function()
-			{
-				// Enable switch in all cases
-				switchObj.bootstrapSwitch( 'disabled' , false );
-			});
+			addSwitch( switchToDrive );
 		});
 	  },
 	  error: function(xhr, textStatus, error)
