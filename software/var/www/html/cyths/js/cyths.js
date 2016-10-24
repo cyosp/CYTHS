@@ -1,6 +1,8 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.3.0";
+var projectVersion = "1.4.0";
 
+// 2016-10-24 V 1.4.0
+//- UI is now refreshed when page has focus
 // 2016-10-21 V 1.3.0
 //- Add internationalization
 // 2016-10-02 V 1.2.1
@@ -13,15 +15,43 @@ var projectVersion = "1.3.0";
 // 2016-07-07 V 1.0.0
 //   - Initial release
 
-$( document ).ready(function()
+//
+// Refresh UI when page has focus
+//
+$(window).on("blur focus", function(e)
 {
-	init();
+    var prevType = $(this).data("prevType");
+
+	//  Reduce double fire issues
+    if (prevType != e.type)
+	{   
+        switch (e.type)
+		{
+            case "blur":
+                break;
+            case "focus":
+                loadUI();
+                break;
+        }
+    }
+
+    $(this).data("prevType", e.type);
+});
+
+
+$( document ).ready( function()
+{
+	// Set page title
+	$(document).prop( 'title' , $(document).prop( 'title' ) + " - " + projectVersion );
+
+	loadUI();
 });
 
 function addSwitch( switchToDrive )
 {
 	// Define switch id
 	var switchId = "switch-" + switchToDrive.channel + "-" + switchToDrive.rcId;
+	var infoId = switchId + "-info";
 
 	// Add switch if it doesn't exist in the page
 	if( $( '#' + switchId ).length == 0 )
@@ -51,8 +81,9 @@ function addSwitch( switchToDrive )
 		switchesListToAdd += '  <h2 class="h6">';
 		if( switchToDrive.info )
 		{
-			if( switchToDrive.sensorId )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensorId + '">' + switchToDrive.info + '</a>';
-			else							switchesListToAdd += switchToDrive.info;
+			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
+			if( switchToDrive.sensorId )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensorId + '">' + infoTag + '</a>';
+			else							switchesListToAdd += infoTag;
 		}
 		switchesListToAdd += '  </h2>';
 		switchesListToAdd += '</div>';
@@ -106,9 +137,28 @@ function addSwitch( switchToDrive )
 			});
 		});
 	}
+	else
+	{
+		// Get switch
+		var switchObj = $( '#' + switchId );
+		// Get switch state
+		var switchState = ( switchObj.bootstrapSwitch( 'state' ) ? 'on' : 'off' );
+		
+		// Update switch state if needed
+		if( switchState != switchToDrive.state )	switchObj.bootstrapSwitch( 'toggleState' , true );
+
+		// Get switch info
+		var switchInfoObj = $( '#' + infoId );
+		// Get switch info value
+		var switchInfo = switchInfoObj.text();
+
+		// Update switch info if needed
+		if( switchInfo != switchToDrive.info )	switchInfoObj.text( switchToDrive.info );
+
+	}
 }
 
-function init()
+function loadUI()
 {
 	//
 	// Get JSON configuration file
@@ -123,11 +173,7 @@ function init()
 	  {
 		// Store transmitter wiringPi number
 		emitterWiringPiNumber = root.emitterWiringPiNumber;
-		 
-		// Set page titles
-		$(document).prop( 'title' , $(document).prop( 'title' ) + " - " + projectVersion );
-		$( "div.container h1").text( root.pageTitle );
-	
+
 		//
 		// Add each switch configured
 		//
