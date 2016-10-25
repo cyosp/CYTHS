@@ -1,6 +1,12 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.4.1";
+var projectVersion = "1.5.0";
 
+var uiDisplayedToUser = true;
+var refreshEachMilliSeconds = 5000;
+
+// 2016-10-25 V 1.5.0
+//  - Add an automatic refresh each 5 seconds
+//  - Manage switch state "indeterminate" in refresh UI
 // 2016-10-25 V 1.4.1
 //  - Fix: Refresh UI on mobile browser 
 // 2016-10-24 V 1.4.0
@@ -26,7 +32,12 @@ var projectVersion = "1.4.1";
 //
 document.addEventListener( 'visibilitychange' , function()
 {
-    if( ! document.hidden )	loadUI();
+    if( document.hidden )	uiDisplayedToUser = false;
+	else
+	{
+		uiDisplayedToUser = true;
+		loadUI();
+	}
 });
 
 //
@@ -45,8 +56,10 @@ $(window).on("blur focus", function(e)
         switch (e.type)
 		{
             case "blur":
+				uiDisplayedToUser = false;
                 break;
             case "focus":
+				uiDisplayedToUser = true;
                 loadUI();
                 break;
         }
@@ -159,10 +172,27 @@ function addSwitch( switchToDrive )
 		// Get switch
 		var switchObj = $( '#' + switchId );
 		// Get switch state
-		var switchState = ( switchObj.bootstrapSwitch( 'state' ) ? 'on' : 'off' );
-		
+		var switchState = ( switchObj.bootstrapSwitch( "state" ) ? "on" : "off" );
+		if( switchObj.bootstrapSwitch( "indeterminate" ) )	switchState = "indeterminate";
+
+		//
 		// Update switch state if needed
-		if( switchState != switchToDrive.state )	switchObj.bootstrapSwitch( 'toggleState' , true );
+		//
+		if( switchState != switchToDrive.state )
+		{
+			switch( switchToDrive.state )
+			{
+				case "on" :
+					switchObj.bootstrapSwitch( "state" , true , true );		
+				break;
+				case "off" :
+					switchObj.bootstrapSwitch( "state" , false , true );
+				break;
+				default :
+					switchObj.bootstrapSwitch( "indeterminate" , true );
+				break;
+			}
+		}	
 
 		// Get switch info
 		var switchInfoObj = $( '#' + infoId );
@@ -171,37 +201,43 @@ function addSwitch( switchToDrive )
 
 		// Update switch info if needed
 		if( switchInfo != switchToDrive.info )	switchInfoObj.text( switchToDrive.info );
-
 	}
 }
 
 function loadUI()
 {
-	//
-	// Get JSON configuration file
-	//
-	$.ajax(
+	// Load UI only if displayed to user
+	if( uiDisplayedToUser )
 	{
-	  url: "data/config.json",
-	  dataType: 'json',
-	  async: false,
-	  cache: false,
-	  success: function( root )
-	  {
-		// Store transmitter wiringPi number
-		emitterWiringPiNumber = root.emitterWiringPiNumber;
+		// Program a new UI refresh
+		setTimeout( loadUI , refreshEachMilliSeconds );
 
 		//
-		// Add each switch configured
+		// Get JSON configuration file
 		//
-		$.each( root.switchesList , function( index , switchToDrive )
+		$.ajax(
 		{
-			addSwitch( switchToDrive );
+		  url: "data/config.json",
+		  dataType: 'json',
+		  async: false,
+		  cache: false,
+		  success: function( root )
+		  {
+			// Store transmitter wiringPi number
+			emitterWiringPiNumber = root.emitterWiringPiNumber;
+
+			//
+			// Add each switch configured
+			//
+			$.each( root.switchesList , function( index , switchToDrive )
+			{
+				addSwitch( switchToDrive );
+			});
+		  },
+		  error: function(xhr, textStatus, error)
+		  {
+			  alert( textStatus + ": " + error );
+		  }
 		});
-	  },
-	  error: function(xhr, textStatus, error)
-	  {
-		  alert( textStatus + ": " + error );
-	  }
-	});
+	}
 }
