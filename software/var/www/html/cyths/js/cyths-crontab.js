@@ -1,5 +1,7 @@
-var pageVersion = "1.0.2";
+var pageVersion = "1.1.0";
 
+// 2016-10-26 V 1.1.0
+//   - Use jqCron library instead of cronwtf
 // 2016-10-10 V 1.0.2
 //   - Manage cronwtf library
 // 2016-10-08 V 1.0.1
@@ -25,8 +27,6 @@ function init()
 	  cache: false,
 	  success: function( root )
 	  {
-		var crontabsListToAdd = '';
-		
 		//
 		// For each switch configured
 		//
@@ -34,32 +34,66 @@ function init()
 		{
 			// Switch is displayed only if there is a crontab associated
 			if( switchToDrive.crontab )
-			{	
+			{
 				//
 				// Compute piece of HTML to insert
 				//
-				crontabsListToAdd += '<div class="col-xs-12 col-lg-3 switch">';
+				var crontabsListToAdd = '<div class="col-xs-12 col-lg-3 switch">';
 				crontabsListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
 				crontabsListToAdd += '  <p>';
 				crontabsListToAdd += '   <ul>';
+
+				var pos = 0;
 				$.each( switchToDrive.crontab , function( index , entry )
 				{
-					// Get cron string
-					var cronString = entry.cron + ' ' + entry.state;
-					// Convert cron as a human readable string
-					var cronHumanString = CronWTF.entry( cronString );
+					// Compute id for jqCron
+					var crontabId = switchToDrive.rcId + "-" + switchToDrive.channel + '-' + pos;
 					
 					// Add entry in HTML page
-					crontabsListToAdd += '    <li>' + cronString + '<br/>' + cronHumanString.message +'</li>';
+					crontabsListToAdd += '    <li>' + entry.state + '<div id="' + crontabId + '"></div></li>';
+					
+					// Update position
+					pos++;
 				});
+
+				// End of piece of HTML
 				crontabsListToAdd += '   </ul>';
 				crontabsListToAdd += '  </p>';
 				crontabsListToAdd += '</div>';
+
+				// Insert piece of HTML
+				$( crontabsListToAdd ).insertBefore( ".row" );
+
+				//
+				// Initialise jqCron
+				//
+				pos = 0;
+				$.each( switchToDrive.crontab , function( index , entry )
+				{
+					// Compute id for jqCron
+					var crontabId = switchToDrive.rcId + "-" + switchToDrive.channel + '-' + pos;
+
+					// Initialise jqCron
+					$( '#' + crontabId ).jqCron(
+					{
+						enabled_minute: true,
+						multiple_dom: true,
+						multiple_month: true,
+						multiple_mins: true,
+						multiple_dow: true,
+						multiple_time_hours: true,
+						multiple_time_minutes: true,
+						default_period: 'week',
+						default_value: entry.cron,
+						no_reset_button: true,
+						disable: true,
+						lang: 'en'
+					});
+
+					pos++;
+				});
 	  		}
 		});
-		
-		// Insert piece of HTML
-		$( crontabsListToAdd ).insertAfter( ".row" );
 	  },
 	  error: function(xhr, textStatus, error)
 	  {
@@ -67,3 +101,4 @@ function init()
 	  }
 	});
 }
+
