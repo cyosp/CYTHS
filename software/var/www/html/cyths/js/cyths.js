@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.5.0";
+var projectVersion = "1.5.1";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2016-10-26 V 1.5.1
+//  - Add version in navigation bar
 // 2016-10-25 V 1.5.0
 //  - Add an automatic refresh each 5 seconds
 //  - Manage switch state "indeterminate" in refresh UI
@@ -71,9 +73,11 @@ $(window).on("blur focus", function(e)
 
 $( document ).ready( function()
 {
-	// Set page title
+	// Add version in page title
 	$(document).prop( 'title' , $(document).prop( 'title' ) + " - " + projectVersion );
-
+	// Add version in navigation bar
+	$( "#cythsTitle" ).text( $( "#cythsTitle" ).text() + " - " + projectVersion );
+	// Load user interface
 	loadUI();
 });
 
