@@ -40,7 +40,6 @@ function init()
 				//
 				var crontabsListToAdd = '<div class="col-xs-12 col-lg-3 switch">';
 				crontabsListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
-				crontabsListToAdd += '  <p>';
 				crontabsListToAdd += '   <ul>';
 
 				var pos = 0;
@@ -58,7 +57,6 @@ function init()
 
 				// End of piece of HTML
 				crontabsListToAdd += '   </ul>';
-				crontabsListToAdd += '  </p>';
 				crontabsListToAdd += '</div>';
 
 				// Insert piece of HTML
