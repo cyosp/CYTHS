@@ -2,7 +2,12 @@
    "crontab":
    {
      "label": "Planification",
-     "title": "CYTHS - Planification"
+     "title": "CYTHS - Planification",
+     "state":
+     {
+       "on": "Allumer",
+       "off": "Éteindre"
+     }
    },
    "sensors":
    {

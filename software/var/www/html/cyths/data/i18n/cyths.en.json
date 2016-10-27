@@ -2,7 +2,12 @@
    "crontab":
    {
    	 "label": "Scheduler",
-     "title": "CYTHS - Scheduler"
+     "title": "CYTHS - Scheduler",
+     "state":
+     {
+       "on": "On",
+       "off": "Off"
+     }
    },
    "sensors":
    {

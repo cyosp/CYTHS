@@ -1,5 +1,8 @@
-var pageVersion = "1.1.0";
+var pageVersion = "1.2.0";
 
+// 2016-10-27 V 1.2.0
+//   - Use cythsBeforeLocalize instead of init
+//   - Localize "on" and "off" crontab states
 // 2016-10-26 V 1.1.0
 //   - Use jqCron library instead of cronwtf
 // 2016-10-10 V 1.0.2
@@ -9,12 +12,7 @@ var pageVersion = "1.1.0";
 // 2016-10-06 V 1.0.0
 //   - Initial release
 
-$( document ).ready(function()
-{
-	init();
-});
-
-function init()
+function cythsBeforeLocalize()
 {
 	//
 	// Get JSON configuration file
@@ -49,7 +47,7 @@ function init()
 					var crontabId = switchToDrive.rcId + "-" + switchToDrive.channel + '-' + pos;
 					
 					// Add entry in HTML page
-					crontabsListToAdd += '    <li>' + entry.state + '<div id="' + crontabId + '"></div></li>';
+					crontabsListToAdd += '    <li><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span><div id="' + crontabId + '"></div></li>';
 					
 					// Update position
 					pos++;
