@@ -1,5 +1,7 @@
-var pageVersion = "1.2.1";
+var pageVersion = "1.3.0";
 
+// 2016-10-28 V 1.3.0
+//   - Add crontab translation
 // 2016-10-28 V 1.2.1
 //   - Crontab are padded with zero
 // 2016-10-27 V 1.2.0
@@ -16,6 +18,14 @@ var pageVersion = "1.2.1";
 
 function cythsBeforeLocalize()
 {
+	// Load jqCron translation
+	jQuery.ajax(
+	{
+	    url: "../../js/jqCron/jqCron." + (navigator.language || navigator.userLanguage) + ".js",
+	    dataType: 'script',
+		async: false
+	});
+
 	//
 	// Get JSON configuration file
 	//
@@ -85,7 +95,8 @@ function cythsBeforeLocalize()
 						default_value: entry.cron,
 						no_reset_button: true,
 						disable: true,
-						numeric_zero_pad: true
+						numeric_zero_pad: true,
+						lang: navigator.language || navigator.userLanguage
 					});
 
 					pos++;
