@@ -1,5 +1,7 @@
-var pageVersion = "1.2.0";
+var pageVersion = "1.2.1";
 
+// 2016-10-28 V 1.2.1
+//   - Crontab are padded with zero
 // 2016-10-27 V 1.2.0
 //   - Use cythsBeforeLocalize instead of init
 //   - Localize "on" and "off" crontab states
@@ -83,7 +85,7 @@ function cythsBeforeLocalize()
 						default_value: entry.cron,
 						no_reset_button: true,
 						disable: true,
-						lang: 'en'
+						numeric_zero_pad: true
 					});
 
 					pos++;
