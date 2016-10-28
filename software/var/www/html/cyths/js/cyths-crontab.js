@@ -1,5 +1,7 @@
-var pageVersion = "1.3.0";
+var pageVersion = "1.3.1";
 
+// 2016-10-28 V 1.3.1
+//   - Optimize code
 // 2016-10-28 V 1.3.0
 //   - Add crontab translation
 // 2016-10-28 V 1.2.1
@@ -37,6 +39,8 @@ function cythsBeforeLocalize()
 	  cache: false,
 	  success: function( root )
 	  {
+		var crontabsListToAdd = '';
+
 		//
 		// For each switch configured
 		//
@@ -48,60 +52,42 @@ function cythsBeforeLocalize()
 				//
 				// Compute piece of HTML to insert
 				//
-				var crontabsListToAdd = '<div class="col-xs-12 col-lg-3 switch">';
+				crontabsListToAdd += '<div class="col-xs-12 col-lg-3 switch">';
 				crontabsListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
 				crontabsListToAdd += '   <ul>';
 
-				var pos = 0;
 				$.each( switchToDrive.crontab , function( index , entry )
 				{
-					// Compute id for jqCron
-					var crontabId = switchToDrive.rcId + "-" + switchToDrive.channel + '-' + pos;
-					
 					// Add entry in HTML page
-					crontabsListToAdd += '    <li><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span><div id="' + crontabId + '"></div></li>';
-					
-					// Update position
-					pos++;
+					crontabsListToAdd += '    <li><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span><div><input value="' + entry.cron + '" class="cyths-crontab" type="hidden"></input></div></li>';
 				});
 
 				// End of piece of HTML
 				crontabsListToAdd += '   </ul>';
 				crontabsListToAdd += '</div>';
-
-				// Insert piece of HTML
-				$( crontabsListToAdd ).insertBefore( ".row" );
-
-				//
-				// Initialise jqCron
-				//
-				pos = 0;
-				$.each( switchToDrive.crontab , function( index , entry )
-				{
-					// Compute id for jqCron
-					var crontabId = switchToDrive.rcId + "-" + switchToDrive.channel + '-' + pos;
-
-					// Initialise jqCron
-					$( '#' + crontabId ).jqCron(
-					{
-						enabled_minute: true,
-						multiple_dom: true,
-						multiple_month: true,
-						multiple_mins: true,
-						multiple_dow: true,
-						multiple_time_hours: true,
-						multiple_time_minutes: true,
-						default_period: 'week',
-						default_value: entry.cron,
-						no_reset_button: true,
-						disable: true,
-						numeric_zero_pad: true,
-						lang: navigator.language || navigator.userLanguage
-					});
-
-					pos++;
-				});
 	  		}
+		});
+
+		// Insert piece of HTML
+		$( crontabsListToAdd ).insertAfter( ".row" );
+
+		//
+		// Initialize jqCron
+		//
+		$( '.cyths-crontab' ).jqCron(
+		{
+			enabled_minute: true,
+			multiple_dom: true,
+			multiple_month: true,
+			multiple_mins: true,
+			multiple_dow: true,
+			multiple_time_hours: true,
+			multiple_time_minutes: true,
+			default_period: 'week',
+			no_reset_button: true,
+			disable: true,
+			numeric_zero_pad: true,
+			lang: navigator.language || navigator.userLanguage
 		});
 	  },
 	  error: function(xhr, textStatus, error)
