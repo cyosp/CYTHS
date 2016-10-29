@@ -1,5 +1,7 @@
-var pageVersion = "1.3.1";
+var pageVersion = "1.3.2";
 
+// 2016-10-29 V 1.3.2
+//   - States are displayed as jqCron
 // 2016-10-28 V 1.3.1
 //   - Optimize code
 // 2016-10-28 V 1.3.0
@@ -59,7 +61,7 @@ function cythsBeforeLocalize()
 				$.each( switchToDrive.crontab , function( index , entry )
 				{
 					// Add entry in HTML page
-					crontabsListToAdd += '    <li><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span><div><input value="' + entry.cron + '" class="cyths-crontab" type="hidden"></input></div></li>';
+					crontabsListToAdd += '    <li><span class="jqCron-container disable"><span class="jqCron-selector-title"><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span></span></span><div><input value="' + entry.cron + '" class="cyths-crontab" type="hidden"></input></div></li>';
 				});
 
 				// End of piece of HTML
