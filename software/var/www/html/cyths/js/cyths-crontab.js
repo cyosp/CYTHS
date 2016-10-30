@@ -1,5 +1,7 @@
-var pageVersion = "1.3.3";
+var pageVersion = "1.4.0";
 
+// 2016-10-30 V 1.4.0
+//   - Enable crontab to be modified without saving modification
 // 2016-10-29 V 1.3.3
 //   - Use now one line per crontab
 // 2016-10-29 V 1.3.2
@@ -63,7 +65,10 @@ function cythsBeforeLocalize()
 				$.each( switchToDrive.crontab , function( index , entry )
 				{
 					// Add entry in HTML page
-					crontabsListToAdd += '    <li><span class="jqCron-container disable"><span class="jqCron-selector-title"><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span></span></span> <span class="lowercase"><input value="' + entry.cron + '" class="cyths-crontab" type="hidden"></input></span></li><br/>';
+					crontabsListToAdd += '    <li>';
+					crontabsListToAdd += '        <span class="jqCron-container"><span class="jqCron-selector jqCron-selector-1"><span class="jqCron-selector-title cyths-crontab-state"><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span></span><ul class="jqCron-selector-list cyths-crontab-state-list" style="display: none;"><li><span data-i18n="crontab.state.on">on</span></li><li><span data-i18n="crontab.state.off">off</span></li></ul></span></span> ';
+					crontabsListToAdd += '        <span class="lowercase"><input value="' + entry.cron + '" class="cyths-crontab" type="hidden"></input></span><span class="jqCron-container disable"></span>';
+					crontabsListToAdd += '    </li><br/>';
 				});
 
 				// End of piece of HTML
@@ -89,9 +94,29 @@ function cythsBeforeLocalize()
 			multiple_time_minutes: true,
 			default_period: 'week',
 			no_reset_button: true,
-			disable: true,
+			disable: false,
 			numeric_zero_pad: true,
 			lang: navigator.language || navigator.userLanguage
+		});
+
+		// Display/hide available states 
+		$( '.cyths-crontab-state' ).click( function()
+		{
+			// Get selected state tag
+			$(this).next( ".cyths-crontab-state-list" ).toggle();
+		});
+
+		// Manage selected state
+		$( '.cyths-crontab-state-list li' ).click( function()
+		{
+			// Get selected state tag
+			var stateTagSelected = $(this).html();
+			
+			// Update crontab state
+			$(this).parent().prev( ".jqCron-selector-title" ).html( stateTagSelected );
+
+			// Hide list of states
+			$(this).parent().hide();
 		});
 	  },
 	  error: function(xhr, textStatus, error)
