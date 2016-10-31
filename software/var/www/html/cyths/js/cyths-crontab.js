@@ -1,5 +1,7 @@
-var pageVersion = "1.4.0";
+var pageVersion = "1.5.0";
 
+// 2016-10-31 V 1.5.0
+//   - Detect crontab user change
 // 2016-10-30 V 1.4.0
 //   - Enable crontab to be modified without saving modification
 // 2016-10-29 V 1.3.3
@@ -59,16 +61,37 @@ function cythsBeforeLocalize()
 				// Compute piece of HTML to insert
 				//
 				crontabsListToAdd += '<div class="col-xs-12 col-lg-3 switch">';
-				crontabsListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
-				crontabsListToAdd += '   <ul>';
+				crontabsListToAdd += ' <h2 class="h4">' + switchToDrive.label + '</h2>';
+				crontabsListToAdd += '  <ul>';
 
 				$.each( switchToDrive.crontab , function( index , entry )
 				{
-					// Add entry in HTML page
-					crontabsListToAdd += '    <li>';
-					crontabsListToAdd += '        <span class="jqCron-container"><span class="jqCron-selector jqCron-selector-1"><span class="jqCron-selector-title cyths-crontab-state"><span data-i18n="crontab.state.' +  entry.state + '">' + entry.state + '</span></span><ul class="jqCron-selector-list cyths-crontab-state-list" style="display: none;"><li><span data-i18n="crontab.state.on">on</span></li><li><span data-i18n="crontab.state.off">off</span></li></ul></span></span> ';
-					crontabsListToAdd += '        <span class="lowercase"><input value="' + entry.cron + '" class="cyths-crontab" type="hidden"></input></span><span class="jqCron-container disable"></span>';
-					crontabsListToAdd += '    </li><br/>';
+					crontabsListToAdd += '   <li class="cyths-crontab" conf-cron="' + entry.cron + '" conf-state="' + entry.state + '">';
+
+					// Manage state
+					crontabsListToAdd += '    <span class="jqCron-container">';
+					crontabsListToAdd += '     <span class="jqCron-selector jqCron-selector-1">';
+					crontabsListToAdd += '      <span class="jqCron-selector-title cyths-crontab-state">';
+					crontabsListToAdd += '       <span data-i18n="crontab.state.' +  entry.state + '" crontab-state="' + entry.state + '">' + entry.state;
+					crontabsListToAdd += '       </span>';
+					crontabsListToAdd += '      </span>';
+					crontabsListToAdd += '      <ul class="jqCron-selector-list cyths-crontab-state-list" style="display: none;">';
+					crontabsListToAdd += '       <li><span data-i18n="crontab.state.on" crontab-state="on">on</span></li>';
+					crontabsListToAdd += '       <li><span data-i18n="crontab.state.off" crontab-state="off">off</span></li>';
+					crontabsListToAdd += '      </ul>';
+					crontabsListToAdd += '     </span>';
+					crontabsListToAdd += '    </span> ';
+
+					// Manage jqCron
+					crontabsListToAdd += '    <span class="lowercase">';
+					crontabsListToAdd += '     <input value="' + entry.cron + '" class="cyths-crontab-jqcron" type="hidden"></input>';
+					crontabsListToAdd += '    </span>';
+					crontabsListToAdd += '    <span class="jqCron-container disable"></span>';
+
+					// Manage modified configuration
+					crontabsListToAdd += '    <span class="jqCron-cross update-cyths-crontab" style="display: none;">✔</span>';
+
+					crontabsListToAdd += '   </li><br/>';
 				});
 
 				// End of piece of HTML
@@ -83,7 +106,7 @@ function cythsBeforeLocalize()
 		//
 		// Initialize jqCron
 		//
-		$( '.cyths-crontab' ).jqCron(
+		$( '.cyths-crontab-jqcron' ).jqCron(
 		{
 			enabled_minute: true,
 			multiple_dom: true,
@@ -96,27 +119,81 @@ function cythsBeforeLocalize()
 			no_reset_button: true,
 			disable: false,
 			numeric_zero_pad: true,
-			lang: navigator.language || navigator.userLanguage
+			lang: navigator.language || navigator.userLanguage,
+			bind_method:
+			{
+				// User has set a value of jqCron
+				set: function( $element , value )
+				{
+					// Update hidden input
+					$element.val( value );
+
+					// Get CYTHS crontab tag
+					var cythsCrontab = $element.parents( ".cyths-crontab" );
+
+					// Get cron configured
+					var cythsCrontabConfCron = cythsCrontab.attr( "conf-cron" );
+
+					//
+					// Hide/display update CYTHS crontab
+					//
+					var updateCythsCrontab = cythsCrontab.children( ".update-cyths-crontab" );
+					if( value != cythsCrontabConfCron )	updateCythsCrontab.show();
+					else								updateCythsCrontab.hide();
+				}
+			}
 		});
 
 		// Display/hide available states 
 		$( '.cyths-crontab-state' ).click( function()
 		{
-			// Get selected state tag
 			$(this).next( ".cyths-crontab-state-list" ).toggle();
 		});
 
 		// Manage selected state
 		$( '.cyths-crontab-state-list li' ).click( function()
 		{
-			// Get selected state tag
+			// Get selected state tag content
 			var stateTagSelected = $(this).html();
-			
-			// Update crontab state
-			$(this).parent().prev( ".jqCron-selector-title" ).html( stateTagSelected );
 
-			// Hide list of states
+			// Get selected state
+			var selectedState = $(this).children( "span" ).attr( "crontab-state" );
+
+			// Get CYTHS crontab tag
+			var cythsCrontab = $(this).parents( ".cyths-crontab" );
+
+			// Get state configured
+			var cythsCrontabConfState = cythsCrontab.attr( "conf-state" );
+			
+			// Update UI with state selected
+			$(this).parent().prev( ".cyths-crontab-state" ).html( stateTagSelected );
+
+			// Hide state list
 			$(this).parent().hide();
+
+			//
+			// Hide/display update CYTHS crontab
+			//
+			var updateCythsCrontab = cythsCrontab.children( ".update-cyths-crontab" );
+			if( selectedState != cythsCrontabConfState )	updateCythsCrontab.show();
+			else											updateCythsCrontab.hide();
+		});
+
+		// Manage CYTHS crontab update
+		$( '.update-cyths-crontab' ).click( function()
+		{
+			// Get CYTHS crontab tag
+			var cythsCrontab = $(this).parents( ".cyths-crontab" );
+
+			// Get configured cron and state
+			var cythsCrontabConfCron  = cythsCrontab.attr( "conf-cron" );
+			var cythsCrontabConfState = cythsCrontab.attr( "conf-state" );
+
+			// Get user cron and state
+			var userCrontabCron  = cythsCrontab.find( ".cyths-crontab-jqcron" ).val();
+			var userCrontabState = cythsCrontab.find( ".cyths-crontab-state span" ).attr( "crontab-state" );
+			
+			alert( "Feature not yet implemented.\nConfigured: " + cythsCrontabConfCron + " " + cythsCrontabConfState + "\nSelected: " + userCrontabCron + " " + userCrontabState );
 		});
 	  },
 	  error: function(xhr, textStatus, error)
