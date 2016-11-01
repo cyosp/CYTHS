@@ -1,5 +1,7 @@
-var pageVersion = "1.5.0";
+var pageVersion = "1.6.0";
 
+// 2016-11-01 V 1.6.0
+//   - User can now update a crontab configuration
 // 2016-10-31 V 1.5.0
 //   - Detect crontab user change
 // 2016-10-30 V 1.4.0
@@ -61,41 +63,41 @@ function cythsBeforeLocalize()
 				// Compute piece of HTML to insert
 				//
 				crontabsListToAdd += '<div class="col-xs-12 col-lg-3 switch">';
-				crontabsListToAdd += ' <h2 class="h4">' + switchToDrive.label + '</h2>';
-				crontabsListToAdd += '  <ul>';
+				crontabsListToAdd += ' <h2 class="h4" rcId="' + switchToDrive.rcId + '" channel="' + switchToDrive.channel + '">' + switchToDrive.label + '</h2>';
+				crontabsListToAdd += ' <ul>';
 
 				$.each( switchToDrive.crontab , function( index , entry )
 				{
-					crontabsListToAdd += '   <li class="cyths-crontab" conf-cron="' + entry.cron + '" conf-state="' + entry.state + '">';
+					crontabsListToAdd += '  <li class="cyths-crontab" conf-cron="' + entry.cron + '" conf-state="' + entry.state + '">';
 
 					// Manage state
-					crontabsListToAdd += '    <span class="jqCron-container">';
-					crontabsListToAdd += '     <span class="jqCron-selector jqCron-selector-1">';
-					crontabsListToAdd += '      <span class="jqCron-selector-title cyths-crontab-state">';
-					crontabsListToAdd += '       <span data-i18n="crontab.state.' +  entry.state + '" crontab-state="' + entry.state + '">' + entry.state;
-					crontabsListToAdd += '       </span>';
+					crontabsListToAdd += '   <span class="jqCron-container">';
+					crontabsListToAdd += '    <span class="jqCron-selector jqCron-selector-1">';
+					crontabsListToAdd += '     <span class="jqCron-selector-title cyths-crontab-state">';
+					crontabsListToAdd += '      <span data-i18n="crontab.state.' +  entry.state + '" crontab-state="' + entry.state + '">' + entry.state;
 					crontabsListToAdd += '      </span>';
-					crontabsListToAdd += '      <ul class="jqCron-selector-list cyths-crontab-state-list" style="display: none;">';
-					crontabsListToAdd += '       <li><span data-i18n="crontab.state.on" crontab-state="on">on</span></li>';
-					crontabsListToAdd += '       <li><span data-i18n="crontab.state.off" crontab-state="off">off</span></li>';
-					crontabsListToAdd += '      </ul>';
 					crontabsListToAdd += '     </span>';
-					crontabsListToAdd += '    </span> ';
+					crontabsListToAdd += '     <ul class="jqCron-selector-list cyths-crontab-state-list" style="display: none;">';
+					crontabsListToAdd += '      <li><span data-i18n="crontab.state.on" crontab-state="on">on</span></li>';
+					crontabsListToAdd += '      <li><span data-i18n="crontab.state.off" crontab-state="off">off</span></li>';
+					crontabsListToAdd += '     </ul>';
+					crontabsListToAdd += '    </span>';
+					crontabsListToAdd += '   </span> ';
 
 					// Manage jqCron
-					crontabsListToAdd += '    <span class="lowercase">';
-					crontabsListToAdd += '     <input value="' + entry.cron + '" class="cyths-crontab-jqcron" type="hidden"></input>';
-					crontabsListToAdd += '    </span>';
-					crontabsListToAdd += '    <span class="jqCron-container disable"></span>';
+					crontabsListToAdd += '   <span class="lowercase">';
+					crontabsListToAdd += '    <input value="' + entry.cron + '" class="cyths-crontab-jqcron" type="hidden"></input>';
+					crontabsListToAdd += '   </span>';
+					crontabsListToAdd += '   <span class="jqCron-container"><span class="jqCron-cross update-cyths-crontab" style="display: none;">✔</span></span>';
 
 					// Manage modified configuration
-					crontabsListToAdd += '    <span class="jqCron-cross update-cyths-crontab" style="display: none;">✔</span>';
+					//crontabsListToAdd += '   <span class="jqCron-cross update-cyths-crontab" style="display: none;">✔</span>';
 
-					crontabsListToAdd += '   </li><br/>';
+					crontabsListToAdd += '  </li><br/>';
 				});
 
 				// End of piece of HTML
-				crontabsListToAdd += '   </ul>';
+				crontabsListToAdd += ' </ul>';
 				crontabsListToAdd += '</div>';
 	  		}
 		});
@@ -123,23 +125,27 @@ function cythsBeforeLocalize()
 			bind_method:
 			{
 				// User has set a value of jqCron
-				set: function( $element , value )
+				set: function( $element , cron )
 				{
 					// Update hidden input
-					$element.val( value );
+					$element.val( cron );
 
 					// Get CYTHS crontab tag
 					var cythsCrontab = $element.parents( ".cyths-crontab" );
 
-					// Get cron configured
-					var cythsCrontabConfCron = cythsCrontab.attr( "conf-cron" );
+					// Get current state
+					var state = cythsCrontab.find( ".cyths-crontab-state span" ).attr( "crontab-state" );
+
+					// Get cron and state configured
+					var cythsCrontabConfCron  = cythsCrontab.attr( "conf-cron" );
+					var cythsCrontabConfState = cythsCrontab.attr( "conf-state" );
 
 					//
 					// Hide/display update CYTHS crontab
 					//
-					var updateCythsCrontab = cythsCrontab.children( ".update-cyths-crontab" );
-					if( value != cythsCrontabConfCron )	updateCythsCrontab.show();
-					else								updateCythsCrontab.hide();
+					var updateCythsCrontab = cythsCrontab.find( ".update-cyths-crontab" );
+					if( cron != cythsCrontabConfCron || state != cythsCrontabConfState )	updateCythsCrontab.show();
+					else																	updateCythsCrontab.hide();
 				}
 			}
 		});
@@ -157,12 +163,16 @@ function cythsBeforeLocalize()
 			var stateTagSelected = $(this).html();
 
 			// Get selected state
-			var selectedState = $(this).children( "span" ).attr( "crontab-state" );
+			var state = $(this).children( "span" ).attr( "crontab-state" );
 
 			// Get CYTHS crontab tag
 			var cythsCrontab = $(this).parents( ".cyths-crontab" );
 
-			// Get state configured
+			// Get current cron
+			var cron = cythsCrontab.find( ".cyths-crontab-jqcron" ).val();
+
+			// Get cron and state configured
+			var cythsCrontabConfCron = cythsCrontab.attr( "conf-cron" );
 			var cythsCrontabConfState = cythsCrontab.attr( "conf-state" );
 			
 			// Update UI with state selected
@@ -174,14 +184,27 @@ function cythsBeforeLocalize()
 			//
 			// Hide/display update CYTHS crontab
 			//
-			var updateCythsCrontab = cythsCrontab.children( ".update-cyths-crontab" );
-			if( selectedState != cythsCrontabConfState )	updateCythsCrontab.show();
-			else											updateCythsCrontab.hide();
+			var updateCythsCrontab = cythsCrontab.find( ".update-cyths-crontab" );
+			if( cron != cythsCrontabConfCron || state != cythsCrontabConfState )	updateCythsCrontab.show();
+			else																	updateCythsCrontab.hide();
 		});
 
 		// Manage CYTHS crontab update
 		$( '.update-cyths-crontab' ).click( function()
 		{
+			// Get reference to current tag
+			var updateCythsCrontabTag = $(this);
+
+			// Hide tag to user
+			updateCythsCrontabTag.fadeOut( 200 );
+
+			// Get switch tag
+			var switchTag = $(this).parents( "ul" ).prev( "h2" );
+
+			// Get switch remote identifier and channel
+			var rcId = switchTag.attr( "rcId" );
+			var channel = switchTag.attr( "channel" );
+
 			// Get CYTHS crontab tag
 			var cythsCrontab = $(this).parents( ".cyths-crontab" );
 
@@ -193,7 +216,47 @@ function cythsBeforeLocalize()
 			var userCrontabCron  = cythsCrontab.find( ".cyths-crontab-jqcron" ).val();
 			var userCrontabState = cythsCrontab.find( ".cyths-crontab-state span" ).attr( "crontab-state" );
 			
-			alert( "Feature not yet implemented.\nConfigured: " + cythsCrontabConfCron + " " + cythsCrontabConfState + "\nSelected: " + userCrontabCron + " " + userCrontabState );
+			//alert( "Feature not yet implemented.\nRemote identifier: " + rcId + "\nChannel: " + channel + "\nConfigured: " + cythsCrontabConfCron + " " + cythsCrontabConfState + "\nSelected: " + userCrontabCron + " " + userCrontabState );
+
+			// Ask server to change crontab configuration
+			$.post( '../../API/set/crontab/' ,
+			{
+				rcId    		: rcId,
+				channel			: channel,
+				currentCron		: cythsCrontabConfCron,
+				currentState	: cythsCrontabConfState,
+				newCron			: userCrontabCron,
+				newState		: userCrontabState
+			}).done(function( data )
+			{
+				// Get JSON object
+				var response = jQuery.parseJSON( data );
+			
+				// Manage error case
+				if( response.result == "error")
+				{
+					var msg = "ERROR\n";
+					msg += response.message;
+				
+					// Display error to the user
+					alert( msg );
+				}
+				else
+				{
+					// Update CYTHS crontab configuration
+					// It's to detect a new change performed by user on this crontab
+					cythsCrontab.attr( "conf-cron" , userCrontabCron );
+					cythsCrontabConfState = cythsCrontab.attr( "conf-state" , userCrontabState );
+				}
+
+			}).fail(function(jqxhr, textStatus, error)
+			{
+				// Allow user to try again
+				updateCythsCrontabTag.fadeIn( 0 );
+
+				// Alert user
+				alert( textStatus + ": " + error );
+			});
 		});
 	  },
 	  error: function(xhr, textStatus, error)
