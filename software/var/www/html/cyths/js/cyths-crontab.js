@@ -88,10 +88,11 @@ function cythsBeforeLocalize()
 					crontabsListToAdd += '   <span class="lowercase">';
 					crontabsListToAdd += '    <input value="' + entry.cron + '" class="cyths-crontab-jqcron" type="hidden"></input>';
 					crontabsListToAdd += '   </span>';
-					crontabsListToAdd += '   <span class="jqCron-container"><span class="jqCron-cross update-cyths-crontab" style="display: none;">✔</span></span>';
 
 					// Manage modified configuration
-					//crontabsListToAdd += '   <span class="jqCron-cross update-cyths-crontab" style="display: none;">✔</span>';
+					crontabsListToAdd += '   <span class="jqCron-container">';
+					crontabsListToAdd += '    <span class="jqCron-cross update-cyths-crontab" style="display: none;">✔</span>';
+					crontabsListToAdd += '   </span>';
 
 					crontabsListToAdd += '  </li><br/>';
 				});
