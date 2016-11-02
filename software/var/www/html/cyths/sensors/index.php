@@ -1,8 +1,11 @@
 <!DOCTYPE html>
 <!-- Author: CYOSP       -->
 <!-- Created: 2016-07-08 -->
-<!-- Version: 1.2.0      -->
+<!-- Version: 1.2.1      -->
 
+<!-- 2016-11-02 V 1.2.1                                          -->
+<!--  * Add sensors entry in navigation bar if a sensor is       -->
+<!--    passed as argument                                       -->
 <!-- 2016-10-22 V 1.2.0                                          -->
 <!--  * Use local dygraphs library                               --> 
 <!--  * Add bootstrap navbar                                     --> 
@@ -54,6 +57,7 @@
 				  		<div id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav navbar-right">
 					  			<li><a href=".."><i class="fa fa-home" aria-hidden="true"></i></a></li>
+								<?php if( $_GET[ 'id' ] != "" ) echo ' <li><a href="."><span data-i18n="sensors.label">Sensors</span></a></li>'; ?>
 					  			<li><a href="../display/crontab"><span data-i18n="crontab.label">Crontab</span></a></li>
 							</ul>
 				  		</div>
