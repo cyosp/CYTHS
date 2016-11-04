@@ -1,9 +1,12 @@
 //
 // Author: CYOSP
 // Created: 2016-10-21
-// Version: 1.2.0
+// Version: 1.2.1
 //
 
+// 2016-11-04 V 1.2.1
+//   - Manage language more than 2 characters
+//     (Safari on iOS for example)
 // 2016-10-27 V 1.2.0
 //   - Execute cythsBeforeLocalize function (if it exists)
 //     before internationalization 
@@ -13,13 +16,28 @@
 // 2016-10-21 V 1.0.0
 //   - Initial release
 
+var cythsI18n =
+{
+	// Return language on 2 characters
+	getLanguage : function()
+	{
+		// Get language
+		var language = navigator.language || navigator.userLanguage;
+		
+		// If language is more than 2 characters, reduce it to the first 2 ones
+		if( language.length > 2 )	language = language.substring( 0 , 2 );
+		
+		return language;
+	}
+}
+
 //
 // i18next configuration
 //
 var i18nextOptions =
 {
 	// evtl. use language-detector https://github.com/i18next/i18next-browser-languageDetector
-    lng: navigator.language || navigator.userLanguage, 
+    lng: cythsI18n.getLanguage(), 
 	fallbackLng: 'en',
 	load: 'currentOnly',
 	backend:

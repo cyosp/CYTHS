@@ -1,5 +1,7 @@
-var pageVersion = "1.6.0";
+var pageVersion = "1.6.1";
 
+// 2016-11-04 V 1.6.1
+//   - Use cythsI18n.getLanguage() to get language on 2 characters
 // 2016-11-01 V 1.6.0
 //   - User can now update a crontab configuration
 // 2016-10-31 V 1.5.0
@@ -33,7 +35,7 @@ function cythsBeforeLocalize()
 	// Load jqCron translation
 	jQuery.ajax(
 	{
-	    url: "../../js/jqCron/jqCron." + (navigator.language || navigator.userLanguage) + ".js",
+	    url: "../../js/jqCron/jqCron." + cythsI18n.getLanguage() + ".js",
 	    dataType: 'script',
 		async: false
 	});
@@ -122,7 +124,7 @@ function cythsBeforeLocalize()
 			no_reset_button: true,
 			disable: false,
 			numeric_zero_pad: true,
-			lang: navigator.language || navigator.userLanguage,
+			lang: cythsI18n.getLanguage(),
 			bind_method:
 			{
 				// User has set a value of jqCron
