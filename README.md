@@ -23,6 +23,10 @@ This project is divided in several parts:
 
         ![software-sensor-graph](doc/images/software-sensor-graph.png?raw=true "software-sensor-graph")
 
+    * Allow to schedule RSL switches change
+
+        ![software-scheduler-page](doc/images/software-scheduler-page.png?raw=true "software-scheduler-page")
+
 ## License
 
 **[CYTHS](https://github.com/cyosp/CYTHS)** is released under the BSD 3-Clause License.
