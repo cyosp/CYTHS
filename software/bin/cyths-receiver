@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.2.0                                                              #
+# Version: 1.2.1                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -24,6 +24,8 @@
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.2.1 - 2016-11-12                                                          #
+#  - Add missing 0 for: -.9 <= TEMPERATURE <= .9                              #
 # 1.2.0 - 2016-09-30                                                          #
 #  - Manage new URL API: /API/set/info/ which replaces /switch/               #
 # 1.1.1 - 2016-09-29                                                          #
@@ -159,6 +161,9 @@ do
 				TEMPERATURE=$(echo "ibase=2; $BIN_TEMPERATURE" | bc 2>&1)
 				# Extract real temperature
 				TEMPERATURE=$(bc <<< "scale=1; ($TEMPERATURE-400)/10")
+				# Add missing 0 for: -.9 <= TEMPERATURE <= .9
+				#  => It allows to have: -0.9 <= TEMPERATURE <= 0.9
+				TEMPERATURE=$(echo $TEMPERATURE | sed "s|^\(-*\)\.|\10.|")
 
 				# Get humidity in base 10
 				HUMIDITY=$(echo "ibase=2; $BIN_HUMIDITY" | bc 2>&1)
