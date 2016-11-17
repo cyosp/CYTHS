@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.5.1";
+var projectVersion = "1.6.0";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2016-11-17 V 1.6.0
+//  - Error is now logged in footer instead of with an alert
 // 2016-10-26 V 1.5.1
 //  - Add version in navigation bar
 // 2016-10-25 V 1.5.0
@@ -227,6 +229,9 @@ function loadUI()
 		  cache: false,
 		  success: function( root )
 		  {
+			// Hide footer used for error message
+			$( '#footer' ).fadeOut( 150 );
+
 			// Store transmitter wiringPi number
 			emitterWiringPiNumber = root.emitterWiringPiNumber;
 
@@ -240,7 +245,10 @@ function loadUI()
 		  },
 		  error: function(xhr, textStatus, error)
 		  {
-			  alert( textStatus + ": " + error );
+			// Set error message	
+			$( '#footer .container' ).html( '<p>' + textStatus + ": " + error + '</p>' );
+			// Display it to user
+			$( '#footer' ).fadeIn( 150 );
 		  }
 		});
 	}
