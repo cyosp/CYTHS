@@ -2,16 +2,18 @@
 
 //
 // Author: CYOSP
-// Version: 1.0.0
+// Version: 1.0.1
 //
 // Post arguments:
 //  - <rcId> : Remote command identifier (0 -> 67108863)
 //  - <channel> : Channel (0 -> 16)
 //  - <currentCron> : Cron configured in format: * * * * *
-//  - <currentState> : State configured (on|off)
+//  - <currentState> : State configured (on|off|disabled)
 //  - <newCron> : New cron in format: * * * * *
-//  - <newState> : New state (on|off)
+//  - <newState> : New state (on|off|disabled)
 //
+// 2016-12-27 V 1.0.1
+//  - Manage new crontab disabled state
 // 2016-11-01 V 1.0.0
 //  - First release
 //

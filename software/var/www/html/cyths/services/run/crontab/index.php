@@ -2,10 +2,12 @@
 
 //
 // Author: CYOSP
-// Version: 1.0.0
+// Version: 1.1.0
 // Dependencies:
 //  - php_curl (sudo apt-get install php5-curl)
 //
+// 2016-12-27 V 1.1.0
+//  - Manage new crontab disabled state
 // 2016-10-09 V 1.0.0
 //  - First release
 //
@@ -45,27 +47,31 @@ foreach( $data['switchesList'] as $i => $switch )
 		{
 			echo $switch['label'].' - rcId='.$switch['rcId'].', channel='.$switch['channel'].' : '.$cronEntry['cron'].' '. $cronEntry['state'].'<br/>';
 
-			// Setup CronExpression
-			$cron = Cron\CronExpression::factory( $cronEntry['cron'] );
-
-			// Cron state must be applied
-			if( $cron->isDue() )
+			// There is a state to manage
+			if( $cronEntry['state'] != "disabled")
 			{
-				// POST data
-				$postData = 'emitterWiringPiNumber='.$emitterWiringPiNumber.'&rcId='.$switch['rcId'].'&channel='.$switch['channel'].'&state='.$cronEntry['state'];
+				// Setup CronExpression
+				$cron = Cron\CronExpression::factory( $cronEntry['cron'] );
 
-				// Init cURL
-				$ch = curl_init( 'http://localhost'.dirname($_SERVER['SCRIPT_NAME']).'/../../../API/set/switch/' );
-				curl_setopt( $ch , CURLOPT_POST           , 1         );
-				curl_setopt( $ch , CURLOPT_POSTFIELDS     , $postData );
-				curl_setopt( $ch , CURLOPT_HEADER         , 0         );
-				curl_setopt( $ch , CURLOPT_RETURNTRANSFER , 1         );
+				// Cron state must be applied
+				if( $cron->isDue() )
+				{
+					// POST data
+					$postData = 'emitterWiringPiNumber='.$emitterWiringPiNumber.'&rcId='.$switch['rcId'].'&channel='.$switch['channel'].'&state='.$cronEntry['state'];
 
-				// Execute POST request
-				$response = curl_exec( $ch );
+					// Init cURL
+					$ch = curl_init( 'http://localhost'.dirname($_SERVER['SCRIPT_NAME']).'/../../../API/set/switch/' );
+					curl_setopt( $ch , CURLOPT_POST           , 1         );
+					curl_setopt( $ch , CURLOPT_POSTFIELDS     , $postData );
+					curl_setopt( $ch , CURLOPT_HEADER         , 0         );
+					curl_setopt( $ch , CURLOPT_RETURNTRANSFER , 1         );
 
-				// Display response
-				echo $response."<br/>";
+					// Execute POST request
+					$response = curl_exec( $ch );
+
+					// Display response
+					echo $response."<br/>";
+				}
 			}
 		}
 	}

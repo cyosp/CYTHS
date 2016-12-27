@@ -5,8 +5,9 @@
      "title": "CYTHS - Planification",
      "state":
      {
-       "on": "Allumer",
-       "off": "Éteindre"
+       "on":       "Allumer",
+       "off":      "Éteindre",
+       "disabled": "Désactivée"
      }
    },
    "sensors":

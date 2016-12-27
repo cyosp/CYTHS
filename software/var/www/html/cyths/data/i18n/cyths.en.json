@@ -5,8 +5,9 @@
      "title": "CYTHS - Scheduler",
      "state":
      {
-       "on": "On",
-       "off": "Off"
+       "on":       "On",
+       "off":      "Off",
+       "disabled": "Disabled"
      }
    },
    "sensors":

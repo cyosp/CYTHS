@@ -1,5 +1,7 @@
-var pageVersion = "1.6.1";
+var pageVersion = "1.7.0";
 
+// 2016-12-27 V 1.7.0
+//  - Manage new crontab disabled state
 // 2016-11-04 V 1.6.1
 //   - Use cythsI18n.getLanguage() to get language on 2 characters
 // 2016-11-01 V 1.6.0
@@ -82,6 +84,7 @@ function cythsBeforeLocalize()
 					crontabsListToAdd += '     <ul class="jqCron-selector-list cyths-crontab-state-list" style="display: none;">';
 					crontabsListToAdd += '      <li><span data-i18n="crontab.state.on" crontab-state="on">on</span></li>';
 					crontabsListToAdd += '      <li><span data-i18n="crontab.state.off" crontab-state="off">off</span></li>';
+					crontabsListToAdd += '      <li><span data-i18n="crontab.state.disabled" crontab-state="disabled">disabled</span></li>';
 					crontabsListToAdd += '     </ul>';
 					crontabsListToAdd += '    </span>';
 					crontabsListToAdd += '   </span> ';
@@ -171,8 +174,18 @@ function cythsBeforeLocalize()
 			// Get CYTHS crontab tag
 			var cythsCrontab = $(this).parents( ".cyths-crontab" );
 
-			// Get current cron
-			var cron = cythsCrontab.find( ".cyths-crontab-jqcron" ).val();
+			// Get current jqCron
+			var jqCron = cythsCrontab.find( ".cyths-crontab-jqcron" );
+			
+			// Get current jqCron instance
+			var jqCronInstance = jqCron.jqCronGetInstance();
+			
+			// Enable/disable jqCron following state selected
+			if( state == "disabled" )	jqCronInstance.disable();
+			else 						jqCronInstance.enable();
+
+			// Get current cron value
+			var cron = jqCron.val();
 
 			// Get cron and state configured
 			var cythsCrontabConfCron = cythsCrontab.attr( "conf-cron" );
