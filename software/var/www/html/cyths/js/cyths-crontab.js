@@ -1,5 +1,7 @@
-var pageVersion = "1.7.0";
+var pageVersion = "1.7.1";
 
+// 2016-12-27 V 1.7.1
+//  - Disabled state is now shown during loading phase
 // 2016-12-27 V 1.7.0
 //  - Manage new crontab disabled state
 // 2016-11-04 V 1.6.1
@@ -112,48 +114,55 @@ function cythsBeforeLocalize()
 		$( crontabsListToAdd ).insertAfter( ".row" );
 
 		//
-		// Initialize jqCron
+		// Initialize all jqCron
 		//
-		$( '.cyths-crontab-jqcron' ).jqCron(
+		$( '.cyths-crontab-jqcron' ).each( function()
 		{
-			enabled_minute: true,
-			multiple_dom: true,
-			multiple_month: true,
-			multiple_mins: true,
-			multiple_dow: true,
-			multiple_time_hours: true,
-			multiple_time_minutes: true,
-			default_period: 'week',
-			no_reset_button: true,
-			disable: false,
-			numeric_zero_pad: true,
-			lang: cythsI18n.getLanguage(),
-			bind_method:
+			// Get current jqCron input field
+			var jqCronInput = $(this);
+			
+			// Setup jqCron
+			jqCronInput.jqCron(
 			{
-				// User has set a value of jqCron
-				set: function( $element , cron )
+				enabled_minute: true,
+				multiple_dom: true,
+				multiple_month: true,
+				multiple_mins: true,
+				multiple_dow: true,
+				multiple_time_hours: true,
+				multiple_time_minutes: true,
+				default_period: 'week',
+				no_reset_button: true,
+				disable: jqCronInput.parent().prev().find( 'span.cyths-crontab-state > span' ).is( '[crontab-state="disabled"]' ),
+				numeric_zero_pad: true,
+				lang: cythsI18n.getLanguage(),
+				bind_method:
 				{
-					// Update hidden input
-					$element.val( cron );
+					// User has set a value of jqCron
+					set: function( $element , cron )
+					{
+						// Update hidden input
+						$element.val( cron );
 
-					// Get CYTHS crontab tag
-					var cythsCrontab = $element.parents( ".cyths-crontab" );
+						// Get CYTHS crontab tag
+						var cythsCrontab = $element.parents( ".cyths-crontab" );
 
-					// Get current state
-					var state = cythsCrontab.find( ".cyths-crontab-state span" ).attr( "crontab-state" );
+						// Get current state
+						var state = cythsCrontab.find( ".cyths-crontab-state span" ).attr( "crontab-state" );
 
-					// Get cron and state configured
-					var cythsCrontabConfCron  = cythsCrontab.attr( "conf-cron" );
-					var cythsCrontabConfState = cythsCrontab.attr( "conf-state" );
+						// Get cron and state configured
+						var cythsCrontabConfCron  = cythsCrontab.attr( "conf-cron" );
+						var cythsCrontabConfState = cythsCrontab.attr( "conf-state" );
 
-					//
-					// Hide/display update CYTHS crontab
-					//
-					var updateCythsCrontab = cythsCrontab.find( ".update-cyths-crontab" );
-					if( cron != cythsCrontabConfCron || state != cythsCrontabConfState )	updateCythsCrontab.show();
-					else																	updateCythsCrontab.hide();
+						//
+						// Hide/display update CYTHS crontab
+						//
+						var updateCythsCrontab = cythsCrontab.find( ".update-cyths-crontab" );
+						if( cron != cythsCrontabConfCron || state != cythsCrontabConfState )	updateCythsCrontab.show();
+						else																	updateCythsCrontab.hide();
+					}
 				}
-			}
+			});
 		});
 
 		// Display/hide available states 
