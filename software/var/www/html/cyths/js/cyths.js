@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.6.0";
+var projectVersion = "1.6.1";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-01-30 V 1.6.1
+//  - Manage switch with only a sensor attached
 // 2016-11-17 V 1.6.0
 //  - Error is now logged in footer instead of with an alert
 // 2016-10-26 V 1.5.1
@@ -85,8 +87,14 @@ $( document ).ready( function()
 
 function addSwitch( switchToDrive )
 {
+	//
 	// Define switch id
-	var switchId = "switch-" + switchToDrive.channel + "-" + switchToDrive.rcId;
+	//
+	var switchId = "switch-";
+	// There is no switch to drive, only a sensor attached
+	if( switchToDrive.channel == "" && switchToDrive.rcId == "" )	switchId += "sensor-" + switchToDrive.sensorId;
+	else															switchId += switchToDrive.channel + "-" + switchToDrive.rcId;
+	
 	var infoId = switchId + "-info";
 
 	// Add switch if it doesn't exist in the page
