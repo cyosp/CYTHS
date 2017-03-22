@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.2.1                                                              #
+# Version: 1.2.2                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -24,6 +24,8 @@
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.2.2 - 2017-03-22                                                          #
+#  - Update following new configuration file structure                        #
 # 1.2.1 - 2016-11-12                                                          #
 #  - Add missing 0 for: -.9 <= TEMPERATURE <= .9                              #
 # 1.2.0 - 2016-09-30                                                          #
@@ -81,7 +83,7 @@ mkdir -p "$RRD_FOLDER"
 mkdir -p "$CSV_FOLDER"
 
 # Extract needed values from JSON configuration file
-JSCON_CONFIG_VIA_JQ=$(jq '.switchesList | map(.sensorId + "\n") | join( "" )' "$CONFIG_FILE_PATH" | sed 's|"\(.*\)"|\1|g' 2>&1)
+JSCON_CONFIG_VIA_JQ=$(jq '.switchesList | map(.sensor.id + "\n") | join( "" )' "$CONFIG_FILE_PATH" | sed 's|"\(.*\)"|\1|g' 2>&1)
 
 # Manage IFS
 IFS_BCKP=$IFS
