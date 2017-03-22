@@ -17,7 +17,10 @@
             	}
             ],
             "info": "20.0° / 50% • 08:37:25",
-			"sensorId": "10"
+            "sensor":
+            {
+            	"id": "10"
+            }
         },
         {
             "label": "Room 2",
@@ -25,7 +28,10 @@
             "rcId": "123456",
             "state": "off",
             "info": "18.5° / 65% • 08:35:10",
-			"sensorId": "20"
+			"sensor":
+            {
+            	"id": "20"
+            }
         },
         {
             "label": "Outdoor sensor",
@@ -33,7 +39,10 @@
             "rcId": "123456",
             "state": "unknown",
             "info": "12.2° / 67% • 08:36:58",
-			"sensorId": "30"
+			"sensor":
+            {
+            	"id": "30"
+            }
         }
     ]
 }
