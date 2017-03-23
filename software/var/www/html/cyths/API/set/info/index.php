@@ -2,12 +2,14 @@
 
 //
 // Author: CYOSP
-// Version: 1.0.0
+// Version: 1.0.1
 //
 // Post arguments:
 //  - <sensorId> : Sensor identifier (1->127)
 //  - <info> : Switch additional info to set (a not empty string)
 //
+// 2017-03-23 V 1.0.1
+//  - Update following new configuration file structure
 // 2016-09-30 V 1.0.0
 //  - First release
 //
@@ -44,7 +46,7 @@ if( $sensorId != "" && $info != "" )
 		foreach( $data['switchesList'] as $key => $entry )
 		{
 			// Entry to update found
-			if( $entry['sensorId'] == $sensorId )
+			if( $entry['sensor']['id'] == $sensorId )
 			{
 				$found = true;
 				$data['switchesList'][$key]['info'] = $info;
@@ -54,10 +56,14 @@ if( $sensorId != "" && $info != "" )
 		// Add an entry if no one found
 		if( ! $found )
 		{
+			// Sub level
+			$sensor['id'] = $sensorId;
+			// Main level
 			$newValue['label'] = "Unknown";
 			$newValue['channel'] = "";
 			$newValue['rcId'] = "";
 			$newValue['state'] = "unknown";
+			$newValue['sensor'] = $sensor;
 			$newValue['info'] = $info;
 
 			// Add new entry
