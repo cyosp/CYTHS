@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.6.1";
+var projectVersion = "1.6.2";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-03-23 V 1.6.2
+//  - Update following new configuration file structure
 // 2017-01-30 V 1.6.1
 //  - Manage switch with only a sensor attached
 // 2016-11-17 V 1.6.0
@@ -92,7 +94,7 @@ function addSwitch( switchToDrive )
 	//
 	var switchId = "switch-";
 	// There is no switch to drive, only a sensor attached
-	if( switchToDrive.channel == "" && switchToDrive.rcId == "" )	switchId += "sensor-" + switchToDrive.sensorId;
+	if( switchToDrive.channel == "" && switchToDrive.rcId == "" )	switchId += "sensor-" + switchToDrive.sensor.id;
 	else															switchId += switchToDrive.channel + "-" + switchToDrive.rcId;
 	
 	var infoId = switchId + "-info";
@@ -126,7 +128,7 @@ function addSwitch( switchToDrive )
 		if( switchToDrive.info )
 		{
 			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
-			if( switchToDrive.sensorId )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensorId + '">' + infoTag + '</a>';
+			if( switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '">' + infoTag + '</a>';
 			else							switchesListToAdd += infoTag;
 		}
 		switchesListToAdd += '  </h2>';
