@@ -1,11 +1,13 @@
 //
 // Author: CYOSP
 // Created: 2016-10-22
-// Version: 1.0.0
+// Version: 1.0.1
 //
 
+// 2017-03-24 V 1.0.1
+//  - Update following new configuration file structure
 // 2016-10-22 V 1.0.0
-//   - Initial release
+//  - Initial release
 
 function cythsInit()
 {
@@ -33,7 +35,7 @@ function cythsInit()
 			$.each( root.switchesList , function( index , switchConfigured )
 			{
 				// Association found => update suffix string
-				if( switchConfigured.sensorId == sensorId )	suffix += switchConfigured.label;
+				if( switchConfigured.sensor.id == sensorId )	suffix += switchConfigured.label;
 			});
 
 			// Update page title
@@ -49,27 +51,27 @@ function cythsInit()
 		//
 		$.each( root.switchesList , function( index , switchConfigured )
 		{
-			// Check if switch has a sensor identifer configured
-			if( switchConfigured.sensorId && switchConfigured.sensorId != "" )
+			// Check if switch has a sensor identifier configured
+			if( switchConfigured.sensor.id && switchConfigured.sensor.id != "" )
 			{	
 				//
 				// Compute piece of HTML to insert
 				//
 
 				// Add a break if there is something to display
-				if( sensorId == "" || switchConfigured.sensorId == sensorId )	graphsListToAdd += '<br/>';
+				if( sensorId == "" || switchConfigured.sensor.id == sensorId )	graphsListToAdd += '<br/>';
 
 				// Display a title per sensor if all sensors must be displayed
 				if( sensorId == "" )											graphsListToAdd += '<ul><li><h5>' + switchConfigured.label + '</h5></li></ul>';
 		
 				// Display sensor graph
-				if( sensorId == "" || switchConfigured.sensorId == sensorId )
+				if( sensorId == "" || switchConfigured.sensor.id == sensorId )
 				{
-					graphsListToAdd += '<div id="' + switchConfigured.sensorId + '" style="width: 98%;"></div>';
+					graphsListToAdd += '<div id="' + switchConfigured.sensor.id + '" style="width: 98%;"></div>';
 					graphsListToAdd += '<script type="text/javascript">';
 					graphsListToAdd += '  g3 = new Dygraph(';
-					graphsListToAdd += '        document.getElementById("' + switchConfigured.sensorId + '"),';
-					graphsListToAdd += '        "../data/csv/' + switchConfigured.sensorId + '.rrd.csv",';
+					graphsListToAdd += '        document.getElementById("' + switchConfigured.sensor.id + '"),';
+					graphsListToAdd += '        "../data/csv/' + switchConfigured.sensor.id + '.rrd.csv",';
 					graphsListToAdd += '	 {';
 					graphsListToAdd += '		 rollPeriod: 7,';
 					graphsListToAdd += '		 showRoller: true,';
