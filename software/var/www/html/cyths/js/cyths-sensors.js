@@ -1,9 +1,11 @@
 //
 // Author: CYOSP
 // Created: 2016-10-22
-// Version: 1.0.1
+// Version: 1.0.2
 //
 
+// 2017-03-24 V 1.0.2
+//  - Fix: JavaScript error: switchConfigured.sensor is undefined
 // 2017-03-24 V 1.0.1
 //  - Update following new configuration file structure
 // 2016-10-22 V 1.0.0
@@ -35,7 +37,7 @@ function cythsInit()
 			$.each( root.switchesList , function( index , switchConfigured )
 			{
 				// Association found => update suffix string
-				if( switchConfigured.sensor.id == sensorId )	suffix += switchConfigured.label;
+				if( switchConfigured.sensor && switchConfigured.sensor.id == sensorId )	suffix += switchConfigured.label;
 			});
 
 			// Update page title
@@ -52,7 +54,7 @@ function cythsInit()
 		$.each( root.switchesList , function( index , switchConfigured )
 		{
 			// Check if switch has a sensor identifier configured
-			if( switchConfigured.sensor.id && switchConfigured.sensor.id != "" )
+			if( switchConfigured.sensor && switchConfigured.sensor.id && switchConfigured.sensor.id != "" )
 			{	
 				//
 				// Compute piece of HTML to insert
