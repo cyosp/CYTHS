@@ -9,7 +9,7 @@
 //  - <date> : Sensor data receiving date (format: YYYY-MM-DD)
 //  - <time> : Sensor data receiving time (format: HH:MM:SS)
 //  - <temperature> : Sensor temperature (-40.0->62.4)
-//  - <humidity> : Sensor humidity (0.0->100.0)
+//  - <humidity> : Sensor humidity (0->100)
 
 //
 // 2017-03-24 V 1.0.0
