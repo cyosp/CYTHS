@@ -7,7 +7,7 @@
 // Post arguments:
 //  - <sensorId> : Sensor identifier (1->127)
 //  - <date> : Sensor data receiving date (format: YYYY-MM-DD)
-//  - <time> : Sensor data receiving time (format: HH-MM-SS.NNN)
+//  - <time> : Sensor data receiving time (format: HH:MM:SS)
 //  - <temperature> : Sensor temperature (-40.0->62.4)
 //  - <humidity> : Sensor humidity (0.0->100.0)
 
@@ -17,7 +17,7 @@
 //
 
 // TEST
-//  * curl -i --silent --data "sensorId=123&date=2017-03-24&time=22:00:00.000&temperature=20.0&humidity=60.0" "http://localhost/cyths/API/set/sensor/data/"
+//  * curl -i --silent --data "sensorId=123&date=2017-03-24&time=22:00:00&temperature=20.0&humidity=60.0" "http://localhost/cyths/API/set/sensor/data/"
 
 // Get parameters
 $sensorId = $_POST['sensorId'];
