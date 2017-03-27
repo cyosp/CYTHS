@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.6.2";
+var projectVersion = "1.7.0";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-03-27 V 1.7.0
+//  - Allow to configure sensor info displayed
 // 2017-03-23 V 1.6.2
 //  - Update following new configuration file structure
 // 2017-01-30 V 1.6.1
@@ -96,9 +98,20 @@ function addSwitch( switchToDrive )
 	// There is no switch to drive, only a sensor attached
 	if( switchToDrive.channel == "" && switchToDrive.rcId == "" )	switchId += "sensor-" + switchToDrive.sensor.id;
 	else															switchId += switchToDrive.channel + "-" + switchToDrive.rcId;
+
+	//
+	// Resolve switch info variables
+	//
+	if( switchToDrive.info && switchToDrive.sensor && switchToDrive.sensor.data )
+	{
+		if( switchToDrive.sensor.data.date )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.date}/g        , switchToDrive.sensor.data.date        );
+		if( switchToDrive.sensor.data.time )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.time}/g        , switchToDrive.sensor.data.time        );
+		if( switchToDrive.sensor.data.temperature )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.temperature}/g , switchToDrive.sensor.data.temperature );
+		if( switchToDrive.sensor.data.humidity )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.humidity}/g    , switchToDrive.sensor.data.humidity    );
+	}
 	
 	var infoId = switchId + "-info";
-
+	
 	// Add switch if it doesn't exist in the page
 	if( $( '#' + switchId ).length == 0 )
 	{
@@ -216,7 +229,7 @@ function addSwitch( switchToDrive )
 		var switchInfo = switchInfoObj.text();
 
 		// Update switch info if needed
-		if( switchInfo != switchToDrive.info )	switchInfoObj.text( switchToDrive.info );
+		if( switchToDrive.info != switchInfo )	switchInfoObj.text( switchToDrive.info );
 	}
 }
 
