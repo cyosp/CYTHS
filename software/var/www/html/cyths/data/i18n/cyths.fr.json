@@ -8,7 +8,8 @@
        "on":       "Allumer",
        "off":      "Éteindre",
        "disabled": "Désactivée"
-     }
+     },
+     "condition": "et sous condition"
    },
    "sensors":
    {
