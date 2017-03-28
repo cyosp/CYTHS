@@ -9,7 +9,8 @@
             "crontab": [
             	{
             		"cron": "0 19 * * *",
-            		"state": "on"
+            		"state": "on",
+            		"condition": "switchesList.sensor[id=10].data.humidity:gt({switchesList.sensor[id=30].data.humidity})"
             	},
             	{
             		"cron": "0 6 * * *",
