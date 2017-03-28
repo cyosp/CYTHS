@@ -1,5 +1,7 @@
-var pageVersion = "1.7.1";
+var pageVersion = "1.7.2";
 
+// 2017-03-28 V 1.7.2
+//  - Manage crontab condition
 // 2016-12-27 V 1.7.1
 //  - Disabled state is now shown during loading phase
 // 2016-12-27 V 1.7.0
@@ -95,6 +97,13 @@ function cythsBeforeLocalize()
 					crontabsListToAdd += '   <span class="lowercase">';
 					crontabsListToAdd += '    <input value="' + entry.cron + '" class="cyths-crontab-jqcron" type="hidden"></input>';
 					crontabsListToAdd += '   </span>';
+					
+					// Add crontab condition if configured
+					if( entry.condition )
+					{
+						crontabsListToAdd += '   <br/>';
+						crontabsListToAdd += '   <span data-i18n="crontab.condition"></span>';
+					}
 
 					// Manage modified configuration
 					crontabsListToAdd += '   <span class="jqCron-container">';
