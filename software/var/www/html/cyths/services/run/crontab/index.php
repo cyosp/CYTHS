@@ -2,10 +2,12 @@
 
 //
 // Author: CYOSP
-// Version: 1.1.0
+// Version: 1.2.0
 // Dependencies:
 //  - php_curl (sudo apt-get install php5-curl)
 //
+// 2017-03-29 V 1.2.0
+//  - Manage crontab condition
 // 2016-12-27 V 1.1.0
 //  - Manage new crontab disabled state
 // 2016-10-09 V 1.0.0
@@ -48,7 +50,7 @@ foreach( $data['switchesList'] as $i => $switch )
 			echo $switch['label'].' - rcId='.$switch['rcId'].', channel='.$switch['channel'].' : '.$cronEntry['cron'].' '. $cronEntry['state'].'<br/>';
 
 			// There is a state to manage
-			if( $cronEntry['state'] != "disabled")
+			if( $cronEntry['state'] != "disabled" )
 			{
 				// Setup CronExpression
 				$cron = Cron\CronExpression::factory( $cronEntry['cron'] );
@@ -56,21 +58,38 @@ foreach( $data['switchesList'] as $i => $switch )
 				// Cron state must be applied
 				if( $cron->isDue() )
 				{
-					// POST data
-					$postData = 'emitterWiringPiNumber='.$emitterWiringPiNumber.'&rcId='.$switch['rcId'].'&channel='.$switch['channel'].'&state='.$cronEntry['state'];
+					// By default crontab condition is assuming true
+					// It allows to execute crontab when there is no condition
+					$cronCondition = true;
 
-					// Init cURL
-					$ch = curl_init( 'http://localhost'.dirname($_SERVER['SCRIPT_NAME']).'/../../../API/set/switch/' );
-					curl_setopt( $ch , CURLOPT_POST           , 1         );
-					curl_setopt( $ch , CURLOPT_POSTFIELDS     , $postData );
-					curl_setopt( $ch , CURLOPT_HEADER         , 0         );
-					curl_setopt( $ch , CURLOPT_RETURNTRANSFER , 1         );
+					// Check there is a crontab condition
+					if( array_key_exists( 'condition' , $cronEntry ) && $cronEntry['condition'] != "" )
+					{
+						// Execute node.js script to verify crontab condition
+						$output = shell_exec( "node crontab-condition.js " . $i . " " . $j ." 2>&1 >/dev/null; echo $?" );
 
-					// Execute POST request
-					$response = curl_exec( $ch );
+						// Analyze execution to know crontab condition value
+						if( strcmp( $output , "0\n" ) != 0 )	$cronCondition = false;
+					}
 
-					// Display response
-					echo $response."<br/>";
+					if( $cronCondition )
+					{
+						// POST data
+						$postData = 'emitterWiringPiNumber='.$emitterWiringPiNumber.'&rcId='.$switch['rcId'].'&channel='.$switch['channel'].'&state='.$cronEntry['state'];
+
+						// Init cURL
+						$ch = curl_init( 'http://localhost'.dirname($_SERVER['SCRIPT_NAME']).'/../../../API/set/switch/' );
+						curl_setopt( $ch , CURLOPT_POST           , 1         );
+						curl_setopt( $ch , CURLOPT_POSTFIELDS     , $postData );
+						curl_setopt( $ch , CURLOPT_HEADER         , 0         );
+						curl_setopt( $ch , CURLOPT_RETURNTRANSFER , 1         );
+
+						// Execute POST request
+						$response = curl_exec( $ch );
+
+						// Display response
+						echo $response."<br/>";
+					}
 				}
 			}
 		}

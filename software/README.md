@@ -9,3 +9,7 @@ The following main components must be installed on the Operating System in order
  | Bash      | >= 4.3.30 |
  | PHP       | >= 5.6.24 |
  | NodeJS    | >= TBD    |
+ 
+### PHP modules
+
+The following PHP module is needed: **php_curl**.
