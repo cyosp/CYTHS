@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.7.0";
+var projectVersion = "1.7.1";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-03-30 V 1.7.1
+//  - Fix: Check sensor existence before to check sensor.id
 // 2017-03-27 V 1.7.0
 //  - Allow to configure sensor info displayed
 // 2017-03-23 V 1.6.2
@@ -141,8 +143,8 @@ function addSwitch( switchToDrive )
 		if( switchToDrive.info )
 		{
 			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
-			if( switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '">' + infoTag + '</a>';
-			else							switchesListToAdd += infoTag;
+			if( switchToDrive.sensor && switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '">' + infoTag + '</a>';
+			else													switchesListToAdd += infoTag;
 		}
 		switchesListToAdd += '  </h2>';
 		switchesListToAdd += '</div>';
