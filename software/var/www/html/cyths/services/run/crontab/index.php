@@ -66,7 +66,7 @@ foreach( $data['switchesList'] as $i => $switch )
 					if( array_key_exists( 'condition' , $cronEntry ) && $cronEntry['condition'] != "" )
 					{
 						// Execute node.js script to verify crontab condition
-						$output = shell_exec( "node crontab-condition.js " . $i . " " . $j ." 2>&1 >/dev/null; echo $?" );
+						$output = shell_exec( "nodejs crontab-condition.js " . $i . " " . $j ." 2>&1 >/dev/null; echo $?" );
 
 						// Analyze execution to know crontab condition value
 						if( strcmp( $output , "0\n" ) != 0 )	$cronCondition = false;
