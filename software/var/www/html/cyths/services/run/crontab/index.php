@@ -2,10 +2,13 @@
 
 //
 // Author: CYOSP
-// Version: 1.2.0
+// Version: 1.2.1
+//
 // Dependencies:
 //  - php_curl (sudo apt-get install php5-curl)
 //
+// 2017-03-31 V 1.2.1
+//  - Fix: PHP parse error
 // 2017-03-29 V 1.2.0
 //  - Manage crontab condition
 // 2016-12-27 V 1.1.0
@@ -66,7 +69,7 @@ foreach( $data['switchesList'] as $i => $switch )
 					if( array_key_exists( 'condition' , $cronEntry ) && $cronEntry['condition'] != "" )
 					{
 						// Execute node.js script to verify crontab condition
-						$output = shell_exec( "export NODE_PATH="$(npm root -g)"; nodejs crontab-condition.js " . $i . " " . $j ." 2>&1 >/dev/null; echo $?" );
+						$output = shell_exec( 'export NODE_PATH="$(npm root -g)"; nodejs crontab-condition.js ' . $i . " " . $j ." 2>&1 >/dev/null; echo $?" );
 
 						// Analyze execution to know crontab condition value
 						if( strcmp( $output , "0\n" ) != 0 )	$cronCondition = false;
