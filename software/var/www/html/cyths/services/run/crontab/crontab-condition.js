@@ -18,6 +18,11 @@ function help()
 	console.log( " * Crontab index in switch, starting: 1" );
 }
 
+// Return:
+// * 0 : Crontab condition is true
+// * 1 : Crontab condition is false
+// * 9 : Missing parameters
+
 // Dependencies:
 var path = require('path');
 var jsonQuery = require('json-query');
@@ -31,7 +36,7 @@ var exitCode = 0;
 // Check input arguments
 if( process.argv.length != 4 )
 {
-	exitCode = 1;
+	exitCode = 9;
 	help();
 }
 else
