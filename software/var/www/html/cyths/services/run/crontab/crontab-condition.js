@@ -1,9 +1,11 @@
 //
 // Author: CYOSP
 // Created: 2017-03-30
-// Version: 1.0.0
+// Version: 1.0.1
 //
 
+// 2017-03-31 V 1.0.1
+//  - Index is now starting 0 instead of 1
 // 2017-03-30 V 1.0.0
 //  - Initial release
 
@@ -14,8 +16,8 @@
 function help()
 {
 	console.log( path.basename( process.argv[1] ) + " takes two arguments:" );
-	console.log( " * Switch index, starting: 1" );
-	console.log( " * Crontab index in switch, starting: 1" );
+	console.log( " * Switch index, starting: 0" );
+	console.log( " * Crontab index in switch, starting: 0" );
 }
 
 // Return:
@@ -28,7 +30,7 @@ var path = require('path');
 var jsonQuery = require('json-query');
 
 //Test:
-// * nodejs crontab-condition.js 1 1
+// * nodejs crontab-condition.js 0 0
 
 // Exit code
 var exitCode = 0;
@@ -41,10 +43,10 @@ if( process.argv.length != 4 )
 }
 else
 {
-	// Get switch index in nodejs reference
-	var switchIndex = process.argv[2] - 1;
-	// Get crontab index in nodejs reference
-	var crontabIndex = process.argv[3] - 1;
+	// Get switch index
+	var switchIndex = process.argv[2];
+	// Get crontab index
+	var crontabIndex = process.argv[3];
 	
 	// Load configuration file
 	var config = require( "../../../data/config.json" );
