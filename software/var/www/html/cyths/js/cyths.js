@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.7.1";
+var projectVersion = "1.7.2";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-04-04 V 1.7.2
+//  - Manage empty switch info field
 // 2017-03-30 V 1.7.1
 //  - Fix: Check sensor existence before to check sensor.id
 // 2017-03-27 V 1.7.0
@@ -34,6 +36,9 @@ var refreshEachMilliSeconds = 5000;
 //   - Add a graphic link to each sensor
 // 2016-07-07 V 1.0.0
 //   - Initial release
+
+// Default switch info field
+var defaultSwitchInfo = '<span data-i18n="switch.info.default">No sensor</span>';
 
 //
 // Refresh UI when page is visible to user.
@@ -81,7 +86,7 @@ $(window).on("blur focus", function(e)
 });
 
 
-$( document ).ready( function()
+function cythsBeforeLocalize()
 {
 	// Add version in page title
 	$(document).prop( 'title' , $(document).prop( 'title' ) + " - " + projectVersion );
@@ -89,7 +94,7 @@ $( document ).ready( function()
 	$( "#cythsTitle" ).text( $( "#cythsTitle" ).text() + " - " + projectVersion );
 	// Load user interface
 	loadUI();
-});
+}
 
 function addSwitch( switchToDrive )
 {
@@ -101,16 +106,21 @@ function addSwitch( switchToDrive )
 	if( switchToDrive.channel == "" && switchToDrive.rcId == "" )	switchId += "sensor-" + switchToDrive.sensor.id;
 	else															switchId += switchToDrive.channel + "-" + switchToDrive.rcId;
 
-	//
-	// Resolve switch info variables
-	//
-	if( switchToDrive.info && switchToDrive.sensor && switchToDrive.sensor.data )
+	// Check switch info exists and is not empty
+	if( switchToDrive.info )
 	{
-		if( switchToDrive.sensor.data.date )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.date}/g        , switchToDrive.sensor.data.date        );
-		if( switchToDrive.sensor.data.time )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.time}/g        , switchToDrive.sensor.data.time        );
-		if( switchToDrive.sensor.data.temperature )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.temperature}/g , switchToDrive.sensor.data.temperature );
-		if( switchToDrive.sensor.data.humidity )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.humidity}/g    , switchToDrive.sensor.data.humidity    );
+		//
+		// Resolve switch info variables
+		//
+		if( switchToDrive.sensor && switchToDrive.sensor.data )
+		{
+			if( switchToDrive.sensor.data.date )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.date}/g        , switchToDrive.sensor.data.date        );
+			if( switchToDrive.sensor.data.time )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.time}/g        , switchToDrive.sensor.data.time        );
+			if( switchToDrive.sensor.data.temperature )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.temperature}/g , switchToDrive.sensor.data.temperature );
+			if( switchToDrive.sensor.data.humidity )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.humidity}/g    , switchToDrive.sensor.data.humidity    );
+		}
 	}
+	else switchToDrive.info = defaultSwitchInfo;
 	
 	var infoId = switchId + "-info";
 	
@@ -231,7 +241,7 @@ function addSwitch( switchToDrive )
 		var switchInfo = switchInfoObj.text();
 
 		// Update switch info if needed
-		if( switchToDrive.info != switchInfo )	switchInfoObj.text( switchToDrive.info );
+		if( switchToDrive.info != switchInfo && switchToDrive.info != defaultSwitchInfo)	switchInfoObj.text( switchToDrive.info );
 	}
 }
 

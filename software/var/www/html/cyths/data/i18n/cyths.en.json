@@ -1,4 +1,11 @@
 {
+   "switch":
+   {
+     "info":
+     {
+        "default": "No sensor"
+     }
+   },
    "crontab":
    {
    	 "label": "Scheduler",

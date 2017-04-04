@@ -1,4 +1,11 @@
 {
+   "switch":
+   {
+     "info":
+     {
+        "default": "Aucun capteur"
+     }
+   },
    "crontab":
    {
      "label": "Planification",
