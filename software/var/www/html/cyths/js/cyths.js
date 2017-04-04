@@ -150,12 +150,11 @@ function addSwitch( switchToDrive )
 		switchesListToAdd += '>';
 		switchesListToAdd += '  </p>';
 		switchesListToAdd += '  <h2 class="h6">';
-		if( switchToDrive.info )
-		{
-			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
-			if( switchToDrive.sensor && switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '">' + infoTag + '</a>';
-			else													switchesListToAdd += infoTag;
-		}
+		// START : Manage info field
+		var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
+		if( switchToDrive.sensor && switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '">' + infoTag + '</a>';
+		else													switchesListToAdd += infoTag;
+		// END : Manage info field
 		switchesListToAdd += '  </h2>';
 		switchesListToAdd += '</div>';
 
