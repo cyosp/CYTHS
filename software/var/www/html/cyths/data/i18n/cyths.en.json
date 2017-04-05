@@ -16,7 +16,7 @@
        "off":      "Off",
        "disabled": "Disabled"
      },
-     "condition": "and under condition"
+     "condition": "if"
    },
    "sensors":
    {

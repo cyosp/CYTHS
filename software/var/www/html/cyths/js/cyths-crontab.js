@@ -1,5 +1,7 @@
-var pageVersion = "1.7.2";
+var pageVersion = "1.7.3";
 
+// 2017-04-05 V 1.7.3
+//  - Display crontab condition
 // 2017-03-28 V 1.7.2
 //  - Manage crontab condition
 // 2016-12-27 V 1.7.1
@@ -103,6 +105,7 @@ function cythsBeforeLocalize()
 					{
 						crontabsListToAdd += '   <br/>';
 						crontabsListToAdd += '   <span data-i18n="crontab.condition"></span>';
+						crontabsListToAdd += '   <span>: <i>'+ entry.condition + '</i></span>';
 					}
 
 					// Manage modified configuration

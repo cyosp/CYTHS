@@ -16,7 +16,7 @@
        "off":      "Éteindre",
        "disabled": "Désactivée"
      },
-     "condition": "et sous condition"
+     "condition": "si"
    },
    "sensors":
    {
