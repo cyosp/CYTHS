@@ -1,5 +1,7 @@
-var pageVersion = "1.7.3";
+var pageVersion = "1.7.4";
 
+// 2017-04-12 V 1.7.4
+//  - Disable crontab condition if needed
 // 2017-04-05 V 1.7.3
 //  - Display crontab condition
 // 2017-03-28 V 1.7.2
@@ -37,6 +39,13 @@ var pageVersion = "1.7.3";
 //   - Manage new crontab format
 // 2016-10-06 V 1.0.0
 //   - Initial release
+
+//
+// Crontab condition
+//
+var cythsCrontabConditionClassName = "cyths-crontab-condition";
+var cythsCrontabConditionJquerySelector = '.' + cythsCrontabConditionClassName;
+var cythsCrontabConditionClassDisabled = "crontab-condition-disabled";
 
 function cythsBeforeLocalize()
 {
@@ -104,8 +113,10 @@ function cythsBeforeLocalize()
 					if( entry.condition )
 					{
 						crontabsListToAdd += '   <br/>';
-						crontabsListToAdd += '   <span data-i18n="crontab.condition"></span>';
-						crontabsListToAdd += '   <span>: <i>'+ entry.condition + '</i></span>';
+						crontabsListToAdd += '   <span class="' + cythsCrontabConditionClassName + '">';
+						crontabsListToAdd += '     <span data-i18n="crontab.condition"></span>';
+						crontabsListToAdd += '     <span>: <i>'+ entry.condition + '</i></span>';
+						crontabsListToAdd += '   </span>';
 					}
 
 					// Manage modified configuration
@@ -133,6 +144,9 @@ function cythsBeforeLocalize()
 			// Get current jqCron input field
 			var jqCronInput = $(this);
 			
+			// Check if crontab state is disabled
+			var isCrontabStateDisabled = jqCronInput.parent().prev().find( 'span.cyths-crontab-state > span' ).is( '[crontab-state="disabled"]' );
+			
 			// Setup jqCron
 			jqCronInput.jqCron(
 			{
@@ -145,7 +159,7 @@ function cythsBeforeLocalize()
 				multiple_time_minutes: true,
 				default_period: 'week',
 				no_reset_button: true,
-				disable: jqCronInput.parent().prev().find( 'span.cyths-crontab-state > span' ).is( '[crontab-state="disabled"]' ),
+				disable: isCrontabStateDisabled,
 				numeric_zero_pad: true,
 				lang: cythsI18n.getLanguage(),
 				bind_method:
@@ -175,6 +189,9 @@ function cythsBeforeLocalize()
 					}
 				}
 			});
+			
+			// Disable crontab condition if state is disabled
+			if( isCrontabStateDisabled )	jqCronInput.parents( '.cyths-crontab' ).find( cythsCrontabConditionJquerySelector ).addClass( cythsCrontabConditionClassDisabled );			
 		});
 
 		// Display/hide available states 
@@ -201,9 +218,17 @@ function cythsBeforeLocalize()
 			// Get current jqCron instance
 			var jqCronInstance = jqCron.jqCronGetInstance();
 			
-			// Enable/disable jqCron following state selected
-			if( state == "disabled" )	jqCronInstance.disable();
-			else 						jqCronInstance.enable();
+			// Enable/disable jqCron and crontab condition following state selected
+			if( state == "disabled" )
+			{
+				jqCronInstance.disable();
+				cythsCrontab.find( cythsCrontabConditionJquerySelector ).addClass( cythsCrontabConditionClassDisabled );
+			}
+			else
+			{
+				jqCronInstance.enable();
+				cythsCrontab.find( cythsCrontabConditionJquerySelector ).removeClass( cythsCrontabConditionClassDisabled );
+			}
 
 			// Get current cron value
 			var cron = jqCron.val();

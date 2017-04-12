@@ -25,6 +25,14 @@
 	text-transform: lowercase;
 }
 
+/*********************/
+/* Crontab condition */
+/*********************/
+.crontab-condition-disabled
+{
+	color: #888;
+}
+
 /*****************/
 /* Manage footer */
 /*****************/
@@ -46,4 +54,3 @@ html, body
 	height: 50px;
 	background-color: #FFCCCC;
 }
-
