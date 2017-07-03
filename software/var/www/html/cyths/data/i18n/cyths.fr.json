@@ -22,5 +22,10 @@
    {
      "label": "Capteurs",
      "title": "CYTHS - Capteurs"
+   },
+   "error":
+   {
+     "serverCommunication": "Erreur de communication avec le serveur",
+     "configurationNotFound" : "Fichier de configuration introuvable"
    }
 }

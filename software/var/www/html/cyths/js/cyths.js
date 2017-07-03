@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.7.2";
+var projectVersion = "1.7.3";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-07-03 V 1.7.3
+//  - Improve error messages
 // 2017-04-04 V 1.7.2
 //  - Manage empty switch info field
 // 2017-03-30 V 1.7.1
@@ -279,8 +281,22 @@ function loadUI()
 		  },
 		  error: function(xhr, textStatus, error)
 		  {
-			// Set error message	
-			$( '#footer .container' ).html( '<p>' + textStatus + ": " + error + '</p>' );
+		  	var msgTag = $( '#footer .container' );
+
+			// Set error message
+			if( error )
+			{
+				if( error == "Not Found" )
+                    msgTag.html( '<span data-i18n="error.configurationNotFound">Configuration file not found</span>' );
+				else
+					msgTag.html( '<p>' + textStatus + ": " + error + '</p>' );
+            }
+			else
+                msgTag.html( '<span data-i18n="error.serverCommunication">Server communication error</span>' );
+
+			// Force localization
+			msgTag.localize();
+
 			// Display it to user
 			$( '#footer' ).fadeIn( 150 );
 		  }
