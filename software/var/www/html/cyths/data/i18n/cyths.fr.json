@@ -26,6 +26,7 @@
    "error":
    {
      "serverCommunication": "Erreur de communication avec le serveur",
-     "configurationNotFound" : "Fichier de configuration introuvable"
+     "configurationNotFound" : "Fichier de configuration introuvable",
+     "unAuthorized" : "Accès non autorisé"
    }
 }

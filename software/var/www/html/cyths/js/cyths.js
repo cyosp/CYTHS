@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.7.3";
+var projectVersion = "1.7.4";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-07-06 V 1.7.4
+//  - Add unauthorized error message
 // 2017-07-03 V 1.7.3
 //  - Improve error messages
 // 2017-04-04 V 1.7.2
@@ -286,10 +288,17 @@ function loadUI()
 			// Set error message
 			if( error )
 			{
-				if( error == "Not Found" )
-                    msgTag.html( '<span data-i18n="error.configurationNotFound">Configuration file not found</span>' );
-				else
-					msgTag.html( '<p>' + textStatus + ": " + error + '</p>' );
+				switch( error )
+				{
+					case "Not Found" :
+                        msgTag.html( '<span data-i18n="error.configurationNotFound">Configuration file not found</span>' );
+                        break;
+                    case "Unauthorized" :
+                        msgTag.html( '<span data-i18n="error.unAuthorized">Unauthorized access</span>' );
+                        break;
+					default :
+                        msgTag.html( '<p>' + textStatus + ": " + error + '</p>' );
+				}
             }
 			else
                 msgTag.html( '<span data-i18n="error.serverCommunication">Server communication error</span>' );

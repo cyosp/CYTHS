@@ -26,6 +26,8 @@
   "error":
   {
     "serverCommunication": "Server communication error",
-    "configurationNotFound" : "Configuration file not found"
+    "configurationNotFound" : "Configuration file not found",
+    "unAuthorized" : "Unauthorized access"
+
   }
 }
