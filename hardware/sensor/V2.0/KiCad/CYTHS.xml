@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <export version="D">
   <design>
-    <source>/home/cyosp/GitHub/CYTHS/hardware/sensor/V 2.0/KiCad/CYTHS.sch</source>
+    <source>/home/yves/Backup/GitHub/CYTHS/hardware/sensor/V 2.0/KiCad/CYTHS.sch</source>
     <date>dim. 21 août 2016 22:20:03 CEST</date>
     <tool>Eeschema 4.0.2+dfsg1-2~bpo8+1-stable</tool>
     <sheet number="1" name="/" tstamps="/">
@@ -109,7 +109,7 @@
   </libparts>
   <libraries>
     <library logical="sensors">
-      <uri>/home/cyosp/GitHub/CYTHS/hardware/sensor/V 2.0/kicad-lib/sensors.lib</uri>
+      <uri>/home/yves/Backup/GitHub/CYTHS/hardware/sensor/V 2.0/kicad-lib/sensors.lib</uri>
     </library>
     <library logical="atmel">
       <uri>/usr/share/kicad/library/atmel.lib</uri>

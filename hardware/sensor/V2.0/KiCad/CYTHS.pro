@@ -58,4 +58,4 @@ LibName26=opto
 LibName27=atmel
 LibName28=contrib
 LibName29=valves
-LibName30=/home/cyosp/GitHub/CYTHS/hardware/sensor/V 2.0/kicad-lib/sensors
+LibName30=/home/yves/Backup/GitHub/CYTHS/hardware/sensor/V 2.0/kicad-lib/sensors

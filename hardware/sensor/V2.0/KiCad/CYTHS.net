@@ -1,6 +1,6 @@
 (export (version D)
   (design
-    (source "/home/cyosp/GitHub/CYTHS/hardware/sensor/V 2.0/KiCad/CYTHS.sch")
+    (source "/home/yves/Backup/GitHub/CYTHS/hardware/sensor/V 2.0/KiCad/CYTHS.sch")
     (date "sam. 27 août 2016 15:30:35 CEST")
     (tool "Eeschema 4.0.2+dfsg1-2~bpo8+1-stable")
     (sheet (number 1) (name /) (tstamps /)
@@ -125,7 +125,7 @@
     (library (logical atmel)
       (uri /usr/share/kicad/library/atmel.lib))
     (library (logical sensors)
-      (uri "/home/cyosp/GitHub/CYTHS/hardware/sensor/V 2.0/kicad-lib/sensors.lib")))
+      (uri "/home/yves/Backup/GitHub/CYTHS/hardware/sensor/V 2.0/kicad-lib/sensors.lib")))
   (nets
     (net (code 1) (name "Net-(IC1-Pad2)")
       (node (ref RF1) (pin 1))
