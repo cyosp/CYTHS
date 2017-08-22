@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.7.4";
+var projectVersion = "1.8.0";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-08-22 V 1.8.0
+//  - Add admin page
 // 2017-07-06 V 1.7.4
 //  - Add unauthorized error message
 // 2017-07-03 V 1.7.3
