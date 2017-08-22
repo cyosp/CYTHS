@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!-- Author: CYOSP       -->
+<!-- Created: 2017-08-21 -->
+<!-- Version: 1.0.0      -->
+
+<!-- 2017-08-21 V 1.0.0                                          -->
+<!--  * First release                                            -->
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="Display CYTHS admin page">
+		<meta name="author" content="CYOSP">
+		<title data-i18n="admin.title">CYTHS - Admin</title>
+		<!-- CSS -->
+		<link href="../css/bootstrap.min.css" rel="stylesheet">
+		<link href="../css/font-awesome.min.css" rel="stylesheet">
+		<!-- JavaScript -->
+		<script src="../js/jquery.min.js"></script>
+		<script src="../js/bootstrap.min.js"></script>
+		<script src="../js/cyths-admin.js"></script>
+		<!-- i18n -->
+		<script src="../js/i18next.min.js"></script>
+		<script src="../js/i18nextXHRBackend.min.js"></script>
+		<script src="../js/jquery-i18next.min.js"></script>			
+		<script>var i18nextLoadPath='../data/i18n/cyths.{{lng}}.json';</script>
+		<script src="../js/cyths-i18n.js"></script>
+    </head>
+    <body>
+		<div id="content">
+			<div class="container">
+				<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+					<div class="container">
+						<div class="navbar-header">
+				  			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+								<span class="icon-bar"></span>
+				  			</button>
+				  			<a class="navbar-brand" href=".."><span data-i18n="admin.title" id="adminTitle">CYTHS - Admin</span></a>
+						</div>
+				  		<div id="navbar" class="navbar-collapse collapse">
+							<ul class="nav navbar-nav navbar-right">
+							    <li><a href=".."><i class="fa fa-home" aria-hidden="true"></i></a></li>
+					  			<li><a href="../display/crontab"><span data-i18n="crontab.label">Crontab</span></a></li>
+					  			<li><a href="../sensors"><span data-i18n="sensors.label">Sensors</span></a></li>
+							</ul>
+				  		</div>
+					</div>
+				 </nav>
+				 <br/>
+				 <br/>
+				 <br/>
+			</div>
+		</div>
+		<div class="row" width="100%"></div>
+    </body>
+</html>

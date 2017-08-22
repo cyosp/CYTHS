@@ -23,11 +23,16 @@
      "label": "Sensors",
      "title": "CYTHS - Sensors"
    },
-  "error":
-  {
-    "serverCommunication": "Server communication error",
-    "configurationNotFound" : "Configuration file not found",
-    "unAuthorized" : "Unauthorized access"
+   "error":
+   {
+     "serverCommunication": "Server communication error",
+     "configurationNotFound" : "Configuration file not found",
+     "unAuthorized" : "Unauthorized access"
 
-  }
+   },
+   "admin":
+   {
+     "label": "Admin",
+     "title": "CYTHS - Admin"
+   }
 }

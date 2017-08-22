@@ -28,5 +28,10 @@
      "serverCommunication": "Erreur de communication avec le serveur",
      "configurationNotFound" : "Fichier de configuration introuvable",
      "unAuthorized" : "Accès non autorisé"
+   },
+   "admin":
+   {
+     "label": "Admin",
+     "title": "CYTHS - Admin"
    }
 }

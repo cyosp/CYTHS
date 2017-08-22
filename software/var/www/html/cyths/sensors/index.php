@@ -59,6 +59,7 @@
 					  			<li><a href=".."><i class="fa fa-home" aria-hidden="true"></i></a></li>
 								<?php if( $_GET[ 'id' ] != "" ) echo ' <li><a href="."><span data-i18n="sensors.label">Sensors</span></a></li>'; ?>
 					  			<li><a href="../display/crontab"><span data-i18n="crontab.label">Crontab</span></a></li>
+					  			<li><a href="../admin"><span data-i18n="admin.label">Admin</span></a></li>
 							</ul>
 				  		</div>
 					</div>
