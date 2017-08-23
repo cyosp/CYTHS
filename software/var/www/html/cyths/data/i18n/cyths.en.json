@@ -33,6 +33,10 @@
    "admin":
    {
      "label": "Admin",
-     "title": "CYTHS - Admin"
+     "title": "CYTHS - Admin",
+     "pairing":
+     {
+       "label": "Pairing"
+     }
    }
 }
