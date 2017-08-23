@@ -2,14 +2,17 @@
 
 //
 // Author: CYOSP
-// Version: 1.1.0
+// Version: 1.2.0
 //
 // Post arguments:
 //  - <rcId> : Remote command identifier (0 -> 67108863)
 //  - <channel> : Channel (0 -> 16)
 //  - <emitterWiringPiNumber> : WiringPi transmitter pin number
 //  - <state> : Switch state to set (on|off|unknown)
+//  - [repeat] : How many times the command must be repeated
 //
+// 2017-08-23 V 1.2.0
+//  - Add optional repeat argument
 // 2016-09-30 V 1.1.0
 //  - Move possibility to set info field to /API/set/info/
 //  - Manage "unknown" state
@@ -23,6 +26,7 @@ $emitterWiringPiNumber = $_POST['emitterWiringPiNumber'];
 $rcId = $_POST['rcId'];
 $channel = $_POST['channel'];
 $state = $_POST['state'];
+$repeat = $_POST['repeat'];
 
 // Check input arguments
 if( $rcId != "" && $channel != "" && $emitterWiringPiNumber != "" && $state != "" )
@@ -31,6 +35,7 @@ if( $rcId != "" && $channel != "" && $emitterWiringPiNumber != "" && $state != "
 	{
 		// Define rc-rsl command to execute
 		$json['cmd'] = "sudo rc-rsl " . $emitterWiringPiNumber . " " . $rcId . " " . $channel . " " . $state;
+        if( $repeat != "" ) $json['cmd'] .= " " . $repeat;
 
 		// Execute command
 		$output = shell_exec( $json['cmd'] );
