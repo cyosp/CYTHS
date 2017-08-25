@@ -1,9 +1,11 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "1.8.0";
+var projectVersion = "1.8.1";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
 
+// 2017-08-25 V 1.8.1
+//  - Check emitterWiringPiNumber received value
 // 2017-08-22 V 1.8.0
 //  - Add admin page
 // 2017-07-06 V 1.7.4
@@ -273,7 +275,8 @@ function loadUI()
 			$( '#footer' ).fadeOut( 150 );
 
 			// Store transmitter wiringPi number
-			emitterWiringPiNumber = root.emitterWiringPiNumber;
+			if (root.emitterWiringPiNumber != undefined)
+				emitterWiringPiNumber = root.emitterWiringPiNumber;
 
 			//
 			// Add each switch configured

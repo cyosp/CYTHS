@@ -1,9 +1,11 @@
 //
 // Author: CYOSP
 // Created: 2017-08-21
-// Version: 1.1.0
+// Version: 1.1.1
 //
 
+// 2017-08-25 V 1.1.1
+//  - Check emitterWiringPiNumber and repeat received values
 // 2017-08-23 V 1.1.0
 //  - Add pairing interactive part
 // 2017-08-21 V 1.0.0
@@ -22,9 +24,13 @@ function cythsInit() {
             cache: false,
             success: function (root) {
 
+                //
                 // Store transmitter wiringPi number thus repeat value
-                emitterWiringPiNumber = root.emitterWiringPiNumber;
-                repeat = root.repeat;
+                //
+                if (root.emitterWiringPiNumber != undefined)
+                    emitterWiringPiNumber = root.emitterWiringPiNumber;
+                if (root.repeat != undefined)
+                    repeat = root.repeat;
 
                 // For each switch
                 $.each(root.switchesList, function (index, switchConfigured) {
