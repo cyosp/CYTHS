@@ -36,6 +36,10 @@
      "pairing":
      {
        "label": "Appairage"
+     },
+     "disapairing":
+     {
+       "label": "Désappairage"
      }
    }
 }

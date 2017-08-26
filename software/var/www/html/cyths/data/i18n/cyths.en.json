@@ -37,6 +37,10 @@
      "pairing":
      {
        "label": "Pairing"
+     },
+     "disapairing":
+     {
+       "label": "Disapairing"
      }
    }
 }

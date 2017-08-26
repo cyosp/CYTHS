@@ -1,9 +1,11 @@
 //
 // Author: CYOSP
 // Created: 2017-08-21
-// Version: 1.1.1
+// Version: 1.2.0
 //
 
+// 2017-08-26 V 1.2.0
+//  - Add desapairing interactive part
 // 2017-08-25 V 1.1.1
 //  - Check emitterWiringPiNumber and repeat received values
 // 2017-08-23 V 1.1.0
@@ -39,57 +41,67 @@ function cythsInit() {
                     if (switchConfigured.channel &&
                         switchConfigured.rcId) {
 
-                        //
-                        // Compute piece of HTML to insert
-                        //
-                        var switchId = "switch-" + switchConfigured.channel + "-" + switchConfigured.rcId;
+                        var pairingType = 'pairing';
+                        var disapairingType = 'disapairing';
+                        var buttonsType = [pairingType, disapairingType];
 
-                        var switchesListToAdd = '<div class="col-xs-6 col-lg-4 switch">';
-                        switchesListToAdd += ' <p>';
-                        switchesListToAdd += '  <button type="button" class="btn btn-success" style="width: 100%" id="' + switchId + '" rcId="' + switchConfigured.rcId + '" channel="' + switchConfigured.channel + '">';
-                        switchesListToAdd += switchConfigured.label;
-                        switchesListToAdd += '  </button>';
-                        switchesListToAdd += ' </p>';
-                        switchesListToAdd += '</div>';
+                        buttonsType.forEach(function (buttonType) {
 
-                        $(switchesListToAdd).insertBefore("#pairing");
+                            //
+                            // Compute piece of HTML to insert
+                            //
+                            var buttonId = "button-" + buttonType + "-" + switchConfigured.channel + "-" + switchConfigured.rcId;
 
-                        $('#' + switchId).click(function () {
+                            var buttonToAdd = '<div class="col-xs-6 col-lg-4 switch">';
+                            buttonToAdd += ' <p>';
+                            buttonToAdd += '  <button type="button" class="btn ' + buttonType + '" id="' + buttonId + '" rcId="' + switchConfigured.rcId + '" channel="' + switchConfigured.channel + '">';
+                            buttonToAdd += switchConfigured.label;
+                            buttonToAdd += '  </button>';
+                            buttonToAdd += ' </p>';
+                            buttonToAdd += '</div>';
 
-                            // Get button object
-                            var buttonObj = $(this);
+                            $(buttonToAdd).insertBefore("#" + buttonType);
 
-                            // Disable button until post answer
-                            buttonObj.attr('disabled', true);
+                            var state = "on";
+                            if (buttonType == disapairingType) state = "onoff";
 
-                            $.post('../API/set/switch/',
-                                {
-                                    emitterWiringPiNumber: emitterWiringPiNumber,
-                                    rcId: buttonObj.attr("rcId"),
-                                    channel: buttonObj.attr("channel"),
-                                    state: "on",
-                                    repeat: repeat
-                                }).done(function (data) {
-                                // Get JSON object
-                                var response = jQuery.parseJSON(data);
+                            $('#' + buttonId).click(function () {
 
-                                // Manage error case
-                                if (response.result == "error") {
-                                    var msg = "ERROR\n";
-                                    msg += response.cmd + "\n";
-                                    msg += response.message;
+                                // Get button object
+                                var buttonObj = $(this);
 
-                                    // Display command executed and error to the user
-                                    alert(msg);
-                                }
-                            }).fail(function (jqxhr, textStatus, error) {
-                                // Alert user
-                                alert(textStatus + ": " + error);
-                            }).always(function () {
-                                // Enable in all cases
-                                buttonObj.attr('disabled', false);
+                                // Disable button until post answer
+                                buttonObj.attr('disabled', true);
+
+                                $.post('../API/set/switch/',
+                                    {
+                                        emitterWiringPiNumber: emitterWiringPiNumber,
+                                        rcId: buttonObj.attr("rcId"),
+                                        channel: buttonObj.attr("channel"),
+                                        state: state,
+                                        repeat: repeat
+                                    }).done(function (data) {
+                                    // Get JSON object
+                                    var response = jQuery.parseJSON(data);
+
+                                    // Manage error case
+                                    if (response.result == "error") {
+                                        var msg = "ERROR\n";
+                                        msg += response.cmd + "\n";
+                                        msg += response.message;
+
+                                        // Display command executed and error to the user
+                                        alert(msg);
+                                    }
+                                }).fail(function (jqxhr, textStatus, error) {
+                                    // Alert user
+                                    alert(textStatus + ": " + error);
+                                }).always(function () {
+                                    // Enable in all cases
+                                    buttonObj.attr('disabled', false);
+                                });
+
                             });
-
                         });
                     }
                 });

@@ -1,0 +1,20 @@
+/*********************/
+/* Manage admin page */
+/*********************/
+.pairing, .disapairing
+{
+	width: 100%;
+	color: white;
+}
+
+.pairing
+{
+	background-color: mediumaquamarine;
+	border-color: mediumaquamarine;
+}
+
+.disapairing
+{
+	background-color: crimson;
+	border-color: crimson;
+}
