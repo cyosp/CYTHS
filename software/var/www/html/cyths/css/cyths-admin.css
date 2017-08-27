@@ -1,20 +1,31 @@
 /*********************/
 /* Manage admin page */
 /*********************/
-.pairing, .disapairing
+.association,
+.association:hover,
+.dissociationStep1,
+.dissociationStep1:hover,
+.dissociationStep2,
+.dissociationStep2:hover
 {
 	width: 100%;
 	color: white;
 }
 
-.pairing
+.association
 {
-	background-color: mediumaquamarine;
-	border-color: mediumaquamarine;
+	background-color: #BDECB6;
+	border-color: #BDECB6;
 }
 
-.disapairing
+.dissociationStep1
 {
-	background-color: crimson;
-	border-color: crimson;
+	background-color: #FFD394;
+	border-color: #FFD394;
+}
+
+.dissociationStep2
+{
+	background-color: #FF9994;
+	border-color: #FF9994;
 }

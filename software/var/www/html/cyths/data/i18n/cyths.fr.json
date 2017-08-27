@@ -33,13 +33,17 @@
    {
      "label": "Admin",
      "title": "CYTHS - Admin",
-     "pairing":
+     "association":
      {
-       "label": "Appairage"
+       "label": "Association"
      },
-     "disapairing":
+     "dissociation":
      {
-       "label": "Désappairage"
+       "label":
+       {
+         "step1": "Dissociation - étape 1",
+         "step2": "Dissociation - étape 2"
+       }
      }
    }
 }

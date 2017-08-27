@@ -1,11 +1,13 @@
 //
 // Author: CYOSP
 // Created: 2017-08-21
-// Version: 1.2.0
+// Version: 1.3.0
 //
 
+// 2017-08-27 V 1.3.0
+//  - Improve dissociation feature
 // 2017-08-26 V 1.2.0
-//  - Add desapairing interactive part
+//  - Add association interactive part
 // 2017-08-25 V 1.1.1
 //  - Check emitterWiringPiNumber and repeat received values
 // 2017-08-23 V 1.1.0
@@ -41,9 +43,10 @@ function cythsInit() {
                     if (switchConfigured.channel &&
                         switchConfigured.rcId) {
 
-                        var pairingType = 'pairing';
-                        var disapairingType = 'disapairing';
-                        var buttonsType = [pairingType, disapairingType];
+                        var associationType = 'association';
+                        var dissociationStep1Type = 'dissociationStep1';
+                        var dissociationStep2Type = 'dissociationStep2';
+                        var buttonsType = [associationType, dissociationStep1Type, dissociationStep2Type];
 
                         buttonsType.forEach(function (buttonType) {
 
@@ -63,7 +66,8 @@ function cythsInit() {
                             $(buttonToAdd).insertBefore("#" + buttonType);
 
                             var state = "on";
-                            if (buttonType == disapairingType) state = "onoff";
+                            if (buttonType == dissociationStep1Type) state = "onoff";
+                            else if (buttonType == dissociationStep2Type) state = "off";
 
                             $('#' + buttonId).click(function () {
 
