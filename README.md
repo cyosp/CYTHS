@@ -26,6 +26,10 @@ This project is divided in several parts:
     * Allow to schedule RSL switches change
 
         ![software-scheduler-page](doc/images/software-scheduler-page.png?raw=true "software-scheduler-page")
+        
+    * Allow to associate and dissociate switches 
+        
+        ![software-admin-page](doc/images/software-admin-page.png?raw=true "software-admin-page")
 
 ## License
 
