@@ -31,6 +31,37 @@ This project is divided in several parts:
         
         ![software-admin-page](doc/images/software-admin-page.png?raw=true "software-admin-page")
 
+## Hardware requirement
+
+[CYTHS](https://github.com/cyosp/CYTHS) works on [Raspberry Pi](https://www.raspberrypi.org/products/)
+
+It has been tested on models:
+
+ * [Pi 2 Model B](https://www.raspberrypi.org/products/raspberry-pi-2-model-b/)
+
+   Which was used during development phase
+ 
+ * [Pi 3 Model B](https://www.raspberrypi.org/products/raspberry-pi-3-model-b/)
+ 
+   On this board Bluetooth has been added and connected to default UART
+ 
+   To have it working you need:
+   
+   * Disable Bluetooth to restore default UART
+
+        ```bash
+        echo -e "\n# Disable Bluetooth to restore default UART\ndtoverlay=pi3-disable-bt\n" | sudo tee --append /boot/config.txt > /dev/null
+        ```
+   * Stop Bluetooth service
+
+        ```bash
+        sudo systemctl disable hciuart
+        ```
+
+    * Make sure you have `console=ttyAMA0` in `/boot/cmdline.txt`
+
+   * And reboot system: `sudo reboot`
+
 ## License
 
 **[CYTHS](https://github.com/cyosp/CYTHS)** is released under the BSD 3-Clause License.
