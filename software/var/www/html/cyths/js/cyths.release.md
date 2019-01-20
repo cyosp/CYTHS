@@ -1,4 +1,6 @@
-# 2018-09-15 V 2.0.1
+# 2019-01-20 V 2.1.0
+ * Battery percentage and indicator can be displayed in sensor info zone
+ # 2018-09-15 V 2.0.1
  * Fix: display switches in loading page instead of the first data refresh
  * Update data refresh way
 # 2017-08-27 V 2.0.0

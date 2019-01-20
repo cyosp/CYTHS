@@ -10,7 +10,7 @@
 //  - <time> : Sensor data receiving time (format: HH:MM:SS)
 //  - <temperature> : Sensor temperature (-40.0->62.4)
 //  - <humidity> : Sensor humidity (0->100)
-//  - [battery] : Sensor battery percentage (0->100)
+//  - <battery> : Sensor battery percentage (0->100)
 
 //
 // 2019-01-20 V 1.1.0
@@ -31,7 +31,7 @@ $humidity = $_POST['humidity'];
 $battery = $_POST['battery'];
 
 // Check input arguments
-if( $sensorId != "" && $date != "" && $time != "" && $temperature != "" && $humidity != "" )
+if( $sensorId != "" && $date != "" && $time != "" && $temperature != "" && $humidity != "" && $battery != "")
 {
 	//
 	// Update JSON configuration file

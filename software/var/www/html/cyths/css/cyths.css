@@ -25,6 +25,20 @@
 	text-transform: lowercase;
 }
 
+/* Battery indicator colors */
+.battery-ok
+{
+	color: green;
+}
+.battery-warning
+{
+	color: orange;
+}
+.battery-alarm
+{
+	color: red;
+}
+
 /*********************/
 /* Crontab condition */
 /*********************/

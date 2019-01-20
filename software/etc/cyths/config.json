@@ -18,7 +18,7 @@
             		"state": "off"
             	}
             ],
-            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% \u2022 ${sensor.data.time}",
+            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery}% ${sensor.data.time}",
             "sensor":
             {
             	"id": "10",
@@ -26,7 +26,8 @@
                     "date": "2017-03-27",
                     "time": "08:37:25",
                     "temperature": "20.0",
-                    "humidity": "50"
+                    "humidity": "50",
+                    "battery": "100"
                 }
             }
         },
@@ -35,7 +36,7 @@
             "channel": "2",
             "rcId": "123456",
             "state": "off",
-            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% \u2022 ${sensor.data.time}",
+            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery:indicator} ${sensor.data.time}",
 			"sensor":
             {
             	"id": "20",
@@ -43,7 +44,8 @@
                     "date": "2017-03-27",
                     "time": "08:35:10",
                     "temperature": "18.5",
-                    "humidity": "65"
+                    "humidity": "65",
+                    "battery": "33"
                 }
             }
         },
@@ -52,7 +54,7 @@
             "channel": "3",
             "rcId": "123456",
             "state": "unknown",
-            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% \u2022 ${sensor.data.time}",
+            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery:indicator} ${sensor.data.battery}% ${sensor.data.time}",
 			"sensor":
             {
             	"id": "30",
@@ -60,7 +62,8 @@
                     "date": "2017-03-27",
                     "time": "08:36:58",
                     "temperature": "12.2",
-                    "humidity": "67"
+                    "humidity": "67",
+                    "battery": "67"
                 }
             }
         }

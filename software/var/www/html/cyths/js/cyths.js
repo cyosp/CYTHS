@@ -1,5 +1,5 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "2.0.1";
+var projectVersion = "2.1.0";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
@@ -63,6 +63,24 @@ function cythsBeforeLocalize()
 	loadUI();
 }
 
+function htmlBatteryIndicator(switchToDrive) {
+	var battery = switchToDrive.sensor.data.battery;
+
+	var batteryIndicator;
+	switch (true) {
+		case (battery == 0):
+			batteryIndicator = "alarm";
+			break;
+		case (battery < 50):
+			batteryIndicator = "warning";
+			break;
+		default:
+			batteryIndicator = "ok";
+			break;
+	}
+	return '<span class="battery-' + batteryIndicator + '">•</span>';
+}
+
 function addSwitch( switchToDrive )
 {
 	//
@@ -85,6 +103,11 @@ function addSwitch( switchToDrive )
 			if( switchToDrive.sensor.data.time )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.time}/g        , switchToDrive.sensor.data.time        );
 			if( switchToDrive.sensor.data.temperature )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.temperature}/g , switchToDrive.sensor.data.temperature );
 			if( switchToDrive.sensor.data.humidity )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.humidity}/g    , switchToDrive.sensor.data.humidity    );
+			if( switchToDrive.sensor.data.battery )
+			{
+				switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.battery}/g           , switchToDrive.sensor.data.battery   );
+				switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.battery:indicator}/g , htmlBatteryIndicator(switchToDrive)   );
+			}
 		}
 	}
 	else switchToDrive.info = defaultSwitchInfo;
@@ -205,15 +228,10 @@ function addSwitch( switchToDrive )
 					switchObj.bootstrapSwitch( "indeterminate" , true );
 				break;
 			}
-		}	
+		}
 
-		// Get switch info
-		var switchInfoObj = $( '#' + infoId );
-		// Get switch info value
-		var switchInfo = switchInfoObj.text();
-
-		// Update switch info if needed
-		if( switchToDrive.info != switchInfo && switchToDrive.info != defaultSwitchInfo)	switchInfoObj.text( switchToDrive.info );
+		var switchInfoObj = $('#' + infoId);
+		if (switchInfoObj) switchInfoObj.html(switchToDrive.info);
 	}
 }
 
