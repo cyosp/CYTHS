@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.4.0                                                              #
+# Version: 1.4.1                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -25,6 +25,8 @@
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.4.1 - 2019-01-20                                                          #
+#  - Set battery percentage in sensor data                                    #
 # 1.4.0 - 2019-01-19                                                          #
 #  - Log battery percentage value                                             #
 # 1.3.0 - 2017-03-27                                                          #
@@ -177,9 +179,9 @@ do
 				HUMIDITY=$(echo "ibase=2; $BIN_HUMIDITY" | bc 2>&1)
 
 				BATTERY_LEVEL=$(echo "ibase=2; $BIN_BATTERY_LEVEL" | bc 2>&1)
-			    BATTERY_PERCENTAGE=$(awk -v BATTERY_LEVEL="$BATTERY_LEVEL" 'BEGIN{printf "%.0f\n", (100-BATTERY_LEVEL*33.3)}')
+			    BATTERY=$(awk -v BATTERY_LEVEL="$BATTERY_LEVEL" 'BEGIN{printf "%.0f\n", (100-BATTERY_LEVEL*33.3)}')
 
-				echo "  - $TEMPERATURE° / $HUMIDITY%, battery: $BATTERY_PERCENTAGE% for sensor: $SENSOR_ID" >> $LOG_FILE_PATH
+				echo "  - $TEMPERATURE° / $HUMIDITY%, battery: $BATTERY% for sensor: $SENSOR_ID" >> $LOG_FILE_PATH
 
 				SENSOR_RRD_FILE_PATH="$RRD_FOLDER/${SENSOR_ID}.rrd"
 
@@ -209,7 +211,7 @@ do
 				sed -i '$ d' "$SENSOR_RRD_CSV_FILE"
 
 				# Store sensor data
-				OUTPUT=`curl -i --silent --data "sensorId=$SENSOR_ID&date=${RECEIVED_DATE:0:10}&time=${RECEIVED_DATE:11:8}&temperature=$TEMPERATURE&humidity=$HUMIDITY" "http://localhost/$SOLUTION_NAME/API/set/sensor/data/" 2>&1`
+				OUTPUT=`curl -i --silent --data "sensorId=$SENSOR_ID&date=${RECEIVED_DATE:0:10}&time=${RECEIVED_DATE:11:8}&temperature=$TEMPERATURE&humidity=$HUMIDITY&battery=$BATTERY" "http://localhost/$SOLUTION_NAME/API/set/sensor/data/" 2>&1`
 				if [ `echo "$OUTPUT" | head -1 | grep " 200 " > /dev/null 2>&1; echo $?` -ne 0 ]
 				then
 					echo "  - [ERROR] Fail to update user interface. Details: $OUTPUT" >> $LOG_FILE_PATH

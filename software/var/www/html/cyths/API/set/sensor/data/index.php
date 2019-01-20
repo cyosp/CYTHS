@@ -2,7 +2,7 @@
 
 //
 // Author: CYOSP
-// Version: 1.0.0
+// Version: 1.1.0
 //
 // Post arguments:
 //  - <sensorId> : Sensor identifier (1->127)
@@ -10,14 +10,17 @@
 //  - <time> : Sensor data receiving time (format: HH:MM:SS)
 //  - <temperature> : Sensor temperature (-40.0->62.4)
 //  - <humidity> : Sensor humidity (0->100)
+//  - [battery] : Sensor battery percentage (0->100)
 
 //
+// 2019-01-20 V 1.1.0
+//  - Set battery percentage
 // 2017-03-24 V 1.0.0
 //  - First release
 //
 
 // TEST
-//  * curl -i --silent --data "sensorId=123&date=2017-03-24&time=22:00:00&temperature=20.0&humidity=60.0" "http://localhost/cyths/API/set/sensor/data/"
+//  * curl -i --silent --data "sensorId=123&date=2017-03-24&time=22:00:00&temperature=20.0&humidity=60&battery=33" "http://localhost/cyths/API/set/sensor/data/"
 
 // Get parameters
 $sensorId = $_POST['sensorId'];
@@ -25,6 +28,7 @@ $date = $_POST['date'];
 $time = $_POST['time'];
 $temperature = $_POST['temperature'];
 $humidity = $_POST['humidity'];
+$battery = $_POST['battery'];
 
 // Check input arguments
 if( $sensorId != "" && $date != "" && $time != "" && $temperature != "" && $humidity != "" )
@@ -54,6 +58,7 @@ if( $sensorId != "" && $date != "" && $time != "" && $temperature != "" && $humi
 		$sensorData['time'] = $time;
 		$sensorData['temperature'] = $temperature;
 		$sensorData['humidity'] = $humidity;
+		$sensorData['battery'] = $battery;
 
 		//
 		// Search entry to update
