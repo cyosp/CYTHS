@@ -77,8 +77,8 @@ The 4 bits from 25 to 28 never takes value *1111* thus [CYTHS](https://github.co
 
 Where:
  * Battery level
- 	* 00 <=> 4.86V
- 	* 11 <=> 4.35V
+ 	* 00 <=> 4.35V
+ 	* 11 <=> 4.86V
 
  * Protocol version
  	* 00 <=> First protocol managed and implemented
