@@ -1,3 +1,5 @@
+# 1.4.3 - 2019-01-22
+ * Store battery percentage inside Round Robin Database
 # 1.4.2 - 2019-01-21
  * Fix: Minimum and maximum battery level was inverted
 # 1.4.1 - 2019-01-20
