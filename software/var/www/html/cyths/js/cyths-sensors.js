@@ -1,15 +1,8 @@
 //
 // Author: CYOSP
 // Created: 2016-10-22
-// Version: 1.0.2
+// Version: 1.1.0
 //
-
-// 2017-03-24 V 1.0.2
-//  - Fix: JavaScript error: switchConfigured.sensor is undefined
-// 2017-03-24 V 1.0.1
-//  - Update following new configuration file structure
-// 2016-10-22 V 1.0.0
-//  - Initial release
 
 function cythsInit()
 {
@@ -77,7 +70,7 @@ function cythsInit()
 					graphsListToAdd += '	 {';
 					graphsListToAdd += '		 rollPeriod: 7,';
 					graphsListToAdd += '		 showRoller: true,';
-					graphsListToAdd += '		 colors: ["#FF0000", "#0000FF"]';
+					graphsListToAdd += '		 colors: ["#FF0000", "#0000FF", "#FF8000"]';
 					graphsListToAdd += '	 });';
 					graphsListToAdd += '</script>';
 				}

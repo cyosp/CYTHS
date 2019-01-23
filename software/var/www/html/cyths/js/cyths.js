@@ -1,5 +1,5 @@
 var emitterWiringPiNumber = -1;
-var projectVersion = "2.1.0";
+var projectVersion = "2.1.1";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
