@@ -23,10 +23,10 @@
             {
             	"id": "10",
             	"data": {
-                    "date": "2017-03-27",
-                    "time": "08:37:25",
-                    "temperature": "20.0",
-                    "humidity": "50",
+                    "date": "2019-02-02",
+                    "time": "14:01:25",
+                    "temperature": "12.0",
+                    "humidity": "82",
                     "battery": "100"
                 }
             }
@@ -41,16 +41,16 @@
             {
             	"id": "20",
             	"data": {
-                    "date": "2017-03-27",
-                    "time": "08:35:10",
-                    "temperature": "18.5",
-                    "humidity": "65",
-                    "battery": "33"
+                    "date": "2019-02-02",
+                    "time": "14:02:10",
+                    "temperature": "17.6",
+                    "humidity": "58",
+                    "battery": "67"
                 }
             }
         },
         {
-            "label": "Outdoor sensor",
+            "label": "House basement",
             "channel": "3",
             "rcId": "123456",
             "state": "unknown",
@@ -59,10 +59,10 @@
             {
             	"id": "30",
             	"data": {
-                    "date": "2017-03-27",
-                    "time": "08:36:58",
-                    "temperature": "12.2",
-                    "humidity": "67",
+                    "date": "2019-02-02",
+                    "time": "14:03:58",
+                    "temperature": "12.3",
+                    "humidity": "65",
                     "battery": "67"
                 }
             }

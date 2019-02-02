@@ -6,6 +6,7 @@ web:
     - ./default.conf:/etc/nginx/conf.d/default.conf
     - ../var/www/html:/var/www/html
     - ../etc/cyths/config.json:/var/www/html/cyths/data/config.json
+    - ../data/csv:/var/www/html/cyths/data/csv
   links:
     - php
 php:
