@@ -2,11 +2,13 @@
 
 //
 // Author: CYOSP
-// Version: 1.2.1
+// Version: 1.3.0
 //
 // Dependencies:
 //  - php_curl (sudo apt-get install php5-curl)
 //
+// 2019-12-11 V 1.3.0
+//  - Update for rc-rsl 2.0.0
 // 2017-03-31 V 1.2.1
 //  - Fix: PHP parse error
 // 2017-03-29 V 1.2.0
@@ -32,10 +34,12 @@ require_once '../../../src/Cron/YearField.php';
 
 // Get and parse JSON configuration file
 $data = json_decode( file_get_contents( "../../../data/config.json" ) , true );
-// Get WiringPi pin number
-$emitterWiringPiNumber=$data['emitterWiringPiNumber'];
+// Get transmitter info
+$gpioController=$data['gpioController'];
+$controllerOffset=$data['controllerOffset'];
 
-echo "emitterWiringPiNumber: ".$emitterWiringPiNumber."<br/>";
+echo "gpioController: ".$gpioController."<br/>";
+echo "controllerOffset: ".$controllerOffset."<br/>";
 
 //
 // For each switch
@@ -78,7 +82,7 @@ foreach( $data['switchesList'] as $i => $switch )
 					if( $cronCondition )
 					{
 						// POST data
-						$postData = 'emitterWiringPiNumber='.$emitterWiringPiNumber.'&rcId='.$switch['rcId'].'&channel='.$switch['channel'].'&state='.$cronEntry['state'];
+						$postData = 'gpioController='.$gpioController.'&controllerOffset='.$controllerOffset.'&rcId='.$switch['rcId'].'&channel='.$switch['channel'].'&state='.$cronEntry['state'];
 
 						// Init cURL
 						$ch = curl_init( 'http://localhost'.dirname($_SERVER['SCRIPT_NAME']).'/../../../API/set/switch/' );

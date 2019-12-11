@@ -1,4 +1,6 @@
-# 2019-01-23 V 2.1.1
+# 2019-12-11 V 3.0.0
+ * Update for rc-rsl 2.0.0
+ # 2019-01-23 V 2.1.1
  * Add battery percentage to graphics
  # 2019-01-20 V 2.1.0
  * Battery percentage and indicator can be displayed in sensor info zone

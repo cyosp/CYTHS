@@ -1,5 +1,6 @@
 {
-    "emitterWiringPiNumber": "0",
+    "gpioController": "/dev/gpiochip0",
+    "controllerOffset": "17",
     "repeat": "6",
     "switchesList": [
         {

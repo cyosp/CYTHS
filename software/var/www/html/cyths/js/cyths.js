@@ -1,5 +1,6 @@
-var emitterWiringPiNumber = -1;
-var projectVersion = "2.1.1";
+var gpioController = "/dev/null";
+var controllerOffset = -1;
+var projectVersion = "3.0.0";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
@@ -168,7 +169,8 @@ function addSwitch( switchToDrive )
 		
 			$.post( 'API/set/switch/' ,
 			{
-				emitterWiringPiNumber	: emitterWiringPiNumber,
+				gpioController	        : gpioController,
+				controllerOffset	    : controllerOffset,
 				rcId    				: $(this).attr("rcId"),
 				channel					: $(this).attr("channel"),
 				state					: (state ? "on" : "off")
@@ -253,9 +255,11 @@ function loadUI()
 			// Hide footer used for error message
 			$( '#footer' ).fadeOut( 150 );
 
-			// Store transmitter wiringPi number
-			if (root.emitterWiringPiNumber != undefined)
-				emitterWiringPiNumber = root.emitterWiringPiNumber;
+			// Store transmitter info
+			if (root.gpioController != undefined)
+				gpioController = root.gpioController;
+			if (root.controllerOffset != undefined)
+				controllerOffset = root.controllerOffset;
 
 			//
 			// Add each switch configured

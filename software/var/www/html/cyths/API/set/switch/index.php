@@ -2,15 +2,18 @@
 
 //
 // Author: CYOSP
-// Version: 1.2.0
+// Version: 1.3.0
 //
 // Post arguments:
+//  - <gpioController> : GPIO controller used for transmission
+//  - <controllerOffset> : Controller offset used for transmission
 //  - <rcId> : Remote command identifier (0 -> 67108863)
 //  - <channel> : Channel (0 -> 16)
-//  - <emitterWiringPiNumber> : WiringPi transmitter pin number
 //  - <state> : Switch state to set (on|off|unknown)
 //  - [repeat] : How many times the command must be repeated
 //
+// 2019-12-11 V 1.3.0
+//  - Update for rc-rsl 2.0.0
 // 2017-08-23 V 1.2.0
 //  - Add optional repeat argument
 // 2016-09-30 V 1.1.0
@@ -22,19 +25,20 @@
 //
 
 // Get parameters
-$emitterWiringPiNumber = $_POST['emitterWiringPiNumber'];
+$gpioController = $_POST['gpioController'];
+$controllerOffset = $_POST['controllerOffset'];
 $rcId = $_POST['rcId'];
 $channel = $_POST['channel'];
 $state = $_POST['state'];
 $repeat = $_POST['repeat'];
 
 // Check input arguments
-if( $rcId != "" && $channel != "" && $emitterWiringPiNumber != "" && $state != "" )
+if( $rcId != "" && $channel != "" && $gpioController != "" && $controllerOffset != "" && $state != "" )
 {
 	if( $state != "unknown" )
 	{
 		// Define rc-rsl command to execute
-		$json['cmd'] = "sudo rc-rsl " . $emitterWiringPiNumber . " " . $rcId . " " . $channel . " " . $state;
+		$json['cmd'] = "sudo rc-rsl " . $gpioController . " " . $controllerOffset . " " . $rcId . " " . $channel . " " . $state;
         if( $repeat != "" ) $json['cmd'] .= " " . $repeat;
 
 		// Execute command

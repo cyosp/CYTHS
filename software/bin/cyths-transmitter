@@ -3,43 +3,47 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.0.0                                                              #
+# Version: 1.1.0                                                              #
 #                                                                             #
 # Description: Bash API to send RSL codes                                     #
 #                                                                             #
 # Parameters:                                                                 #
-#  $1: WiringPi Pin Number                                                    #
-#  $2: Remote control Id (0 -> 67108863)                                      #
-#  $3: Channel (0 -> 16)                                                      #
-#  $4: State (on|off)                                                         #
-#  $5: CYTHS switch URL (http://localhost/cyths/API/set/switch/)              #
+#  $1: GPIO controller                                                        #
+#  $2: Controller offset                                                      #
+#  $3: Remote control Id (0 -> 67108863)                                      #
+#  $4: Channel (0 -> 16)                                                      #
+#  $5: State (on|off)                                                         #
+#  $6: CYTHS switch URL (http://localhost/cyths/API/set/switch/)              #
 #                                                                             #
 # Sample use:                                                                 #
 #  cyths-transmitter 0 123456 1 on http://localhost/cyths/API/set/switch/     #
 #                                                                             #
 # --------------------------------------------------------------------------- #
 #                                                                             #
+# 1.1.0 - 2019-12-11                                                          #
+#  - Update for rc-rsl 2.0.0                                                  #
 # 1.0.0 - 2016-10-03                                                          #
 #  - First version                                                            #
 #                                                                             #
 ###############################################################################
 
 # Check input arguments number
-if [ $# -ne 5 ]
+if [ $# -ne 6 ]
 then
-	echo "[ERROR] $0 takes 5 arguments"
+	echo "[ERROR] $0 takes 6 arguments"
 	exit 1
 fi
 
 #
 # Get input parameters
 #
-emitterWiringPiNumber=$1
-rcId=$2
-channel=$3
-state=$4
-switchURL=$5
+gpioController=$1
+controllerOffset=$2
+rcId=$3
+channel=$4
+state=$5
+switchURL=$6
 
-curl --silent --data "emitterWiringPiNumber=${emitterWiringPiNumber}&rcId=${rcId}&channel=${channel}&state=${state}" "$switchURL" 2>&1 >/dev/null
+curl --silent --data "gpioController=${gpioController}&controllerOffset=${controllerOffset}&rcId=${rcId}&channel=${channel}&state=${state}" "$switchURL" 2>&1 >/dev/null
 
 exit $?

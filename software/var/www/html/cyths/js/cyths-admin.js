@@ -1,9 +1,11 @@
 //
 // Author: CYOSP
 // Created: 2017-08-21
-// Version: 1.3.0
+// Version: 1.4.0
 //
 
+// 2019-12-11 V 1.4.0
+//  - Update for rc-rsl 2.0.0
 // 2017-08-27 V 1.3.0
 //  - Improve dissociation feature
 // 2017-08-26 V 1.2.0
@@ -15,7 +17,8 @@
 // 2017-08-21 V 1.0.0
 //  - Initial release
 
-var emitterWiringPiNumber = -1;
+var gpioController = "/dev/null";
+var controllerOffset = -1;
 var repeat = -1;
 
 function cythsInit() {
@@ -29,10 +32,12 @@ function cythsInit() {
             success: function (root) {
 
                 //
-                // Store transmitter wiringPi number thus repeat value
+                // Store transmitter info thus repeat value
                 //
-                if (root.emitterWiringPiNumber != undefined)
-                    emitterWiringPiNumber = root.emitterWiringPiNumber;
+                if (root.gpioController != undefined)
+                    gpioController = root.gpioController;
+                if (root.controllerOffset != undefined)
+                    controllerOffset = root.controllerOffset;
                 if (root.repeat != undefined)
                     repeat = root.repeat;
 
@@ -79,7 +84,8 @@ function cythsInit() {
 
                                 $.post('../API/set/switch/',
                                     {
-                                        emitterWiringPiNumber: emitterWiringPiNumber,
+                                        gpioController: gpioController,
+                                        controllerOffset: controllerOffset,
                                         rcId: buttonObj.attr("rcId"),
                                         channel: buttonObj.attr("channel"),
                                         state: state,
