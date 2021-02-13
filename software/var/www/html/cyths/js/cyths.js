@@ -37,7 +37,7 @@ $(window).on("blur focus", function(e)
 
 	//  Reduce double fire issues
     if (prevType != e.type)
-	{   
+	{
         switch (e.type)
 		{
             case "blur":
@@ -112,9 +112,9 @@ function addSwitch( switchToDrive )
 		}
 	}
 	else switchToDrive.info = defaultSwitchInfo;
-	
+
 	var infoId = switchId + "-info";
-	
+
 	// Add switch if it doesn't exist in the page
 	if( $( '#' + switchId ).length == 0 )
 	{
@@ -166,7 +166,7 @@ function addSwitch( switchToDrive )
 
 			// Disable switch until post answer
 			switchObj.bootstrapSwitch( 'disabled' , true );
-		
+
 			$.post( 'API/set/switch/' ,
 			{
 				gpioController	        : gpioController,
@@ -178,14 +178,14 @@ function addSwitch( switchToDrive )
 			{
 				// Get JSON object
 				var response = jQuery.parseJSON( data );
-			
+
 				// Manage error case
 				if( response.result == "error")
 				{
 					var msg = "ERROR\n";
 					msg += response.cmd + "\n";
 					msg += response.message;
-				
+
 					// Display command executed and error to the user
 					alert( msg );
 
@@ -221,7 +221,7 @@ function addSwitch( switchToDrive )
 			switch( switchToDrive.state )
 			{
 				case "on" :
-					switchObj.bootstrapSwitch( "state" , true , true );		
+					switchObj.bootstrapSwitch( "state" , true , true );
 				break;
 				case "off" :
 					switchObj.bootstrapSwitch( "state" , false , true );
