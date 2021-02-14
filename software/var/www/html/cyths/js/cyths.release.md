@@ -1,3 +1,5 @@
+# 2021-02-14 V 3.0.1
+ * Fix: No default switch info label translated when there is no sensor
 # 2019-12-11 V 3.0.0
  * Update for rc-rsl 2.0.0
  # 2019-01-23 V 2.1.1
