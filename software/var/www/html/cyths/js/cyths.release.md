@@ -1,3 +1,5 @@
+# 2021-02-14 V 3.0.2
+ * Improve switch info default label translation mechanism
 # 2021-02-14 V 3.0.1
  * Fix: No default switch info label translated when there is no sensor
 # 2019-12-11 V 3.0.0

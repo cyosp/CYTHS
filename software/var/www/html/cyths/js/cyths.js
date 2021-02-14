@@ -1,13 +1,9 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "3.0.1";
+var projectVersion = "3.0.2";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
-
-// Default switch info field
-var defaultSwitchInfo = '<span data-i18n="switch.info.default">No sensor</span>';
-var defaultSwitchInfoTranslated;
 
 //
 // Refresh UI when page is visible to user.
@@ -112,7 +108,9 @@ function addSwitch( switchToDrive )
 			}
 		}
 	}
-	else switchToDrive.info = defaultSwitchInfo;
+	else {
+		switchToDrive.info = $('#switch-info-default').text();
+	}
 
 	var infoId = switchId + "-info";
 
@@ -235,15 +233,6 @@ function addSwitch( switchToDrive )
 
 		var switchInfoObj = $('#' + infoId);
 		if(switchInfoObj) {
-			var switchInfoObjHtml = switchInfoObj.html();
-			if(defaultSwitchInfoTranslated === undefined && switchInfoObjHtml.match(/switch.info.default/) !== null) {
-				// Get switch info default label translated
-				defaultSwitchInfoTranslated = switchInfoObjHtml;
-			}
-			if(defaultSwitchInfoTranslated && switchToDrive.info === defaultSwitchInfo) {
-				// Set switch to drive info with switch default info translated
-				switchToDrive.info = defaultSwitchInfoTranslated;
-			}
 			switchInfoObj.html(switchToDrive.info);
 		}
 	}
