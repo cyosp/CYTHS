@@ -1,3 +1,5 @@
+# 2021-02-18 V 3.1.0
+ * Add iOS native application behavior on home screen
 # 2021-02-14 V 3.0.2
  * Improve switch info default label translation mechanism
 # 2021-02-14 V 3.0.1
