@@ -1,3 +1,5 @@
+# 2021-11-28 V 3.1.1
+ * Use rc-rsl without sudo
 # 2021-02-18 V 3.1.0
  * Add iOS native application behavior on home screen
 # 2021-02-14 V 3.0.2

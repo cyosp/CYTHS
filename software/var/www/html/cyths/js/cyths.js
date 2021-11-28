@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "3.1.0";
+var projectVersion = "3.1.1";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;

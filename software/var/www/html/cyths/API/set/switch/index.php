@@ -2,7 +2,7 @@
 
 //
 // Author: CYOSP
-// Version: 1.3.0
+// Version: 1.3.1
 //
 // Post arguments:
 //  - <gpioController> : GPIO controller used for transmission
@@ -12,6 +12,8 @@
 //  - <state> : Switch state to set (on|off|unknown)
 //  - [repeat] : How many times the command must be repeated
 //
+// 2021-11-28 V 1.3.1
+//  - Use rc-rsl without sudo
 // 2019-12-11 V 1.3.0
 //  - Update for rc-rsl 2.0.0
 // 2017-08-23 V 1.2.0
@@ -38,33 +40,33 @@ if( $rcId != "" && $channel != "" && $gpioController != "" && $controllerOffset 
 	if( $state != "unknown" )
 	{
 		// Define rc-rsl command to execute
-		$json['cmd'] = "sudo rc-rsl " . $gpioController . " " . $controllerOffset . " " . $rcId . " " . $channel . " " . $state;
+		$json['cmd'] = "rc-rsl " . $gpioController . " " . $controllerOffset . " " . $rcId . " " . $channel . " " . $state;
         if( $repeat != "" ) $json['cmd'] .= " " . $repeat;
 
 		// Execute command
 		$output = shell_exec( $json['cmd'] );
 	}
-	else	// => $state == "unknown" 
+	else	// => $state == "unknown"
 	{
 		$json['cmd'] = "";
 		$output = "Done\n";
 	}
-	
+
 	// Execution is ok
 	if( strcmp( $output , "Done\n" ) == 0 )
 	{
 		//
 		// Update JSON configuration file
 		//
-		
+
 		// Get a file pointer to the lock file
 		$fp = fopen( "/tmp/cyths.config.sync.lock" , "c" );
 		// Lock file for synchronisation
 		if( flock( $fp , LOCK_EX ) )
-		{	
+		{
 			// Define path of file to update
 			$configFile="../../../data/config.json";
-			
+
 			// Get and parse JSON file
 			$data = json_decode( file_get_contents( $configFile ) , true );
 
