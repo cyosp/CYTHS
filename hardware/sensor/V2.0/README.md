@@ -114,6 +114,22 @@ Where:
 
 ### Arduino
 
+#### Dependency libraries installation
+1. **DHTlib**
+   * Sketch → Include Library → Manage Libraries
+   * Search **DHTlib** by *Rob Tillaart*
+   * Latest version is: *0.1.35* the *2022-08-04*
+   * Click *Install*
+2. **PinChangeInterrupt**
+   * Sketch → Include Library → Manage Libraries 
+   * Search **PinChangeInterrupt** by *NicoHood*
+   * Latest version is: *1.2.9* the *2022-08-04*
+   * Click *Install*
+3. **rc-switch** by *CYOSP*
+   * Download https://github.com/cyosp/rc-switch/archive/refs/tags/v2.52.1.zip
+   * Sketch → Include Library → Add .ZIP Library...
+   * Then choose the downloaded ZIP file
+
 #### Configuration
 
 These steps will configure Arduino software in order to use the microcontroller running at 16 Mhz:
