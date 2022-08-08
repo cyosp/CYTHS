@@ -133,21 +133,110 @@ Where:
 #### Configuration
 
 These steps will configure Arduino software in order to use the microcontroller running at 16 Mhz:
- * File -> Preferences
+ * File → Preferences
   * In *Additional Boards Manager URLs:*
   * Enter *https://raw.githubusercontent.com/damellis/attiny/ide-1.6.x-boards-manager/package_damellis_attiny_index.json*
   * And *OK* button
- * Tools -> Board-> Boards Manager...
+ * Tools → Board → Boards Manager...
     * Search in the list and select: **attiny** by **David A. Mellis**
     * Click *Install*
     * And *Close* button
- * Tools -> Board-> ATtiny25/45/85
- * Tools -> Processor-> ATtiny85
- * Tools -> Clock-> Internal 16 MHz
- * Tools -> Programmer-> USBtinyISP
+ * Tools → Board → ATtiny25/45/85
+ * Tools → Processor → ATtiny85
+ * Tools → Clock → **Internal** 16 MHz
 
-Then it's necessary to burn fuses of the microcontroller to set this configuration.
-Steps are:
- * Plug a microcontroller on the [Tiny AVR Programmer](https://www.sparkfun.com/products/11801)
- * Plug the [Tiny AVR Programmer](https://www.sparkfun.com/products/11801) to the computer
- * Tools -> Burn Bootloader
+#### Setup programmer
+
+Here is used [Tiny AVR Programmer](https://www.sparkfun.com/products/11801) and it means:
+ * Tools → Programmer → USBtinyISP 
+ * Wire the microcontroller with the programmer board:
+
+   ![CYTHS-2.0-Programmer-wired](CYTHS-2.0-Programmer-wired.png?raw=true)
+
+ * Plug the programmer board to the computer
+
+#### Code upload
+
+It's necessary to burn fuses of the microcontroller to set this configuration:
+ * Tools → Burn Bootloader
+
+Then **Upload** button of Arduino IDE can be used to upload code to the microcontroller.
+
+Output example of an upload in verbose mode:
+```
+Sketch uses 5086 bytes (62%) of program storage space. Maximum is 8192 bytes.
+Global variables use 218 bytes (42%) of dynamic memory, leaving 294 bytes for local variables. Maximum is 512 bytes.
+/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude -C/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf -v -pattiny85 -cusbtiny -Uflash:w:/var/folders/0m/mk12ygtj6vvc6_7bwsyj_v5w0000gp/T/arduino_build_649299/CYTHS.ino.hex:i 
+
+avrdude: Version 6.3-20190619
+         Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
+         Copyright (c) 2007-2014 Joerg Wunsch
+
+         System wide configuration file is "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf"
+         User configuration file is "/Users/cyosp/.avrduderc"
+         User configuration file does not exist or is not a regular file, skipping
+
+         Using Port                    : usb
+         Using Programmer              : usbtiny
+avrdude: usbdev_open(): Found USBtinyISP, bus:device: 000:005
+         AVR Part                      : ATtiny85
+         Chip Erase delay              : 400000 us
+         PAGEL                         : P00
+         BS2                           : P00
+         RESET disposition             : possible i/o
+         RETRY pulse                   : SCK
+         serial program mode           : yes
+         parallel program mode         : yes
+         Timeout                       : 200
+         StabDelay                     : 100
+         CmdexeDelay                   : 25
+         SyncLoops                     : 32
+         ByteDelay                     : 0
+         PollIndex                     : 3
+         PollValue                     : 0x53
+         Memory Detail                 :
+
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           eeprom        65    12     4    0 no        512    4      0  4000  4500 0xff 0xff
+           flash         65     6    32    0 yes      8192   64    128 30000 30000 0xff 0xff
+           signature      0     0     0    0 no          3    0      0     0     0 0x00 0x00
+           lock           0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           lfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           hfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           efuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+           calibration    0     0     0    0 no          1    0      0     0     0 0x00 0x00
+
+         Programmer Type : USBtiny
+         Description     : USBtiny simple USB programmer, https://learn.adafruit.com/usbtinyisp
+avrdude: programmer operation not supported
+
+avrdude: Using SCK period of 10 usec
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | ################################################## | 100% 0.01s
+
+avrdude: Device signature = 0x1e930b (probably t85)
+avrdude: NOTE: "flash" memory has been specified, an erase cycle will be performed
+         To disable this feature, specify the -D option.
+avrdude: erasing chip
+avrdude: Using SCK period of 10 usec
+avrdude: reading input file "/var/folders/0m/mk12ygtj6vvc6_7bwsyj_v5w0000gp/T/arduino_build_649299/CYTHS.ino.hex"
+avrdude: writing flash (5086 bytes):
+
+Writing | ################################################## | 100% 8.46s
+
+avrdude: 5086 bytes of flash written
+avrdude: verifying flash memory against /var/folders/0m/mk12ygtj6vvc6_7bwsyj_v5w0000gp/T/arduino_build_649299/CYTHS.ino.hex:
+avrdude: load data flash data from input file /var/folders/0m/mk12ygtj6vvc6_7bwsyj_v5w0000gp/T/arduino_build_649299/CYTHS.ino.hex:
+avrdude: input file /var/folders/0m/mk12ygtj6vvc6_7bwsyj_v5w0000gp/T/arduino_build_649299/CYTHS.ino.hex contains 5086 bytes
+avrdude: reading on-chip flash data:
+
+Reading | ################################################## | 100% 12.97s
+
+avrdude: verifying ...
+avrdude: 5086 bytes of flash verified
+
+avrdude done.  Thank you.
+```
