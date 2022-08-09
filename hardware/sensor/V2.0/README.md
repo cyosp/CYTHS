@@ -162,6 +162,227 @@ Here is used [Tiny AVR Programmer](https://www.sparkfun.com/products/11801) and 
 It's necessary to burn fuses of the microcontroller to set this configuration:
  * Tools → Burn Bootloader
 
+Output example of burn bootloader in verbose mode:
+```
+/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude -C/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf -v -v -v -v -pattiny85 -cusbtiny -e -Uefuse:w:0xff:m -Uhfuse:w:0xdf:m -Ulfuse:w:0xe2:m 
+
+avrdude: Version 6.3-20190619
+         Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
+         Copyright (c) 2007-2014 Joerg Wunsch
+
+         System wide configuration file is "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf"
+         User configuration file is "/Users/cyosp/.avrduderc"
+         User configuration file does not exist or is not a regular file, skipping
+
+         Using Port                    : usb
+         Using Programmer              : usbtiny
+avrdude: usbdev_open(): Found USBtinyISP, bus:device: 000:005
+         AVR Part                      : ATtiny85
+         Chip Erase delay              : 400000 us
+         PAGEL                         : P00
+         BS2                           : P00
+         RESET disposition             : possible i/o
+         RETRY pulse                   : SCK
+         serial program mode           : yes
+         parallel program mode         : yes
+         Timeout                       : 200
+         StabDelay                     : 100
+         CmdexeDelay                   : 25
+         SyncLoops                     : 32
+         ByteDelay                     : 0
+         PollIndex                     : 3
+         PollValue                     : 0x53
+         Memory Detail                 :
+
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           eeprom        65    12     4    0 no        512    4      0  4000  4500 0xff 0xff
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           flash         65     6    32    0 yes      8192   64    128 30000 30000 0xff 0xff
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           signature      0     0     0    0 no          3    0      0     0     0 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           lock           0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           lfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           hfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           efuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           calibration    0     0     0    0 no          1    0      0     0     0 0x00 0x00
+
+         Programmer Type : USBtiny
+         Description     : USBtiny simple USB programmer, https://learn.adafruit.com/usbtinyisp
+avrdude: programmer operation not supported
+
+avrdude: Using SCK period of 10 usec
+CMD: [ac 53 00 00] [00 00 53 00]
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | CMD: [30 00 00 00] [00 30 00 1e]
+CMD: [30 00 01 00] [00 30 00 93]
+################CMD: [30 00 02 00] [00 30 00 0b]
+################################## | 100% 0.01s
+
+avrdude: Device signature = 0x1e930b (probably t85)
+avrdude: erasing chip
+CMD: [ac 80 00 00] [00 ac 80 00]
+avrdude: Using SCK period of 10 usec
+CMD: [ac 53 00 00] [00 ac 53 00]
+avrdude: reading input file "0xff"
+avrdude: writing efuse (1 bytes):
+
+/Applications/Arduino.app/Contents/Java/hardware/tools/avr/bin/avrdude -C/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf -v -v -v -v -pattiny85 -cusbtiny 
+
+avrdude: Version 6.3-20190619
+         Copyright (c) 2000-2005 Brian Dean, http://www.bdmicro.com/
+         Copyright (c) 2007-2014 Joerg Wunsch
+
+         System wide configuration file is "/Applications/Arduino.app/Contents/Java/hardware/tools/avr/etc/avrdude.conf"
+         User configuration file is "/Users/cyosp/.avrduderc"
+         User configuration file does not exist or is not a regular file, skipping
+
+         Using Port                    : usb
+         Using Programmer              : usbtiny
+avrdude: usbdev_open(): Found USBtinyISP, bus:device: 000:005
+         AVR Part                      : ATtiny85
+         Chip Erase delay              : 400000 us
+         PAGEL                         : P00
+         BS2                           : P00
+         RESET disposition             : possible i/o
+         RETRY pulse                   : SCK
+         serial program mode           : yes
+         parallel program mode         : yes
+         Timeout                       : 200
+         StabDelay                     : 100
+         CmdexeDelay                   : 25
+         SyncLoops                     : 32
+         ByteDelay                     : 0
+         PollIndex                     : 3
+         PollValue                     : 0x53
+         Memory Detail                 :
+
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           eeprom        65    12     4    0 no        512    4      0  4000  4500 0xff 0xff
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           flash         65     6    32    0 yes      8192   64    128 30000 30000 0xff 0xff
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           signature      0     0     0    0 no          3    0      0     0     0 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           lock           0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           lfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           hfuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           efuse          0     0     0    0 no          1    0      0  9000  9000 0x00 0x00
+                                  Block Poll               Page                       Polled
+           Memory Type Mode Delay Size  Indx Paged  Size   Size #Pages MinW  MaxW   ReadBack
+           ----------- ---- ----- ----- ---- ------ ------ ---- ------ ----- ----- ---------
+           calibration    0     0     0    0 no          1    0      0     0     0 0x00 0x00
+
+         Programmer Type : USBtiny
+         Description     : USBtiny simple USB programmer, https://learn.adafruit.com/usbtinyisp
+avrdude: programmer operation not supported
+
+avrdude: Using SCK period of 10 usec
+Writing | CMD: [50 08 00 00] [00 50 08 ff]
+################################################## | 100% 0.00s
+
+avrdude: 1 bytes of efuse written
+avrdude: verifying efuse memory against 0xff:
+avrdude: load data efuse data from input file 0xff:
+avrdude: input file 0xff contains 1 bytes
+avrdude: reading on-chip efuse data:
+
+Reading | CMD: [50 08 00 00] [00 50 08 ff]
+################################################## | 100% 0.00s
+
+avrdude: verifying ...
+avrdude: 1 bytes of efuse verified
+avrdude: reading input file "0xdf"
+avrdude: writing hfuse (1 bytes):
+
+Writing | CMD: [58 08 00 00] [00 58 08 df]
+################################################## | 100% 0.00s
+
+avrdude: 1 bytes of hfuse written
+avrdude: verifying hfuse memory against 0xdf:
+avrdude: load data hfuse data from input file 0xdf:
+avrdude: input file 0xdf contains 1 bytes
+avrdude: reading on-chip hfuse data:
+
+Reading | CMD: [58 08 00 00] [00 58 08 df]
+################################################## | 100% 0.00s
+
+avrdude: verifying ...
+avrdude: 1 bytes of hfuse verified
+avrdude: reading input file "0xe2"
+avrdude: writing lfuse (1 bytes):
+
+Writing | CMD: [50 00 00 00] [00 50 00 f1]
+CMD: [ac a0 00 e2] [00 ac a0 00]
+CMD: [50 00 00 00] [e2 50 00 ff]
+CMD: [50 00 00 00] [00 50 00 e2]
+################################################## | 100% 0.01s
+
+avrdude: 1 bytes of lfuse written
+avrdude: verifying lfuse memory against 0xe2:
+avrdude: load data lfuse data from input file 0xe2:
+avrdude: input file 0xe2 contains 1 bytes
+avrdude: reading on-chip lfuse data:
+
+Reading | CMD: [50 00 00 00] [00 50 00 e2]
+################################################## | 100% 0.00s
+
+avrdude: verifying ...
+avrdude: 1 bytes of lfuse verified
+
+avrdude done.  Thank you.
+
+CMD: [ac 53 00 00] [00 00 53 00]
+avrdude: AVR device initialized and ready to accept instructions
+
+Reading | CMD: [30 00 00 00] [00 30 00 1e]
+CMD: [30 00 01 00] [00 30 00 93]
+################CMD: [30 00 02 00] [00 30 00 0b]
+################################## | 100% 0.01s
+
+avrdude: Device signature = 0x1e930b (probably t85)
+
+avrdude done.  Thank you.
+```
+
 Then **Upload** button of Arduino IDE can be used to upload code to the microcontroller.
 
 Output example of an upload in verbose mode:
