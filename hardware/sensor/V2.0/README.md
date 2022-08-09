@@ -153,6 +153,8 @@ Here is used [Tiny AVR Programmer](https://www.sparkfun.com/products/11801) and 
 
    ![CYTHS-2.0-Programmer-wired](CYTHS-2.0-Programmer-wired.png?raw=true)
 
+   **/!\ Photo displays sensor bottom side /!\\**
+
  * Plug the programmer board to the computer
 
 #### Code upload
