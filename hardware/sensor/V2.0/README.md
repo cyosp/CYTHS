@@ -143,7 +143,7 @@ These steps will configure Arduino software in order to use the microcontroller 
     * And *Close* button
  * Tools → Board → ATtiny25/45/85
  * Tools → Processor → ATtiny85
- * Tools → Clock → **Internal** 16 MHz
+ * Tools → Clock → **Internal** 8 MHz
 
 #### Setup programmer
 
