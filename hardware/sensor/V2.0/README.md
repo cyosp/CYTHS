@@ -52,12 +52,12 @@ Sensor is composed of a double layer PCB:
 
 Components used are:
 
-| Description                     | Reference                                                                 |
-|:--------------------------------|:--------------------------------------------------------------------------|
-| Temperature and humidity sensor | [DHT22](http://www.humiditycn.com/cp22.html)                              |
-| Microcontroller                 | [ATtiny85](http://www.atmel.com/devices/attiny85.aspx) (CMS package)      |
-| 433 MHz transmitter             | [433 MHz transmitter](http://www.seeedstudio.com/wiki/433Mhz_RF_link_kit) |
-| 3x 1.5V AAA batteries           | [Camelion batteries](http://camelionbatteries.com/primary/plus.html)      |
+| Description                     | Reference                                                                                                         | Power voltage (V) |
+|:--------------------------------|:------------------------------------------------------------------------------------------------------------------|------------------|
+| Temperature and humidity sensor | [DHT22](https://www.waveshare.com/wiki/DHT22_Temperature-Humidity_Sensor)                                         | 3.3 → 6          |
+| Microcontroller                 | [ATTINY85-20SU](https://www.microchip.com/en-us/product/attiny85)                                                 | 2.7 → 5.5        |
+| 433 MHz transmitter             | [433 MHz transmitter](https://microcontrollerslab.com/433mhz-rf-transmitter-module-pinout-examples-applications/) | 3.3 → 12         |
+| 3x 1.5V AAA batteries           | [Camelion batteries](http://camelionbatteries.com/primary/plus.html)                                              | 1.5              |
 
 ### Code structure
 
