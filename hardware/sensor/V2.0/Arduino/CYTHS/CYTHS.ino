@@ -1,40 +1,19 @@
-//
 // Temperature and humidity sensor using RSL protocol
-//
-// @hardware ATtiny85
-// @author CYOSP
-// @version 2.0.0
+// 2.1.0
 
-// V 2.0.0 2016-08-30
-//  Version updated according to hardware CYTHS V 2.0
-// V 1.0.3 2016-06-15
-//  Transmission period is now set to 5 minutes and repeat transmission is
-//  divided by two in order to preserve power consumption
-// V 1.0.2 2016-05-21
-//  Random generator is now initialized with a DHT read
-//  It improves the random generation of sensor id
-// V 1.0.1 2016-04-14
-//  Improve battery life which now respects the project aim
-//  Battery life is estimated around 3.5 years
-// V 1.0.0 2016-02-21
-//  Initial release
+// Uncomment to choose sensor id
+// Value range: 1 - 127
+// #define STATIC_SENSOR_ID 51
 
-//
-// Includes 
-//
-
-// Needed to reduce power consumption
+// To reduce power consumption
 #include <avr/sleep.h>
-// Needed for DHT sensor
+// For DHT sensor
 #include <dht.h>
-// Needed for RSL send
+// For wireless transmission
 #include <RCSwitch.h>
-// Needed to store sensor id
+// To save data even when power is off
 #include <EEPROM.h>
 
-//
-// Defines
-//
 
 // Clear Bit of an I/O register
 // Set to 0
@@ -52,20 +31,20 @@
 // /!\ Modify this value must be set according CLKPR in setLowFreq function
 #define LOW_FREQ_FACTOR 256
 
-// Microcontroller pin mapping
+// ATtiny85 pin mapping
 
 // Unused pin
-#define PIN_0                             0
+#define PIN_0                 0
 // Unused pin
-#define PIN_1                             1
+#define PIN_1                 1
 // Unused pin
-#define PIN_2                             2
-// Transmitter data pin
-#define TRANSMITTER_433_PIN               3
-// DHT sensor pin
-#define DHT_PIN                           4
-// Unconnected pin used to define sensor id if needed to be changed
-#define UNCONNECTED_PIN_FOR_RANDOM_INIT   5
+#define PIN_2                 2
+// Transmitter pin
+#define TRANSMITTER_433_PIN   3
+// DHT pin
+#define DHT_PIN               4
+// Unused pin
+#define PIN_5                 5
 
 // Low power consumption values
 #define WATCHDOG      9   // 9 => 8,3 seconds
@@ -75,18 +54,12 @@
 #define MAX_POWER 4860 // In mV
 #define LOW_POWER 4350 // In mV
 
-// Initialization part
-
 // Watchdog interrupt number
 volatile int index = WATCHDOB_NBR;
 
-// RCSwitch library
 RCSwitch mySwitch = RCSwitch();
-
-// DHT library
 dht DHT;
 
-// Battery level
 unsigned long batteryLevel = 0;
 
 // Define protocol (00) and code (1111)
@@ -94,21 +67,20 @@ unsigned long protocolAndCode = 15;
 
 // Used to define if sensor identifier must be reseted
 int resetSensorId = 0;
-// Variable used to define lenght to read in EEPROM for reset sensor id
+// Used to define lenght to read in EEPROM for reset sensor id
 int bitLength_16 = 0;
 // Position in EEPROM for sensor id reset number
 int resetSensorIdInEEPROM = 0;
 
 // Sensor identifier
 unsigned long sensorId = 0;
-// Variable used to define lenght to read in EEPROM for sensor id
+// Used to define lenght to read in EEPROM for sensor id
 // 32 bits are used for shift operations
 unsigned long bitLength_32 = 0;
 // Position in EEPROM for sensor id
 unsigned long sensorIdInEEPROM = 0 + sizeof( resetSensorIdInEEPROM );
 
-void setup()
-{
+void setup() {
   // Set microcontroller to low frequency
   // TO ENABLE AT THE END BECAUSE AFTER IT'S MORE DIFFICULT TO PROGRAM AGAIN ATtiny85
   //setLowFreq();
@@ -117,88 +89,72 @@ void setup()
   ADCSRA = 0;
   
   // Define pin states
-  pinMode( PIN_0                            , OUTPUT );
-  pinMode( PIN_1                            , OUTPUT );
-  pinMode( PIN_2                            , OUTPUT );
-  pinMode( DHT_PIN                          , INPUT  );
-  pinMode( UNCONNECTED_PIN_FOR_RANDOM_INIT  , OUTPUT );
+  pinMode( PIN_0  , OUTPUT );
+  pinMode( PIN_1  , OUTPUT );
+  pinMode( PIN_2  , OUTPUT );
+  pinMode( DHT_PIN, INPUT  );
+  pinMode( PIN_5  , OUTPUT );
 
-  // Power off others output pins
-  digitalWrite( PIN_0                           , LOW  );
-  digitalWrite( PIN_1                           , LOW  );
-  digitalWrite( PIN_2                           , LOW  );
-  digitalWrite( UNCONNECTED_PIN_FOR_RANDOM_INIT , LOW  );
+  // Set to low level unused pins
+  digitalWrite( PIN_0, LOW  );
+  digitalWrite( PIN_1, LOW  );
+  digitalWrite( PIN_2, LOW  );
+  digitalWrite( PIN_5, LOW  );
 
-  //
-  // Configure RCSwitch library
-  //
   mySwitch.enableTransmit( TRANSMITTER_433_PIN );
-  // Set protocol
-  // 2 <=> rc-rsl protocol
+  // Protocol: 2 <=> rc-rsl 
   mySwitch.setProtocol( 2 ); 
-  // Set number of transmission repetitions
   mySwitch.setRepeatTransmit( 5 );
 
   //
   // Manage sensor id reset part
   //
+  #ifndef STATIC_SENSOR_ID
+    resetSensorId = EEPROM.get( resetSensorIdInEEPROM , bitLength_16 );
+    resetSensorId++;
+    // Avoid false restart because being pluging battery
+    delay( 3000 /*/ LOW_FREQ_FACTOR*/ );
+    EEPROM.put( resetSensorIdInEEPROM , resetSensorId );
+    // Let choice to user to unconnect battery
+    delay( 3000 /*/ LOW_FREQ_FACTOR*/ );
+    if( resetSensorId >= 3 ) {
+      sensorId = 0;
+      EEPROM.put( sensorIdInEEPROM , sensorId );
+    }
 
-  // Read reset sensor id value in EEPROM
-  resetSensorId = EEPROM.get( resetSensorIdInEEPROM , bitLength_16 );
-  // Increment reset number
-  resetSensorId++;
-  // Avoid false restart because being pluging battery
-  delay( 3000 /*/ LOW_FREQ_FACTOR*/ );
-  // Put value in EEPROM
-  EEPROM.put( resetSensorIdInEEPROM , resetSensorId );
-  // Let choice to user to unconnect battery
-  delay( 3000 /*/ LOW_FREQ_FACTOR*/ );
-  // Force use of a new sensor id
-  if( resetSensorId >= 3 )
-  {
-    // Set sensor id in the same value as the first time the sensor is plugged to the battery
-    sensorId = 0;
-    // Store it in the EEPROM
-    EEPROM.put( sensorIdInEEPROM , sensorId );
-  }
-  // Reset number of reset tried
-  resetSensorId = 0;
-  // Store it in the EEPROM
-  EEPROM.put( resetSensorIdInEEPROM , resetSensorId );
+    resetSensorId = 0;
+    EEPROM.put( resetSensorIdInEEPROM , resetSensorId );
 
-  //
-  // Generate a new sensor id if needed
-  //  => First power on
-  //  => Asked by user with 3 reboots
-  //     Each one more than 3 seconds and less than 6 seconds
-  //
-
-  // Get sensor id in EEPROM
-  sensorId = EEPROM.get( sensorIdInEEPROM , bitLength_32 );
-  // A new sensor id must be generated
-  if( sensorId == 0 )
-  {
-    // Init random generator with a DHT read
-    DHT.read22( DHT_PIN );
-    randomSeed( DHT.temperature * DHT.humidity );
- 
-    // Get a new sensor identifier
-    sensorId = random( 1 , 127 );
- 
-    // Store sensor id in EEPROM
-    EEPROM.put( sensorIdInEEPROM , sensorId );
-  }
+    //
+    // Generate a new sensor id if needed
+    //  => First power on
+    //  => Asked by user with 3 reboots
+    //     Each one more than 3 seconds and less than 6 seconds
+    //
+    sensorId = EEPROM.get( sensorIdInEEPROM , bitLength_32 );
+    if( sensorId == 0 ) {
+      // Init random generator with a DHT read
+      DHT.read22( DHT_PIN );
+      randomSeed( DHT.temperature * DHT.humidity );
+   
+      sensorId = random( 1 , 127 );
+      EEPROM.put( sensorIdInEEPROM , sensorId );
+    }
+  #else
+    sensorId = STATIC_SENSOR_ID;
+    // Wait same time as random sensor id phase
+    // It allows also to have a correct DHT measure
+    delay( 6000 /*/ LOW_FREQ_FACTOR*/ );
+  #endif
 
   // Manage low energy
   setup_watchdog( WATCHDOG );
 }
 
-void loop()
-{
+void loop() {
   // It's time to get sensor values
   if( index >= WATCHDOB_NBR )
   {
-    // Reset watchdog index
     index = 0;
 
     // Set microcontroller to high frequency
@@ -207,13 +163,11 @@ void loop()
     // Get Vcc value and map it to 4 values
     batteryLevel = map( readVcc() , LOW_POWER , MAX_POWER , 0 , 3 );
       
-    // Read DHT sensor
     unsigned long chk = DHT.read22( DHT_PIN );
     
     // Set microcontroller to low frequency
     setLowFreq();
     
-    // Get humidity
     unsigned long hum = (unsigned long) DHT.humidity;
     // Get temperature * 10
     unsigned long temp = (unsigned long) (DHT.temperature * 10.0 );
@@ -251,13 +205,8 @@ void loop()
     // Compute RSL code
     unsigned long code = batteryLevel << 30 | protocolAndCode << 24 | sensorId << 17 | hum << 10 | temp;
 
-    // Set microcontroller to high frequency
     setHighFreq();
-
-    // Send RSL code
     mySwitch.send( code , 32 );
-
-    // Set microcontroller to low frequency
     setLowFreq();
   }
 
@@ -267,8 +216,7 @@ void loop()
 
 // Set system into the sleep state 
 // System wakes up when watchdog is timed out
-void system_sleep()
-{
+void system_sleep() {
   // Set sleep mode
   set_sleep_mode( SLEEP_MODE_PWR_DOWN );
   // System sleeps here
@@ -286,8 +234,7 @@ void system_sleep()
 // 7 => 2secs
 // 8 => 4secs
 // 9 => 8secs
-void setup_watchdog( int ii )
-{
+void setup_watchdog( int ii ) {
   byte bb;
   int ww;
   
@@ -309,16 +256,13 @@ void setup_watchdog( int ii )
 
 // Watchdog Interrupt Service
 // Is executed when watchdog timed out
-ISR( WDT_vect )
-{
-  // Increment watchdog index
+ISR( WDT_vect ) {
   index++;
 }
 
 // Measure input microcontroller voltage against internal 1.1V
 // Return Vcc value in mV
-long readVcc()
-{
+long readVcc() {
   // switch Analog to Digitalconverter ON
   sbi( ADCSRA , ADEN );                           
   
@@ -361,8 +305,7 @@ long readVcc()
 }
 
 // Set microcontroller to high frequency
-void setHighFreq()
-{
+void setHighFreq() {
   // Disable interrupts
   cli();
   // Enable prescaler
@@ -374,8 +317,7 @@ void setHighFreq()
 }
 
 // Set microcontroller to low frequency
-void setLowFreq()
-{
+void setLowFreq() {
   // Disable interrupts
   cli();
   // Enable prescaler
