@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 2.2.0 (2022-08-11)
+ * Battery level is updated only each 6 hours instead of each measure
+
 ##### 2.1.0 (2022-08-10)
  * Sensor id can be chosen using a static variable
 

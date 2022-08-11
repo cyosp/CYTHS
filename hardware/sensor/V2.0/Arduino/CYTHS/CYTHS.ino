@@ -1,5 +1,5 @@
 // Temperature and humidity sensor using RSL protocol
-// 2.1.0
+// 2.2.0
 
 // Uncomment to choose sensor id
 // Value range: 1 - 127
@@ -47,8 +47,9 @@
 #define PIN_5                 5
 
 // Low power consumption values
-#define WATCHDOG      9   // 9 => 8,3 seconds
-#define WATCHDOB_NBR  36  // 36 <=> 5 minutes (299 seconds)
+#define WATCHDOG      9                 // 9 => 8,3 seconds
+#define WATCHDOB_NBR  36                // 36 <=> 5 minutes (299 seconds)
+#define WATCHDOB_COUNT_TO_READ_POWER 36 // 36 * 5 minutes <=> 6 hours
 
 // Low and maximum battery level
 #define MAX_POWER 4860 // In mV
@@ -56,6 +57,7 @@
 
 // Watchdog interrupt number
 volatile int index = WATCHDOB_NBR;
+unsigned int watchdogCount = WATCHDOB_COUNT_TO_READ_POWER;
 
 RCSwitch mySwitch = RCSwitch();
 dht DHT;
@@ -160,8 +162,13 @@ void loop() {
     // Set microcontroller to high frequency
     setHighFreq();
 
-    // Get Vcc value and map it to 4 values
-    batteryLevel = map( readVcc() , LOW_POWER , MAX_POWER , 0 , 3 );
+    if(watchdogCount >= WATCHDOB_COUNT_TO_READ_POWER) {
+        watchdogCount = 0;
+        // Get Vcc value and map it to 4 values
+        batteryLevel = map( readVcc() , LOW_POWER , MAX_POWER , 0 , 3 );
+    } else {
+        watchdogCount++;
+    }
       
     unsigned long chk = DHT.read22( DHT_PIN );
     
