@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 2.3.0 (2022-08-13)
+ * Improve battery voltage mapping and fact it can only down
+
 ##### 2.2.0 (2022-08-11)
  * Battery level is updated only each 6 hours instead of each measure
 

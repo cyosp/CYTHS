@@ -1,5 +1,4 @@
 // Temperature and humidity sensor using RSL protocol
-// 2.2.0
 
 // Uncomment to choose sensor id
 // Value range: 1 - 127
@@ -51,10 +50,6 @@
 #define WATCHDOB_NBR  36                // 36 <=> 5 minutes (299 seconds)
 #define WATCHDOB_COUNT_TO_READ_POWER 36 // 36 * 5 minutes <=> 6 hours
 
-// Low and maximum battery level
-#define MAX_POWER 4860 // In mV
-#define LOW_POWER 4350 // In mV
-
 // Watchdog interrupt number
 volatile int index = WATCHDOB_NBR;
 unsigned int watchdogCount = WATCHDOB_COUNT_TO_READ_POWER;
@@ -62,7 +57,7 @@ unsigned int watchdogCount = WATCHDOB_COUNT_TO_READ_POWER;
 RCSwitch mySwitch = RCSwitch();
 dht DHT;
 
-unsigned long batteryLevel = 0;
+unsigned long batteryLevel = 4;
 
 // Define protocol (00) and code (1111)
 unsigned long protocolAndCode = 15;
@@ -162,10 +157,9 @@ void loop() {
     // Set microcontroller to high frequency
     setHighFreq();
 
+    unsigned long vcc = readVcc();
     if(watchdogCount >= WATCHDOB_COUNT_TO_READ_POWER) {
         watchdogCount = 0;
-        // Get Vcc value and map it to 4 values
-        batteryLevel = map( readVcc() , LOW_POWER , MAX_POWER , 0 , 3 );
     } else {
         watchdogCount++;
     }
@@ -174,6 +168,25 @@ void loop() {
     
     // Set microcontroller to low frequency
     setLowFreq();
+
+    // Battery voltage mapping per element
+    // 1.5V : full capacity
+    // 1.3V : 60% to 80% capacity
+    // 1.2V : 30% to 60% capacity
+    // 1.0V : empty
+    unsigned long vccMapping = 0;
+    if(vcc>=4500) {
+      vccMapping = 3;
+    } else if (vcc>=3900) {
+      vccMapping = 2;
+    } else if (vcc>=3600) {
+      vccMapping = 1;
+    }
+    // Battery voltage can only down
+    // It avoids battery level to up and down near threshold
+    if(vccMapping<batteryLevel) {
+      batteryLevel = vccMapping;
+    }
     
     unsigned long hum = (unsigned long) DHT.humidity;
     // Get temperature * 10
