@@ -1,5 +1,8 @@
 // Temperature and humidity sensor using RSL protocol
 
+// Uncomment for sensor V1.0
+// #define SENSOR_V1
+
 // Uncomment to choose sensor id
 // Value range: 1 - 127
 // #define STATIC_SENSOR_ID 51
@@ -30,20 +33,23 @@
 // /!\ Modify this value must be set according CLKPR in setLowFreq function
 #define LOW_FREQ_FACTOR 256
 
-// ATtiny85 pin mapping
+#ifdef SENSOR_V1
+  #define POWER_DHT_AND_TRANSMITTER   0
+  #define TRANSMITTER_433_PIN         1
+  #define DHT_PIN                     2
 
-// Unused pin
-#define PIN_0                 0
-// Unused pin
-#define PIN_1                 1
-// Unused pin
-#define PIN_2                 2
-// Transmitter pin
-#define TRANSMITTER_433_PIN   3
-// DHT pin
-#define DHT_PIN               4
-// Unused pin
-#define PIN_5                 5
+  #define UNUSED_PIN_1                3
+  #define UNUSED_PIN_2                4
+  #define UNUSED_PIN_3                5
+#else
+  #define TRANSMITTER_433_PIN         3
+  #define DHT_PIN                     4
+
+  #define UNUSED_PIN_1                0
+  #define UNUSED_PIN_2                1
+  #define UNUSED_PIN_3                2
+  #define UNUSED_PIN_4                5
+#endif
 
 // Low power consumption values
 #define WATCHDOG      9                 // 9 => 8,3 seconds
@@ -86,17 +92,23 @@ void setup() {
   ADCSRA = 0;
   
   // Define pin states
-  pinMode( PIN_0  , OUTPUT );
-  pinMode( PIN_1  , OUTPUT );
-  pinMode( PIN_2  , OUTPUT );
-  pinMode( DHT_PIN, INPUT  );
-  pinMode( PIN_5  , OUTPUT );
+  pinMode(DHT_PIN, INPUT);
+  pinMode(UNUSED_PIN_1, OUTPUT);
+  pinMode(UNUSED_PIN_2, OUTPUT);
+  pinMode(UNUSED_PIN_3, OUTPUT);
 
   // Set to low level unused pins
-  digitalWrite( PIN_0, LOW  );
-  digitalWrite( PIN_1, LOW  );
-  digitalWrite( PIN_2, LOW  );
-  digitalWrite( PIN_5, LOW  );
+  digitalWrite(UNUSED_PIN_1, LOW);
+  digitalWrite(UNUSED_PIN_2, LOW);
+  digitalWrite(UNUSED_PIN_3, LOW);
+
+  #ifdef SENSOR_V1
+    pinMode(POWER_DHT_AND_TRANSMITTER, OUTPUT);
+    digitalWrite(POWER_DHT_AND_TRANSMITTER, HIGH);
+  #else
+    pinMode(UNUSED_PIN_4, OUTPUT);
+    digitalWrite(UNUSED_PIN_4, LOW);
+  #endif
 
   mySwitch.enableTransmit( TRANSMITTER_433_PIN );
   // Protocol: 2 <=> rc-rsl 

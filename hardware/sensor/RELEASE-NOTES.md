@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 2.3.1 (2022-08-14)
+ * Fix: Code not working for sensor V1.0
+
 ##### 2.3.0 (2022-08-13)
  * Improve battery voltage mapping and fact it can only down
 
