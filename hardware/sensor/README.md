@@ -451,6 +451,6 @@ avrdude done.  Thank you.
 
 Reprogram microcontroller could be hard due to its deep sleep mode.
 
-In that case you must try several times to burn bootloader.
+In that case you must try several times and you will succeed to re-upload a new version.
 
-When you have succeeded you can re-upload a new version.
+If needed, try to reburn bootloader until successful.
