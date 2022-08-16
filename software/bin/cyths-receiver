@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.4.3                                                              #
+# Version: 1.5.0                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -19,6 +19,7 @@
 #  - rrdtool (Debian rrdtool package)                                         #
 #  - rrdupdate (Debian rrdtool package)                                       #
 #  - rrd2csv (https://github.com/williamrh/rrd2csv)                           #
+#  - perl (Debian perl package)                                               #
 #  - curl (Debian curl package)                                               #
 #  - head (Debian coreutils package)                                          #
 #  - awk (Debian mawk package)                                                #
@@ -176,7 +177,7 @@ do
 
 				# Convert RRD to CSV file
 				# Keep only one week
-				rrd2csv.pl -s end-7day -e now "$SENSOR_RRD_FILE_PATH" > "$SENSOR_RRD_CSV_FILE"
+				rrd2csv.pl -s end-7day -e now "$SENSOR_RRD_FILE_PATH" | perl -pe 's/\s*0\.00\s*,\s*0\.00\s*,\s*0\.00/NaN,NaN,NaN/g' > "$SENSOR_RRD_CSV_FILE"
 				# Delete header
 				sed -i "1s/.*/Date,Temp,Hum,Batt/" "$SENSOR_RRD_CSV_FILE"
 				# Delete last line which is always a line with zero values
