@@ -1,9 +1,3 @@
-//
-// Author: CYOSP
-// Created: 2016-10-22
-// Version: 1.1.0
-//
-
 function cythsInit()
 {
 	//
@@ -68,7 +62,6 @@ function cythsInit()
 					graphsListToAdd += '        document.getElementById("' + switchConfigured.sensor.id + '"),';
 					graphsListToAdd += '        "../data/csv/' + switchConfigured.sensor.id + '.rrd.csv",';
 					graphsListToAdd += '	 {';
-					graphsListToAdd += '		 rollPeriod: 7,';
 					graphsListToAdd += '		 showRoller: true,';
 					graphsListToAdd += '		 colors: ["#FF0000", "#0000FF", "#FF8000"]';
 					graphsListToAdd += '	 });';

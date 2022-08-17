@@ -1,3 +1,5 @@
+# 2022-08-17 V 1.2.0
+ * Display raw data instead of smoothed ones
 # 2019-01-23 V 1.1.0
  * Add battery percentage
 # 2017-03-24 V 1.0.2

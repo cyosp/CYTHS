@@ -1,3 +1,5 @@
+# 2022-08-17 V 3.2.0
+ * Display sensors raw data instead of smoothed ones
 # 2021-11-28 V 3.1.1
  * Use rc-rsl without sudo
 # 2021-02-18 V 3.1.0

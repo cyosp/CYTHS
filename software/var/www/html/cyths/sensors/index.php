@@ -1,23 +1,4 @@
 <!DOCTYPE html>
-<!-- Author: CYOSP       -->
-<!-- Created: 2016-07-08 -->
-<!-- Version: 1.2.1      -->
-
-<!-- 2016-11-02 V 1.2.1                                          -->
-<!--  * Add sensors entry in navigation bar if a sensor is       -->
-<!--    passed as argument                                       -->
-<!-- 2016-10-22 V 1.2.0                                          -->
-<!--  * Use local dygraphs library                               --> 
-<!--  * Add bootstrap navbar                                     --> 
-<!--  * Use Font-Awesome                                         -->
-<!--  * Display graph logic is now client side                   -->
-<!-- 2016-10-07 V 1.1.1                                          -->
-<!--  * Sensor graph takes now all page width                    -->
-<!-- 2016-07-08 V 1.1.0                                          -->
-<!--  * It's now possible to restrict display to only one sensor -->
-<!--    given sensor identifier as 'id' parameter                -->
-<!-- 2016-07-08 V 1.0.0                                          -->
-<!--  * First release                                            -->
 <html>
 	<head>
 		<meta charset="utf-8">
@@ -33,7 +14,7 @@
 		<script src="../js/jquery.min.js"></script>
 		<script src="../js/bootstrap.min.js"></script>   
 	    <script src="../js/dygraph-combined.js"></script>
-		<script src="../js/cyths-sensors.js"></script>
+		<script src="../js/cyths-sensors.js?v=1.2.0"></script>
 		<!-- i18n -->
 		<script src="../js/i18next.min.js"></script>
 		<script src="../js/i18nextXHRBackend.min.js"></script>
