@@ -18,3 +18,12 @@ Components used are:
 | Microcontroller                 | [ATTINY85-20PU](https://www.microchip.com/en-us/product/attiny85)                                                 |
 | 433 MHz transmitter             | [433 MHz transmitter](https://microcontrollerslab.com/433mhz-rf-transmitter-module-pinout-examples-applications/) |
 | 3x 1.5V AAA batteries           | [Camelion batteries](http://camelionbatteries.com/primary/plus.html)                                              |
+
+#### ATtiny85 pin mapping
+
+```
+PB5 -| °   |- VCC
+PB3 -|     |- PB2
+PB4 -|     |- PB1
+GND -|     |- PB0
+```
