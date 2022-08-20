@@ -1,3 +1,5 @@
+# 2022-08-20 V 1.4.0
+ * Improve navigation bar
 # 2022-08-17 V 1.3.0
  * Display raw data instead of smoothed ones
 # 2016-11-02 V 1.2.1

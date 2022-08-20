@@ -1,3 +1,5 @@
+# 2022-08-20 V 1.4.0
+* Improve navigation bar
 # 2017-08-22 V 1.3.2
  * Add admin page
 # 2017-01-30 V 1.3.1

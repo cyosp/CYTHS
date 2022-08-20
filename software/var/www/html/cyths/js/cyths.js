@@ -1,6 +1,7 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "3.2.0";
+var projectVersion = "3.3.0";
+var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
@@ -142,7 +143,7 @@ function addSwitch( switchToDrive )
 		switchesListToAdd += '  <h2 class="h6">';
 		// START : Manage info field
 		var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
-		if( switchToDrive.sensor && switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '">' + infoTag + '</a>';
+		if( switchToDrive.sensor && switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '&v=' + sensorsPageVersion + '">' + infoTag + '</a>';
 		else													switchesListToAdd += infoTag;
 		// END : Manage info field
 		switchesListToAdd += '  </h2>';

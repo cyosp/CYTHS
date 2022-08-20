@@ -33,11 +33,11 @@
 								<span class="icon-bar"></span>
 								<span class="icon-bar"></span>
 				  			</button>
-				  			<a class="navbar-brand" href="#"><span data-i18n="sensors.title" id="sensorsTitle">CYTHS - Sensors</span></a>
+				  			<a class="navbar-brand" href=".."><i class="fa fa-home" aria-hidden="true"></i></a>
+							<span class="navbar-brand" data-i18n="sensors.label" id="sensorsTitle">Sensors</span>
 						</div>
 				  		<div id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav navbar-right">
-					  			<li><a href=".."><i class="fa fa-home" aria-hidden="true"></i></a></li>
 								<?php if( $_GET[ 'id' ] != "" ) echo ' <li><a href="."><span data-i18n="sensors.label">Sensors</span></a></li>'; ?>
 					  			<li><a href="../display/crontab"><span data-i18n="crontab.label">Crontab</span></a></li>
 					  			<li><a href="../admin"><span data-i18n="admin.label">Admin</span></a></li>
