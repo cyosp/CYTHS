@@ -6,7 +6,8 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta name="description" content="Display CYTHS sensors">
 		<meta name="author" content="CYOSP">
-		<title data-i18n="sensors.title">CYTHS - Sensors</title>
+		<title data-i18n="sensors.label">Sensors</title>
+		<link rel="icon" type="image/x-icon" href="../img/favicon.ico">
 		<!-- CSS -->
 		<link href="../css/bootstrap.min.css" rel="stylesheet">
 		<link href="../css/font-awesome.min.css" rel="stylesheet">

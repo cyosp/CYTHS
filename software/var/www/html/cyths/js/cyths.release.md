@@ -1,3 +1,7 @@
+# 2022-08-21 V 3.4.0
+ * Add favicon and remove CYTHS in page titles
+# 2022-08-20 V 3.3.0
+ * Improve navigation bar
 # 2022-08-17 V 3.2.0
  * Display sensors raw data instead of smoothed ones
 # 2021-11-28 V 3.1.1

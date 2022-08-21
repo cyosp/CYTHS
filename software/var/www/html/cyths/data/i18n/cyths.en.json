@@ -9,7 +9,6 @@
    "crontab":
    {
    	 "label": "Scheduler",
-     "title": "CYTHS - Scheduler",
      "state":
      {
        "on":       "On",
@@ -20,8 +19,7 @@
    },
    "sensors":
    {
-     "label": "Sensors",
-     "title": "CYTHS - Sensors"
+     "label": "Sensors"
    },
    "error":
    {
@@ -33,7 +31,6 @@
    "admin":
    {
      "label": "Admin",
-     "title": "CYTHS - Admin",
      "association":
      {
        "label": "Association"

@@ -9,7 +9,6 @@
    "crontab":
    {
      "label": "Planification",
-     "title": "CYTHS - Planification",
      "state":
      {
        "on":       "Allumer",
@@ -20,8 +19,7 @@
    },
    "sensors":
    {
-     "label": "Capteurs",
-     "title": "CYTHS - Capteurs"
+     "label": "Capteurs"
    },
    "error":
    {
@@ -32,7 +30,6 @@
    "admin":
    {
      "label": "Admin",
-     "title": "CYTHS - Admin",
      "association":
      {
        "label": "Association"

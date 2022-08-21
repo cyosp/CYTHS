@@ -1,3 +1,5 @@
+# 2022-08-21 V 1.5.0
+ * Add favicon and remove CYTHS in page title
 # 2022-08-20 V 1.4.0
  * Improve navigation bar
 # 2017-08-27 V 1.3.0

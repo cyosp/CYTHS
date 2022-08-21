@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "3.3.0";
+var projectVersion = "3.4.0";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -54,8 +54,8 @@ $(window).on("blur focus", function(e)
 
 function cythsBeforeLocalize()
 {
-	// Add version in page title
-	$(document).prop( 'title' , $(document).prop( 'title' ) + " - " + projectVersion );
+	// Set version in page title
+	$(document).prop( 'title' , projectVersion );
 	// Add version in navigation bar
 	$( "#cythsTitle" ).text( $( "#cythsTitle" ).text() + " - " + projectVersion );
 	// Load user interface
