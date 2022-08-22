@@ -51,6 +51,6 @@
 				 <br/>
 			</div>
 		</div>
-		<?php echo '<div class="row" id="sensorId" sensorId="' .  $_GET[ 'id' ] . '"></div>'; ?>
+		<?php echo '<span id="sensorId" sensorId="' .  $_GET[ 'id' ] . '"></span>'; ?>
     </body>
 </html>

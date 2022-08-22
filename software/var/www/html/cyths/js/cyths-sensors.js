@@ -14,6 +14,9 @@ function cythsInit()
 		// Get sensor identifier provided in URL and stored by PHP in web page
 		var sensorId = $( "#sensorId" ).attr( "sensorId" );
 
+		var graphMarginLeft = "0px";
+		var graphWidth = "98%";
+		var graphsListToAdd = '';
 		// Check if there is a sensor identifier		
 		if( sensorId != "" )
 		{
@@ -31,9 +34,12 @@ function cythsInit()
 			$(document).prop( 'title' , $(document).prop( 'title' ) + suffix );
 			// Update "navbar-brand"
 			$( "#sensorsTitle" ).text( $( "#sensorsTitle" ).text() + suffix );
-		}
 
-		var graphsListToAdd = '';
+			graphsListToAdd += '<br/>';
+		} else if ($(window).height() > $(window).width()) {
+			graphMarginLeft = "30px";
+			graphWidth = "82%";
+		}
 
 		//
 		// For each switch configured
@@ -47,16 +53,13 @@ function cythsInit()
 				// Compute piece of HTML to insert
 				//
 
-				// Add a break if there is something to display
-				if( sensorId == "" || switchConfigured.sensor.id == sensorId )	graphsListToAdd += '<br/>';
-
 				// Display a title per sensor if all sensors must be displayed
-				if( sensorId == "" )											graphsListToAdd += '<ul><li><h5>' + switchConfigured.label + '</h5></li></ul>';
+				if( sensorId == "" ) graphsListToAdd += '<center><h5>' + switchConfigured.label + '</h5></center>';
 		
 				// Display sensor graph
 				if( sensorId == "" || switchConfigured.sensor.id == sensorId )
 				{
-					graphsListToAdd += '<div id="' + switchConfigured.sensor.id + '" style="width: 98%;"></div>';
+					graphsListToAdd += '<div id="' + switchConfigured.sensor.id + '" style="margin-left:' + graphMarginLeft + '; width: ' + graphWidth + ';"></div><br/>';
 					graphsListToAdd += '<script type="text/javascript">';
 					graphsListToAdd += '  g3 = new Dygraph(';
 					graphsListToAdd += '        document.getElementById("' + switchConfigured.sensor.id + '"),';
@@ -71,7 +74,7 @@ function cythsInit()
 		});
 		
 		// Insert piece of HTML
-		$( graphsListToAdd ).insertAfter( ".row" );
+		$( graphsListToAdd ).insertAfter( "#sensorId" );
 	  },
 	  error: function(xhr, textStatus, error)
 	  {

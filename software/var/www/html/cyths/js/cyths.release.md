@@ -1,3 +1,5 @@
+# 2022-08-22 V 3.5.0
+ * Improve page view and vertical scroll on phone screens
 # 2022-08-21 V 3.4.0
  * Add favicon and remove CYTHS in page titles
 # 2022-08-20 V 3.3.0

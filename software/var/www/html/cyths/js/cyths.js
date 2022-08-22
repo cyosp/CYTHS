@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "3.4.0";
+var projectVersion = "3.5.0";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
