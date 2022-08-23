@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "3.5.0";
+var projectVersion = "3.6.0";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -57,7 +57,7 @@ function cythsBeforeLocalize()
 	// Set version in page title
 	$(document).prop( 'title' , projectVersion );
 	// Add version in navigation bar
-	$( "#cythsTitle" ).text( $( "#cythsTitle" ).text() + " - " + projectVersion );
+	$( "#cythsTitle" ).text( $( "#cythsTitle" ).text() + " #" + projectVersion );
 	// Load user interface
 	loadUI();
 }

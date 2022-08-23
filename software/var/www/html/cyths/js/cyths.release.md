@@ -1,3 +1,5 @@
+# 2022-08-23 V 3.6.0
+ * Update how version is displayed and remove useless hyperlink
 # 2022-08-22 V 3.5.0
  * Improve page view and vertical scroll on phone screens
 # 2022-08-21 V 3.4.0
