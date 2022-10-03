@@ -1,3 +1,5 @@
+# 2022-10-03 V 1.8.0
+ * View can be split via configuration `$.view.splitMode=true`
 # 2022-08-23 V 1.7.0
  * Update how version is displayed and remove useless hyperlink
 # 2022-08-22 V 1.6.0

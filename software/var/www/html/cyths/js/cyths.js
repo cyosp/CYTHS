@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "3.6.0";
+var projectVersion = "4.0.0";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -80,8 +80,11 @@ function htmlBatteryIndicator(switchToDrive) {
 	return '<span class="battery-' + batteryIndicator + '">•</span>';
 }
 
-function addSwitch( switchToDrive )
-{
+const allInOneViewMode = "allInOneViewMode";
+const infoViewMode = "infoViewMode";
+const switchViewMode = "switchViewMode";
+
+function addSwitch(switchToDrive, viewMode) {
 	//
 	// Define switch id
 	//
@@ -113,102 +116,117 @@ function addSwitch( switchToDrive )
 		switchToDrive.info = $('#switch-info-default').text();
 	}
 
-	var infoId = switchId + "-info";
+	var infoId = switchId + "-info-" + viewMode;
 
-	// Add switch if it doesn't exist in the page
-	if( $( '#' + switchId ).length == 0 )
-	{
+	let hasInfo = false;
+	if(switchToDrive.info) {
+		hasInfo = true;
+	}
+
+	let state;
+	let hasSwitch = true;
+	if (switchToDrive.state === "on") {
+		state = 'checked';
+	} else if (switchToDrive.state === "off") {
+		state = '';
+	} else {
+		state = 'data-indeterminate="true"';
+		hasSwitch = false;
+	}
+
+	let switchViewClass;
+	if (hasSwitch && hasInfo) {
+		switchViewClass = infoViewMode + " " + switchViewMode;
+	} else if (hasInfo) {
+		switchViewClass = infoViewMode;
+	} else if (hasSwitch) {
+		switchViewClass = switchViewMode;
+	}
+
+	const allInOneView = viewMode === allInOneViewMode;
+	const infoView = viewMode === infoViewMode && hasInfo;
+	const switchView = viewMode === switchViewMode && hasSwitch;
+
+	var switchObj = $('#' + switchId);
+	var switchInfoObj = $('#' + infoId);
+
+	// Add switch if it doesn't exist in the page and following view mode
+	if (switchObj.length === 0 && switchInfoObj.length === 0 && (allInOneView || infoView || switchView)) {
 		//
 		// Compute piece of HTML to insert
 		//
-		var switchesListToAdd = '<div class="col-xs-6 col-lg-3 switch">';
+		var switchesListToAdd = '<div class="col-xs-6 col-lg-3 switch ' + switchViewClass + '">';
 		switchesListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
 		switchesListToAdd += '  <p>';
-		switchesListToAdd += '    <input id="' + switchId + '" name="' + switchId + '" rcId="' + switchToDrive.rcId + '" channel="' + switchToDrive.channel + '" type="checkbox" data-on-color="info" data-off-color="warning" data-size="normal" data-handle-width="50" ';
-		// START : Manage switch state
-		if( switchToDrive.state == "on" )
-		{
-			switchesListToAdd += "checked";
+		if (allInOneView || switchView) {
+			switchesListToAdd += '    <input id="' + switchId + '"';
+			switchesListToAdd += ' name="' + switchId + '" rcId="' + switchToDrive.rcId + '" channel="' + switchToDrive.channel + '" type="checkbox" data-on-color="info" data-off-color="warning" data-size="normal" data-handle-width="50" ';
+			switchesListToAdd += state;
+			// Disable switch if remote command identifier and channel are empty
+			if (switchToDrive.rcId === "" && switchToDrive.channel === "") switchesListToAdd += ' disabled';
+			switchesListToAdd += '>';
 		}
-		else if( switchToDrive.state == "off" )
-		{
-			// Nothing to do
-		}
-		else	switchesListToAdd += 'data-indeterminate="true"';
-		// END : Manage switch state
-		// Disable switch if remote command identifier and channel are empty
-		if( switchToDrive.rcId == "" && switchToDrive.channel == "" )	switchesListToAdd += ' disabled';
-		switchesListToAdd += '>';
 		switchesListToAdd += '  </p>';
-		switchesListToAdd += '  <h2 class="h6">';
-		// START : Manage info field
-		var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
-		if( switchToDrive.sensor && switchToDrive.sensor.id )	switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '&v=' + sensorsPageVersion + '">' + infoTag + '</a>';
-		else													switchesListToAdd += infoTag;
-		// END : Manage info field
-		switchesListToAdd += '  </h2>';
+		if (allInOneView || infoView) {
+			switchesListToAdd += '  <h2 class="h6">';
+			// START : Manage info field
+			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
+			if (switchToDrive.sensor && switchToDrive.sensor.id) {
+				switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '&v=' + sensorsPageVersion + '">' + infoTag + '</a>';
+			} else switchesListToAdd += infoTag;
+			// END : Manage info field
+			switchesListToAdd += '  </h2>';
+		}
 		switchesListToAdd += '</div>';
 
 		// Insert piece of HTML
-		$( switchesListToAdd ).insertBefore( ".row" );
+		$(switchesListToAdd).insertBefore(".row");
 
-		// Get switch
-        var switchObj = $( '#' + switchId );
-
-        // Initialize it <=> update UI display
-        switchObj.bootstrapSwitch();
+		// Initialize it <=> update UI display
+		switchObj.bootstrapSwitch();
 
 		// Register switch change
-        switchObj.on( 'switchChange.bootstrapSwitch', function( event , state )
-		{
+		switchObj.on('switchChange.bootstrapSwitch', function (event, state) {
 			// Get switch 'object'
-			var switchObj = $( '#' + $(this).attr( "id" ) );
+			var switchObj = $('#' + $(this).attr("id"));
 
 			// Disable switch until post answer
-			switchObj.bootstrapSwitch( 'disabled' , true );
+			switchObj.bootstrapSwitch('disabled', true);
 
-			$.post( 'API/set/switch/' ,
-			{
-				gpioController	        : gpioController,
-				controllerOffset	    : controllerOffset,
-				rcId    				: $(this).attr("rcId"),
-				channel					: $(this).attr("channel"),
-				state					: (state ? "on" : "off")
-			}).done(function( data )
-			{
+			$.post('API/set/switch/',
+				{
+					gpioController: gpioController,
+					controllerOffset: controllerOffset,
+					rcId: $(this).attr("rcId"),
+					channel: $(this).attr("channel"),
+					state: (state ? "on" : "off")
+				}).done(function (data) {
 				// Get JSON object
-				var response = jQuery.parseJSON( data );
+				var response = jQuery.parseJSON(data);
 
 				// Manage error case
-				if( response.result == "error")
-				{
+				if (response.result == "error") {
 					var msg = "ERROR\n";
 					msg += response.cmd + "\n";
 					msg += response.message;
 
 					// Display command executed and error to the user
-					alert( msg );
+					alert(msg);
 
 					// Enable switch to be able to toggle state
-					switchObj.bootstrapSwitch( 'disabled' , false );
+					switchObj.bootstrapSwitch('disabled', false);
 					// Restore previous switch state with no event called
-					switchObj.bootstrapSwitch( 'toggleState' , true );
+					switchObj.bootstrapSwitch('toggleState', true);
 				}
-			}).fail(function(jqxhr, textStatus, error)
-			{
+			}).fail(function (jqxhr, textStatus, error) {
 				// Alert user
-				alert( textStatus + ": " + error );
-			}).always(function()
-			{
+				alert(textStatus + ": " + error);
+			}).always(function () {
 				// Enable switch in all cases
-				switchObj.bootstrapSwitch( 'disabled' , false );
+				switchObj.bootstrapSwitch('disabled', false);
 			});
 		});
-	}
-	else
-	{
-		// Get switch
-		var switchObj = $( '#' + switchId );
+	} else {
 		// Get switch state
 		var switchState = ( switchObj.bootstrapSwitch( "state" ) ? "on" : "off" );
 		if( switchObj.bootstrapSwitch( "indeterminate" ) )	switchState = "indeterminate";
@@ -232,7 +250,6 @@ function addSwitch( switchToDrive )
 			}
 		}
 
-		var switchInfoObj = $('#' + infoId);
 		if(switchInfoObj) {
 			switchInfoObj.html(switchToDrive.info);
 		}
@@ -263,13 +280,25 @@ function loadUI()
 			if (root.controllerOffset != undefined)
 				controllerOffset = root.controllerOffset;
 
-			//
-			// Add each switch configured
-			//
-			$.each( root.switchesList , function( index , switchToDrive )
-			{
-				addSwitch( switchToDrive );
-			});
+			  //
+			  // Add each switch configured
+			  //
+			  if (root.view === undefined || root.view.splitMode === undefined || root.view.splitMode === false) {
+				  $.each(root.switchesList, function (index, switchToDrive) {
+					  addSwitch(switchToDrive, allInOneViewMode);
+				  });
+			  } else {
+				  $.each(root.switchesList, function (index, switchToDrive) {
+					  addSwitch(switchToDrive, infoViewMode);
+				  });
+				  const delimiter = "delimiter";
+				  if ($('.' + infoViewMode).length > 0 && $('#' + delimiter).length === 0) {
+					  $('<div id="' + delimiter + '" class="col-xs-12 col-lg-12"/>').insertBefore(".row");
+				  }
+				  $.each(root.switchesList, function (index, switchToDrive) {
+					  addSwitch(switchToDrive, switchViewMode);
+				  });
+			  }
 		  },
 		  error: function(xhr, textStatus, error)
 		  {

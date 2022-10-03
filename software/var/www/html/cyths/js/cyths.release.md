@@ -1,3 +1,5 @@
+# 2022-10-03 V 4.0.0
+ * View can be split via configuration `$.view.splitMode=true`
 # 2022-08-23 V 3.6.0
  * Update how version is displayed and remove useless hyperlink
 # 2022-08-22 V 3.5.0
@@ -18,11 +20,11 @@
  * Fix: No default switch info label translated when there is no sensor
 # 2019-12-11 V 3.0.0
  * Update for rc-rsl 2.0.0
- # 2019-01-23 V 2.1.1
+# 2019-01-23 V 2.1.1
  * Add battery percentage to graphics
- # 2019-01-20 V 2.1.0
+# 2019-01-20 V 2.1.0
  * Battery percentage and indicator can be displayed in sensor info zone
- # 2018-09-15 V 2.0.1
+# 2018-09-15 V 2.0.1
  * Fix: display switches in loading page instead of the first data refresh
  * Update data refresh way
 # 2017-08-27 V 2.0.0

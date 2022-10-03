@@ -9,6 +9,10 @@
 	background: #04B431;
 }*/
 
+#delimiter {
+	border-bottom: 1px solid #e7e7e7;
+}
+
 /* Remove button border halo */
 .bootstrap-switch.bootstrap-switch-focused
 {
