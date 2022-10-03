@@ -1,3 +1,5 @@
+# 2022-10-03 V 1.8.1
+ * Hide switch with no sensor from sensor view in split mode
 # 2022-10-03 V 1.8.0
  * View can be split via configuration `$.view.splitMode=true`
 # 2022-08-23 V 1.7.0

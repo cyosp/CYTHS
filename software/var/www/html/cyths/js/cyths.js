@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "4.0.0";
+var projectVersion = "4.0.1";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -81,7 +81,7 @@ function htmlBatteryIndicator(switchToDrive) {
 }
 
 const allInOneViewMode = "allInOneViewMode";
-const infoViewMode = "infoViewMode";
+const sensorViewMode = "sensorViewMode";
 const switchViewMode = "switchViewMode";
 
 function addSwitch(switchToDrive, viewMode) {
@@ -118,40 +118,40 @@ function addSwitch(switchToDrive, viewMode) {
 
 	var infoId = switchId + "-info-" + viewMode;
 
-	let hasInfo = false;
-	if(switchToDrive.info) {
-		hasInfo = true;
+	let hasSwitchSensor = false;
+	if(switchToDrive.sensor) {
+		hasSwitchSensor = true;
 	}
 
 	let state;
-	let hasSwitch = true;
+	let hasSwitchState = true;
 	if (switchToDrive.state === "on") {
 		state = 'checked';
 	} else if (switchToDrive.state === "off") {
 		state = '';
 	} else {
 		state = 'data-indeterminate="true"';
-		hasSwitch = false;
+		hasSwitchState = false;
 	}
 
 	let switchViewClass;
-	if (hasSwitch && hasInfo) {
-		switchViewClass = infoViewMode + " " + switchViewMode;
-	} else if (hasInfo) {
-		switchViewClass = infoViewMode;
-	} else if (hasSwitch) {
+	if (hasSwitchState && hasSwitchSensor) {
+		switchViewClass = sensorViewMode + " " + switchViewMode;
+	} else if (hasSwitchSensor) {
+		switchViewClass = sensorViewMode;
+	} else if (hasSwitchState) {
 		switchViewClass = switchViewMode;
 	}
 
 	const allInOneView = viewMode === allInOneViewMode;
-	const infoView = viewMode === infoViewMode && hasInfo;
-	const switchView = viewMode === switchViewMode && hasSwitch;
+	const sensorView = viewMode === sensorViewMode && !hasSwitchState && hasSwitchSensor;
+	const switchView = viewMode === switchViewMode && hasSwitchState && !hasSwitchSensor;
 
 	var switchObj = $('#' + switchId);
 	var switchInfoObj = $('#' + infoId);
 
 	// Add switch if it doesn't exist in the page and following view mode
-	if (switchObj.length === 0 && switchInfoObj.length === 0 && (allInOneView || infoView || switchView)) {
+	if (switchObj.length === 0 && switchInfoObj.length === 0 && (allInOneView || sensorView || switchView)) {
 		//
 		// Compute piece of HTML to insert
 		//
@@ -167,7 +167,7 @@ function addSwitch(switchToDrive, viewMode) {
 			switchesListToAdd += '>';
 		}
 		switchesListToAdd += '  </p>';
-		if (allInOneView || infoView) {
+		if (allInOneView || sensorView) {
 			switchesListToAdd += '  <h2 class="h6">';
 			// START : Manage info field
 			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
@@ -289,10 +289,10 @@ function loadUI()
 				  });
 			  } else {
 				  $.each(root.switchesList, function (index, switchToDrive) {
-					  addSwitch(switchToDrive, infoViewMode);
+					  addSwitch(switchToDrive, sensorViewMode);
 				  });
 				  const delimiter = "delimiter";
-				  if ($('.' + infoViewMode).length > 0 && $('#' + delimiter).length === 0) {
+				  if ($('.' + sensorViewMode).length > 0 && $('#' + delimiter).length === 0) {
 					  $('<div id="' + delimiter + '" class="col-xs-12 col-lg-12"/>').insertBefore(".row");
 				  }
 				  $.each(root.switchesList, function (index, switchToDrive) {
