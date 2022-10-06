@@ -1,3 +1,5 @@
+# 2022-10-06 V 4.0.2
+ * Fix: Switch not displayed on page load
 # 2022-10-03 V 4.0.1
  * Hide switch with no sensor from sensor view in split mode
 # 2022-10-03 V 4.0.0

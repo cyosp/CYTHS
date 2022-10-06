@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "4.0.1";
+var projectVersion = "4.0.2";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -181,6 +181,8 @@ function addSwitch(switchToDrive, viewMode) {
 
 		// Insert piece of HTML
 		$(switchesListToAdd).insertBefore(".row");
+
+		switchObj = $('#' + switchId);
 
 		// Initialize it <=> update UI display
 		switchObj.bootstrapSwitch();
