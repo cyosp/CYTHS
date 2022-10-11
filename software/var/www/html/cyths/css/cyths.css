@@ -9,6 +9,26 @@
 	background: #04B431;
 }*/
 
+.sensor-data-outdated-level-1, .sensor-data-outdated-level-1:hover {
+	color: #fdd835;
+}
+
+.sensor-data-outdated-level-2, .sensor-data-outdated-level-2:hover {
+	color: #ffb300;
+}
+
+.sensor-data-outdated-level-3, .sensor-data-outdated-level-3:hover {
+	color: #fb8c00;
+}
+
+.sensor-data-outdated-level-4, .sensor-data-outdated-level-4:hover {
+	color: #f4511e;
+}
+
+.sensor-data-outdated-level-last, .sensor-data-outdated-level-last:hover {
+	color: #bf360c;
+}
+
 #delimiter {
 	border-bottom: 1px solid #e7e7e7;
 }

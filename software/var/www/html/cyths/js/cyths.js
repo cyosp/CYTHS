@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "4.0.2";
+var projectVersion = "4.1.0";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -62,22 +62,24 @@ function cythsBeforeLocalize()
 	loadUI();
 }
 
-function htmlBatteryIndicator(switchToDrive) {
-	var battery = switchToDrive.sensor.data.battery;
-
-	var batteryIndicator;
-	switch (true) {
-		case (battery == 0):
-			batteryIndicator = "alarm";
-			break;
-		case (battery < 50):
-			batteryIndicator = "warning";
-			break;
-		default:
-			batteryIndicator = "ok";
-			break;
+function htmlBatteryIndicator(switchToDrive, outdatedSensorDataClass) {
+	let batteryIndicatorClass = "";
+	if (outdatedSensorDataClass === "") {
+		batteryIndicatorClass += "battery-";
+		let battery = switchToDrive.sensor.data.battery;
+		switch (true) {
+			case (battery === 0):
+				batteryIndicatorClass += "alarm";
+				break;
+			case (battery < 50):
+				batteryIndicatorClass += "warning";
+				break;
+			default:
+				batteryIndicatorClass += "ok";
+				break;
+		}
 	}
-	return '<span class="battery-' + batteryIndicator + '">•</span>';
+	return '<span class="' + batteryIndicatorClass + '">•</span>';
 }
 
 const allInOneViewMode = "allInOneViewMode";
@@ -92,6 +94,30 @@ function addSwitch(switchToDrive, viewMode) {
 	// There is no switch to drive, only a sensor attached
 	if( switchToDrive.channel == "" && switchToDrive.rcId == "" )	switchId += "sensor-" + switchToDrive.sensor.id;
 	else															switchId += switchToDrive.channel + "-" + switchToDrive.rcId;
+
+	let hasSwitchSensor = false;
+	let outdatedSensorDataClass = "";
+	if (switchToDrive.sensor) {
+		hasSwitchSensor = true;
+		if (switchToDrive.sensor.data) {
+			let currentDate = new Date();
+			let sensorDataDate = new Date(switchToDrive.sensor.data.date + 'T' + switchToDrive.sensor.data.time);
+			let outdatedSensorDataInMinutes = (currentDate - sensorDataDate) / (60 * 1000);
+			if (outdatedSensorDataInMinutes < 6) {
+				// Nothing to do : use default empty value
+			} else if ( outdatedSensorDataInMinutes < 11) {
+				outdatedSensorDataClass = "sensor-data-outdated-level-1";
+			} else if (outdatedSensorDataInMinutes < 16) {
+				outdatedSensorDataClass = "sensor-data-outdated-level-2";
+			} else if (outdatedSensorDataInMinutes < 21) {
+				outdatedSensorDataClass = "sensor-data-outdated-level-3";
+			} else if (outdatedSensorDataInMinutes < 36) {
+				outdatedSensorDataClass = "sensor-data-outdated-level-4";
+			} else {
+				outdatedSensorDataClass = "sensor-data-outdated-level-last";
+			}
+		}
+	}
 
 	// Check switch info exists and is not empty
 	if( switchToDrive.info )
@@ -108,7 +134,7 @@ function addSwitch(switchToDrive, viewMode) {
 			if( switchToDrive.sensor.data.battery )
 			{
 				switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.battery}/g           , switchToDrive.sensor.data.battery   );
-				switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.battery:indicator}/g , htmlBatteryIndicator(switchToDrive)   );
+				switchToDrive.info = switchToDrive.info.replace(/\${sensor.data.battery:indicator}/g, htmlBatteryIndicator(switchToDrive, outdatedSensorDataClass));
 			}
 		}
 	}
@@ -117,11 +143,6 @@ function addSwitch(switchToDrive, viewMode) {
 	}
 
 	var infoId = switchId + "-info-" + viewMode;
-
-	let hasSwitchSensor = false;
-	if(switchToDrive.sensor) {
-		hasSwitchSensor = true;
-	}
 
 	let state;
 	let hasSwitchState = true;
@@ -172,7 +193,7 @@ function addSwitch(switchToDrive, viewMode) {
 			// START : Manage info field
 			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
 			if (switchToDrive.sensor && switchToDrive.sensor.id) {
-				switchesListToAdd += '<a href="sensors/?id=' + switchToDrive.sensor.id + '&v=' + sensorsPageVersion + '">' + infoTag + '</a>';
+				switchesListToAdd += '<a class="' + outdatedSensorDataClass + '" href="sensors/?id=' + switchToDrive.sensor.id + '&v=' + sensorsPageVersion + '">' + infoTag + '</a>';
 			} else switchesListToAdd += infoTag;
 			// END : Manage info field
 			switchesListToAdd += '  </h2>';
@@ -228,7 +249,8 @@ function addSwitch(switchToDrive, viewMode) {
 				switchObj.bootstrapSwitch('disabled', false);
 			});
 		});
-	} else {
+	} else if (switchObj.length !== 0 && (allInOneView || switchView)
+		|| switchInfoObj.length !== 0 && (allInOneView || sensorView)) {
 		// Get switch state
 		var switchState = ( switchObj.bootstrapSwitch( "state" ) ? "on" : "off" );
 		if( switchObj.bootstrapSwitch( "indeterminate" ) )	switchState = "indeterminate";
@@ -253,6 +275,11 @@ function addSwitch(switchToDrive, viewMode) {
 		}
 
 		if(switchInfoObj) {
+			let parent = switchInfoObj.parent('a');
+			if(parent) {
+				parent.removeClass();
+				parent.addClass(outdatedSensorDataClass);
+			}
 			switchInfoObj.html(switchToDrive.info);
 		}
 	}

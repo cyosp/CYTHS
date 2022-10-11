@@ -1,3 +1,5 @@
+# 2022-10-11 V 1.9.0
+ * Update switch info color following outdated sensor data
 # 2022-10-06 V 1.8.2
  * Fix: Switch not displayed on page load
 # 2022-10-03 V 1.8.1
