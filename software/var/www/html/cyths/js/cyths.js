@@ -1,10 +1,14 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "4.1.0";
+var projectVersion = "4.2.0";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
 var refreshEachMilliSeconds = 5000;
+
+let previousConfig = {
+	"switchesList": []
+};
 
 //
 // Refresh UI when page is visible to user.
@@ -82,11 +86,38 @@ function htmlBatteryIndicator(switchToDrive, outdatedSensorDataClass) {
 	return '<span class="' + batteryIndicatorClass + '">•</span>';
 }
 
+function trend(switchToDrive, previousSwitchToDrive, type) {
+	if (switchToDrive && switchToDrive.sensor && switchToDrive.sensor.data
+		&& previousSwitchToDrive && previousSwitchToDrive.sensor && previousSwitchToDrive.sensor.data) {
+		let trendClass = type + "-" + switchToDrive.sensor.id;
+		let trend = "➙";
+		let sensorDate = new Date(switchToDrive.sensor.data.date + 'T' + switchToDrive.sensor.data.time);
+		let previousSensorDate = new Date(previousSwitchToDrive.sensor.data.date + 'T' + previousSwitchToDrive.sensor.data.time);
+		if (sensorDate > previousSensorDate) {
+			let previous = eval("previousSwitchToDrive.sensor.data." + type);
+			let current = eval("switchToDrive.sensor.data." + type);
+			if (current > previous) {
+				trend = "➚";
+			} else if (current < previous) {
+				trend = "➘";
+			}
+		} else {
+			let trendText = $("." + trendClass).text();
+			if (trendText) {
+				trend = trendText;
+			}
+		}
+		return '<span class="' + trendClass + '">' + trend + '</span>';
+	} else {
+		return "";
+	}
+}
+
 const allInOneViewMode = "allInOneViewMode";
 const sensorViewMode = "sensorViewMode";
 const switchViewMode = "switchViewMode";
 
-function addSwitch(switchToDrive, viewMode) {
+function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
 	//
 	// Define switch id
 	//
@@ -129,8 +160,15 @@ function addSwitch(switchToDrive, viewMode) {
 		{
 			if( switchToDrive.sensor.data.date )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.date}/g        , switchToDrive.sensor.data.date        );
 			if( switchToDrive.sensor.data.time )		switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.time}/g        , switchToDrive.sensor.data.time        );
-			if( switchToDrive.sensor.data.temperature )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.temperature}/g , switchToDrive.sensor.data.temperature );
-			if( switchToDrive.sensor.data.humidity )	switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.humidity}/g    , switchToDrive.sensor.data.humidity    );
+			if (switchToDrive.sensor.data.temperature) {
+				switchToDrive.info = switchToDrive.info.replace(/\${sensor.data.temperature}/g, switchToDrive.sensor.data.temperature);
+				switchToDrive.info = switchToDrive.info.replace(/\${sensor.data.temperature:trend}/g, trend(switchToDrive, previousSwitchToDrive, "temperature"));
+
+			}
+			if( switchToDrive.sensor.data.humidity ) {
+				switchToDrive.info = switchToDrive.info.replace(/\${sensor.data.humidity}/g, switchToDrive.sensor.data.humidity);
+				switchToDrive.info = switchToDrive.info.replace(/\${sensor.data.humidity:trend}/g, trend(switchToDrive, previousSwitchToDrive, "humidity"));
+			}
 			if( switchToDrive.sensor.data.battery )
 			{
 				switchToDrive.info = switchToDrive.info.replace( /\${sensor.data.battery}/g           , switchToDrive.sensor.data.battery   );
@@ -314,20 +352,21 @@ function loadUI()
 			  //
 			  if (root.view === undefined || root.view.splitMode === undefined || root.view.splitMode === false) {
 				  $.each(root.switchesList, function (index, switchToDrive) {
-					  addSwitch(switchToDrive, allInOneViewMode);
+					  addSwitch(switchToDrive, previousConfig.switchesList[index], allInOneViewMode);
 				  });
 			  } else {
 				  $.each(root.switchesList, function (index, switchToDrive) {
-					  addSwitch(switchToDrive, sensorViewMode);
+					  addSwitch(switchToDrive, previousConfig.switchesList[index], sensorViewMode);
 				  });
 				  const delimiter = "delimiter";
 				  if ($('.' + sensorViewMode).length > 0 && $('#' + delimiter).length === 0) {
 					  $('<div id="' + delimiter + '" class="col-xs-12 col-lg-12"/>').insertBefore(".row");
 				  }
 				  $.each(root.switchesList, function (index, switchToDrive) {
-					  addSwitch(switchToDrive, switchViewMode);
+					  addSwitch(switchToDrive, previousConfig.switchesList[index], switchViewMode);
 				  });
 			  }
+			  previousConfig = root;
 		  },
 		  error: function(xhr, textStatus, error)
 		  {

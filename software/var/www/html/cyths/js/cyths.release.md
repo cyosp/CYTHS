@@ -1,3 +1,5 @@
+# 2022-10-15 V 4.2.0
+ * Sensor temperature and/or humidity trend can be displayed in info section using: ${sensor.data.temperature:trend} and/or ${sensor.data.humidity:trend}
 # 2022-10-11 V 4.1.0
  * Update switch info color following outdated sensor data
 # 2022-10-06 V 4.0.2

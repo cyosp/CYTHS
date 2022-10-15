@@ -1,3 +1,5 @@
+# 2022-10-15 V 1.10.0
+ * Sensor temperature and/or humidity trend can be displayed in info section
 # 2022-10-11 V 1.9.0
  * Update switch info color following outdated sensor data
 # 2022-10-06 V 1.8.2
