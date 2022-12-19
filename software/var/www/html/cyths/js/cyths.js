@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "4.2.0";
+var projectVersion = "4.2.1";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -94,8 +94,8 @@ function trend(switchToDrive, previousSwitchToDrive, type) {
 		let sensorDate = new Date(switchToDrive.sensor.data.date + 'T' + switchToDrive.sensor.data.time);
 		let previousSensorDate = new Date(previousSwitchToDrive.sensor.data.date + 'T' + previousSwitchToDrive.sensor.data.time);
 		if (sensorDate > previousSensorDate) {
-			let previous = eval("previousSwitchToDrive.sensor.data." + type);
-			let current = eval("switchToDrive.sensor.data." + type);
+			let previous = parseFloat(eval("previousSwitchToDrive.sensor.data." + type));
+			let current = parseFloat(eval("switchToDrive.sensor.data." + type));
 			if (current > previous) {
 				trend = "➚";
 			} else if (current < previous) {

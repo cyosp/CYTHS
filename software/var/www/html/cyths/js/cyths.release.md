@@ -1,3 +1,5 @@
+# 2022-12-19 V 4.2.1
+ * Fix: Incorrect temperature trend with negative values
 # 2022-10-15 V 4.2.0
  * Sensor temperature and/or humidity trend can be displayed in info section using: ${sensor.data.temperature:trend} and/or ${sensor.data.humidity:trend}
 # 2022-10-11 V 4.1.0
