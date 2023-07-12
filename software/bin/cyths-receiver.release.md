@@ -1,3 +1,5 @@
+# 1.5.1 - 2023-07-12
+ * Log received code as decimal value
 # 1.5.0 - 2022-08-16
  * Use NaN as value for CSV lines where no data has been received
 # 1.4.3 - 2019-01-22

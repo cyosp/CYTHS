@@ -3,7 +3,7 @@
 ###############################################################################
 #                                                                             #
 # Author: CYOSP                                                               #
-# Version: 1.5.0                                                              #
+# Version: 1.5.1                                                              #
 #                                                                             #
 # Description: Receive CYTHS sensor data                                      #
 #                                                                             #
@@ -103,6 +103,8 @@ do
 	# Code is an integer
 	if [[ $CODE =~ ^-?[0-9]+$ ]]
 	then
+	  echo "  - CODE: $CODE" >> $LOG_FILE_PATH
+
 		# Get RSL code as binary
 		BIN_CODE=$(echo "obase=2; $CODE" | bc 2>&1)
 
@@ -127,7 +129,7 @@ do
 		then
 			# Code structure
 			# [2 bits/battery level] + [2 bits/protocol version] + [4 bits/1111 <=> rsl code not used] + [7 bits/sensor code] + [7 bits/humidity] + [10 bits/temperature]
-		
+
 			BIN_BATTERY_LEVEL=${BIN_CODE:0:2}
 			BIN_PROTOCOL_VERSION=${BIN_CODE:2:2}
 			BIN_SENSOR_CODE=${BIN_CODE:8:7}
@@ -166,7 +168,7 @@ do
 					rrdtool create "$SENSOR_RRD_FILE_PATH" -s 600 -b $(date +%s) DS:temperature:GAUGE:1200:-40:62.4 DS:humidity:GAUGE:1200:0:100 DS:battery:GAUGE:1200:0:100 RRA:AVERAGE:0.5:1:52704 2>&1 >> $LOG_FILE_PATH
 					# Wait all is up and running
 					# Needed for rrdupdate
-					sleep 1	
+					sleep 1
 				fi
 
 				# Update RRD database
@@ -188,7 +190,7 @@ do
 				if [ `echo "$OUTPUT" | head -1 | grep " 200 " > /dev/null 2>&1; echo $?` -ne 0 ]
 				then
 					echo "  - [ERROR] Fail to update user interface. Details: $OUTPUT" >> $LOG_FILE_PATH
-				fi 
+				fi
 			else
 				echo "  - Sensor identifier not registred in configuration: $SENSOR_ID" >> $LOG_FILE_PATH
 			fi
