@@ -1,23 +1,6 @@
 <?php
-
-//
-// Author: CYOSP
-// Version: 1.3.0
-//
 // Dependencies:
-//  - php_curl (sudo apt-get install php5-curl)
-//
-// 2019-12-11 V 1.3.0
-//  - Update for rc-rsl 2.0.0
-// 2017-03-31 V 1.2.1
-//  - Fix: PHP parse error
-// 2017-03-29 V 1.2.0
-//  - Manage crontab condition
-// 2016-12-27 V 1.1.0
-//  - Manage new crontab disabled state
-// 2016-10-09 V 1.0.0
-//  - First release
-//
+//  - php_curl (sudo apt install php8-curl)
 
 // Require CronExpression
 // Order is important
@@ -32,74 +15,78 @@ require_once '../../../src/Cron/MinutesField.php';
 require_once '../../../src/Cron/MonthField.php';
 require_once '../../../src/Cron/YearField.php';
 
-// Get and parse JSON configuration file
-$data = json_decode( file_get_contents( "../../../data/config.json" ) , true );
-// Get transmitter info
-$gpioController=$data['gpioController'];
-$controllerOffset=$data['controllerOffset'];
+require_once '../src/JSONPath/load.php';
 
-echo "gpioController: ".$gpioController."<br/>";
-echo "controllerOffset: ".$controllerOffset."<br/>";
+use Flow\JSONPath\JSONPath;
+
+// Get and parse JSON configuration file
+$data = json_decode(file_get_contents("../../../data/config.json"), true);
+// Get transmitter info
+$gpioController = $data['gpioController'];
+$controllerOffset = $data['controllerOffset'];
+
+echo "gpioController: " . $gpioController . "<br/>";
+echo "controllerOffset: " . $controllerOffset . "<br/>";
 
 //
 // For each switch
 //
-foreach( $data['switchesList'] as $i => $switch )
-{
-	// Check there is a crontab entry
-	if( array_key_exists( 'crontab' , $switch ) )
-	{
-		//
-		// For each crontab entry
-		//
-		foreach( $switch['crontab'] as $j => $cronEntry )
-		{
-			echo $switch['label'].' - rcId='.$switch['rcId'].', channel='.$switch['channel'].' : '.$cronEntry['cron'].' '. $cronEntry['state'].'<br/>';
+foreach ($data['switchesList'] as $i => $switch) {
+    // Check there is a crontab entry
+    if (array_key_exists('crontab', $switch)) {
+        //
+        // For each crontab entry
+        //
+        foreach ($switch['crontab'] as $j => $cronEntry) {
+            echo $switch['label'] . ' - rcId=' . $switch['rcId'] . ', channel=' . $switch['channel'] . ' : ' . $cronEntry['cron'] . ' ' . $cronEntry['state'] . '<br/>';
 
-			// There is a state to manage
-			if( $cronEntry['state'] != "disabled" )
-			{
-				// Setup CronExpression
-				$cron = Cron\CronExpression::factory( $cronEntry['cron'] );
+            // There is a state to manage
+            if ($cronEntry['state'] != "disabled") {
+                // Setup CronExpression
+                $cron = Cron\CronExpression::factory($cronEntry['cron']);
 
-				// Cron state must be applied
-				if( $cron->isDue() )
-				{
-					// By default crontab condition is assuming true
-					// It allows to execute crontab when there is no condition
-					$cronCondition = true;
+                // Cron state must be applied
+                if ($cron->isDue()) {
+                    // By default crontab condition is assuming true
+                    // It allows to execute crontab when there is no condition
+                    $cronCondition = true;
 
-					// Check there is a crontab condition
-					if( array_key_exists( 'condition' , $cronEntry ) && $cronEntry['condition'] != "" )
-					{
-						// Execute node.js script to verify crontab condition
-						$output = shell_exec( 'export NODE_PATH="$(npm root -g)"; nodejs crontab-condition.js ' . $i . " " . $j ." 2>&1 >/dev/null; echo $?" );
+                    // Check there is a crontab condition
+                    if (array_key_exists('condition', $cronEntry) && $cronEntry['condition'] != "") {
+                        $condition = explode(":", $cronEntry['condition']);
 
-						// Analyze execution to know crontab condition value
-						if( strcmp( $output , "0\n" ) != 0 )	$cronCondition = false;
-					}
+                        $leftCondition = $condition[0];
+                        $leftConditionEvaluated = (new JSONPath($data))->find($leftCondition)->getData()['0'];
 
-					if( $cronCondition )
-					{
-						// POST data
-						$postData = 'gpioController='.$gpioController.'&controllerOffset='.$controllerOffset.'&rcId='.$switch['rcId'].'&channel='.$switch['channel'].'&state='.$cronEntry['state'];
+                        $rightCondition = $condition[1];
+                        $conditionToEvaluate = $leftConditionEvaluated . $rightCondition;
 
-						// Init cURL
-						$ch = curl_init( 'http://localhost'.dirname($_SERVER['SCRIPT_NAME']).'/../../../API/set/switch/' );
-						curl_setopt( $ch , CURLOPT_POST           , 1         );
-						curl_setopt( $ch , CURLOPT_POSTFIELDS     , $postData );
-						curl_setopt( $ch , CURLOPT_HEADER         , 0         );
-						curl_setopt( $ch , CURLOPT_RETURNTRANSFER , 1         );
+                        $conditionEvaluation = eval("return " . $conditionToEvaluate . ";");
+                        if ($conditionEvaluation != 1) {
+                            $conditionValue = false;
+                        }
+                    }
 
-						// Execute POST request
-						$response = curl_exec( $ch );
+                    if ($cronCondition) {
+                        // POST data
+                        $postData = 'gpioController=' . $gpioController . '&controllerOffset=' . $controllerOffset . '&rcId=' . $switch['rcId'] . '&channel=' . $switch['channel'] . '&state=' . $cronEntry['state'];
 
-						// Display response
-						echo $response."<br/>";
-					}
-				}
-			}
-		}
-	}
+                        // Init cURL
+                        $ch = curl_init('http://localhost' . dirname($_SERVER['SCRIPT_NAME']) . '/../../../API/set/switch/');
+                        curl_setopt($ch, CURLOPT_POST, 1);
+                        curl_setopt($ch, CURLOPT_POSTFIELDS, $postData);
+                        curl_setopt($ch, CURLOPT_HEADER, 0);
+                        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+                        // Execute POST request
+                        $response = curl_exec($ch);
+
+                        // Display response
+                        echo $response . "<br/>";
+                    }
+                }
+            }
+        }
+    }
 }
 ?>

@@ -1,3 +1,5 @@
+# 2023-07-15 V 5.0.0
+ * Move crontab condition from NodeJS/json-query to PHP/JSONPath
 # 2022-12-19 V 4.2.1
  * Fix: Incorrect temperature trend with negative values
 # 2022-10-15 V 4.2.0

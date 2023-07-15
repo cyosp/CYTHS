@@ -12,7 +12,7 @@
             	{
             		"cron": "0 19 * * *",
             		"state": "on",
-            		"condition": "switchesList.sensor[id=10].data.humidity:gt({switchesList.sensor[id=30].data.humidity})"
+            		"condition": "$..switchesList[*][?(@.id==10)].data.humidity : > 65"
             	},
             	{
             		"cron": "0 6 * * *",
