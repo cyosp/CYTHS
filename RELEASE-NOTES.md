@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 5.0.1 (2023-07-17)
+ * Fix: Incorrect require path for JSONPath library
+
 ##### 5.0.0 (2023-07-15)
  * /!\ Crontab condition breaking change /!\
    - Condition expression move from NodeJS/json-query to PHP/JSONPath

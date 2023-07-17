@@ -15,7 +15,7 @@ require_once '../../../src/Cron/MinutesField.php';
 require_once '../../../src/Cron/MonthField.php';
 require_once '../../../src/Cron/YearField.php';
 
-require_once '../src/JSONPath/load.php';
+require_once '../../../src/JSONPath/load.php';
 
 use Flow\JSONPath\JSONPath;
 
