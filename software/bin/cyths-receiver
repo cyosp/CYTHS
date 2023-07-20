@@ -38,9 +38,6 @@ then
 	exit 1
 fi
 
-# Disable default process attached to the serial port
-sudo systemctl stop serial-getty@ttyAMA0.service
-
 # Define a variable for the configuration file
 CONFIG_FILE_PATH="$1"
 
@@ -60,8 +57,6 @@ CSV_FOLDER="$DATA_FOLDER/csv"
 
 # Create directories
 mkdir -p "$LOG_DIRNAME"
-mkdir -p "$RRD_FOLDER"
-mkdir -p "$CSV_FOLDER"
 
 # Extract needed values from JSON configuration file
 JSCON_CONFIG_VIA_JQ=$(jq '.switchesList | map(.sensor.id + "\n") | join( "" )' "$CONFIG_FILE_PATH" | sed 's|"\(.*\)"|\1|g' 2>&1)
@@ -86,6 +81,11 @@ do
 		config[$SENSOR_ID]=$REGISTRED
 	fi
 done
+
+if [ ! -r /dev/ttyAMA0 ]; then
+    echo "Serial port not found => wait forever" >> $LOG_FILE_PATH
+    sleep infinity
+fi
 
 # Wait a new RSL code
 while read LINE
@@ -186,7 +186,7 @@ do
 				sed -i '$ d' "$SENSOR_RRD_CSV_FILE"
 
 				# Store sensor data
-				OUTPUT=`curl -i --silent --data "sensorId=$SENSOR_ID&date=${RECEIVED_DATE:0:10}&time=${RECEIVED_DATE:11:8}&temperature=$TEMPERATURE&humidity=$HUMIDITY&battery=$BATTERY" "http://localhost/$SOLUTION_NAME/API/set/sensor/data/" 2>&1`
+				OUTPUT=`curl -i --silent --data "sensorId=$SENSOR_ID&date=${RECEIVED_DATE:0:10}&time=${RECEIVED_DATE:11:8}&temperature=$TEMPERATURE&humidity=$HUMIDITY&battery=$BATTERY" "http://localhost/API/set/sensor/data/" 2>&1`
 				if [ `echo "$OUTPUT" | head -1 | grep " 200 " > /dev/null 2>&1; echo $?` -ne 0 ]
 				then
 					echo "  - [ERROR] Fail to update user interface. Details: $OUTPUT" >> $LOG_FILE_PATH

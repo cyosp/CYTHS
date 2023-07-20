@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 6.0.0 (2023-07-20)
+ * Move to container packaging
+
 ##### 5.0.1 (2023-07-17)
  * Fix: Incorrect require path for JSONPath library
 

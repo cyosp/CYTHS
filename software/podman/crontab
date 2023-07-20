@@ -1,0 +1,6 @@
+* * * * * curl --silent 'http://localhost/services/run/crontab/' | sed "s|<br/>|\n|g" 2>&1 >>/var/log/cyths/crontab.log
+
+0 4 * * * logrotate /etc/logrotate.d/nginx
+1 4 * * * logrotate /etc/logrotate.d/php8.2-fpm
+3 4 * * * logrotate /etc/logrotate.d/cyths-receiver
+4 4 * * * logrotate /etc/logrotate.d/cyths-crontab

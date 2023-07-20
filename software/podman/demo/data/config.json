@@ -1,5 +1,5 @@
 {
-    "gpioController": "/dev/gpiochip0",
+    "gpioController": "\/dev\/gpiochip0",
     "controllerOffset": "17",
     "repeat": "6",
     "switchesList": [
@@ -7,23 +7,22 @@
             "label": "Room 1",
             "channel": "1",
             "rcId": "123456",
-            "state": "on",
+            "state": "off",
             "crontab": [
-            	{
-            		"cron": "0 19 * * *",
-            		"state": "on",
-            		"condition": "$..switchesList[*][?(@.id==10)].data.humidity : > 65"
-            	},
-            	{
-            		"cron": "0 6 * * *",
-            		"state": "off"
-            	}
+                {
+                    "cron": "0 19 * * *",
+                    "state": "on",
+                    "condition": "$..switchesList[*][?(@.id==10)].data.humidity : > 65"
+                },
+                {
+                    "cron": "0 6 * * *",
+                    "state": "off"
+                }
             ],
             "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery}% ${sensor.data.time}",
-            "sensor":
-            {
-            	"id": "10",
-            	"data": {
+            "sensor": {
+                "id": "10",
+                "data": {
                     "date": "2019-02-02",
                     "time": "14:01:25",
                     "temperature": "12.0",
@@ -36,12 +35,11 @@
             "label": "Room 2",
             "channel": "2",
             "rcId": "123456",
-            "state": "off",
+            "state": "on",
             "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery:indicator} ${sensor.data.time}",
-			"sensor":
-            {
-            	"id": "20",
-            	"data": {
+            "sensor": {
+                "id": "20",
+                "data": {
                     "date": "2019-02-02",
                     "time": "14:02:10",
                     "temperature": "17.6",
@@ -56,10 +54,9 @@
             "rcId": "123456",
             "state": "unknown",
             "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery:indicator} ${sensor.data.battery}% ${sensor.data.time}",
-			"sensor":
-            {
-            	"id": "30",
-            	"data": {
+            "sensor": {
+                "id": "30",
+                "data": {
                     "date": "2019-02-02",
                     "time": "14:03:58",
                     "temperature": "12.3",

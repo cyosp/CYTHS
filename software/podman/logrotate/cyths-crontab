@@ -1,0 +1,7 @@
+/var/log/cyths/crontab.log {
+	daily
+	rotate 31
+	nocompress
+	missingok
+	notifempty
+}

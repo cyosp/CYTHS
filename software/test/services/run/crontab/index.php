@@ -14,7 +14,7 @@
 
         $conditionValue = true;
 
-        require_once '../../../../cyths/src/JSONPath/load.php';
+        require_once '../../../../www/src/JSONPath/load.php';
 
         use Flow\JSONPath\JSONPath;
 

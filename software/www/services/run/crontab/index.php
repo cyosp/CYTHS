@@ -25,8 +25,7 @@ $data = json_decode(file_get_contents("../../../data/config.json"), true);
 $gpioController = $data['gpioController'];
 $controllerOffset = $data['controllerOffset'];
 
-echo "gpioController: " . $gpioController . "<br/>";
-echo "controllerOffset: " . $controllerOffset . "<br/>";
+echo date('Y-m-d H:i:s') . " " . $gpioController . "#" . $controllerOffset . "<br/>";
 
 //
 // For each switch
@@ -38,7 +37,7 @@ foreach ($data['switchesList'] as $i => $switch) {
         // For each crontab entry
         //
         foreach ($switch['crontab'] as $j => $cronEntry) {
-            echo $switch['label'] . ' - rcId=' . $switch['rcId'] . ', channel=' . $switch['channel'] . ' : ' . $cronEntry['cron'] . ' ' . $cronEntry['state'] . '<br/>';
+            echo " * " . $switch['label'] . ' - rcId=' . $switch['rcId'] . ', channel=' . $switch['channel'] . ' : ' . $cronEntry['cron'] . ' ' . $cronEntry['state'] . '<br/>';
 
             // There is a state to manage
             if ($cronEntry['state'] != "disabled") {
@@ -87,6 +86,7 @@ foreach ($data['switchesList'] as $i => $switch) {
                 }
             }
         }
+        echo "<br/>";
     }
 }
 ?>

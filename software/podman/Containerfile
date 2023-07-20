@@ -1,0 +1,67 @@
+FROM docker.io/debian:bookworm-slim
+MAINTAINER CYOSP <cyosp@cyosp.com>
+
+RUN apt update \
+    && apt install -y \
+      --no-install-recommends \
+      nginx \
+      php-fpm \
+      php-curl \
+      supervisor \
+      jq \
+      bc \
+      rrdtool \
+      librrds-perl \
+      curl \
+      ca-certificates \
+      zip \
+      logrotate \
+      cron
+
+# rc-rsl
+ADD bin/rc-rsl /usr/bin/rc-rsl
+RUN if [ $(arch | grep arm32v7) ]; then \
+      curl https://github.com/cyosp/rc-rsl/releases/download/2.0.0/rc-rsl-armhf -o /usr/bin/rc-rsl; \
+      echo "sha512:e06dfae44976c442783e97d4313d222fd301e7cea3057b304e45e376224b713c958963c0a41fe793cbb866c438697800e097e87525b948c78eb13f7a57fc1e35 /usr/bin/rc-rsl" | sha512sum --check; \
+      strip /usr/bin/rc-rsl; \
+    fi
+RUN chmod +x /usr/bin/rc-rsl
+
+# cyths-transmitter + cyths-receiver
+ADD bin/cyths-* /usr/local/bin
+RUN chmod +x /usr/local/bin/cyths*
+
+# rrd2csv
+RUN curl https://raw.githubusercontent.com/cyosp/rrd2csv/master/rrd2csv.pl -o /usr/local/bin/rrd2csv.pl \
+      && chmod +x /usr/local/bin/rrd2csv.pl
+
+# Nginx
+RUN rm -rf /etc/nginx/sites-enabled/default
+ADD podman/nginx.conf /etc/nginx/sites-enabled/cyths.conf
+RUN echo "daemon off;" >> /etc/nginx/nginx.conf
+
+# CYTHS
+ADD www /var/www/html/cyths
+RUN mkdir -p /etc/cyths /var/lib/cyths/csv /var/lib/cyths/rrd \
+  && ln -s /var/www/html/cyths/data/config.json /etc/cyths \
+  && ln -s /var/lib/cyths/csv /var/www/html/cyths/data/
+
+# PHP-FPM
+RUN sed -i -e 's/^.\+daemonize.\+$/daemonize = no/' /etc/php/8.2/fpm/php-fpm.conf
+
+# Logrotate
+ADD podman/logrotate/cyths* /etc/logrotate.d
+
+# Cron
+ADD podman/crontab /etc/cron.d/cyths
+RUN chmod 0644 /etc/cron.d/cyths \
+      && crontab /etc/cron.d/cyths \
+      && mkdir -p /var/log/cyths
+
+EXPOSE 80
+VOLUME [ "/etc/cyths", "/var/lib/cyths" ]
+
+# Supervisor
+RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
+COPY podman/supervisor.conf /etc/supervisor/conf.d/cyths.conf
+CMD /usr/bin/supervisord
