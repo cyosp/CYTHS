@@ -20,7 +20,7 @@
 //
 
 // TEST
-//  * curl -i --silent --data "sensorId=123&date=2017-03-24&time=22:00:00&temperature=20.0&humidity=60&battery=33" "http://localhost/cyths/API/set/sensor/data/"
+//  * curl -i --silent --data "sensorId=123&date=2017-03-24&time=22:00:00&temperature=20.0&humidity=60&battery=33" "http://localhost/API/set/sensor/data/"
 
 // Get parameters
 $sensorId = $_POST['sensorId'];
@@ -36,15 +36,15 @@ if( $sensorId != "" && $date != "" && $time != "" && $temperature != "" && $humi
 	//
 	// Update JSON configuration file
 	//
-	
+
 	// Get a file pointer to the lock file
 	$fp = fopen( "/tmp/cyths.config.sync.lock" , "c" );
 	// Lock file for synchronisation
 	if( flock( $fp , LOCK_EX ) )
-	{	
+	{
 		// Define path of file to update
 		$configFile="../../../../data/config.json";
-		
+
 		// Get and parse JSON file
 		$data = json_decode( file_get_contents( $configFile ) , true );
 
@@ -113,7 +113,7 @@ if( $sensorId != "" && $date != "" && $time != "" && $temperature != "" && $humi
 
 	$json['result'] = "";
 	$json['message'] = "";
-	
+
 }
 else
 {

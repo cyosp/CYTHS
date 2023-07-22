@@ -38,6 +38,7 @@ RUN curl https://raw.githubusercontent.com/cyosp/rrd2csv/master/rrd2csv.pl -o /u
 # Nginx
 RUN rm -rf /etc/nginx/sites-enabled/default
 ADD podman/nginx.conf /etc/nginx/sites-enabled/cyths.conf
+RUN sed -i "s/user www-data;/user root;/" /etc/nginx/nginx.conf
 RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 
 # CYTHS
@@ -47,6 +48,7 @@ RUN mkdir -p /etc/cyths /var/lib/cyths/csv /var/lib/cyths/rrd \
   && ln -s /var/lib/cyths/csv /var/www/html/cyths/data/
 
 # PHP-FPM
+RUN sed -i -e 's/www-data/root/g' /etc/php/8.2/fpm/pool.d/www.conf
 RUN sed -i -e 's/^.\+daemonize.\+$/daemonize = no/' /etc/php/8.2/fpm/php-fpm.conf
 
 # Logrotate
