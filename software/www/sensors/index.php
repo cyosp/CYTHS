@@ -1,3 +1,7 @@
+<?php
+parse_str(parse_url("http://localhost/$_SERVER[REQUEST_URI]")['query'], $query);
+$sensorId = $query[ 'id' ];
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -13,13 +17,13 @@
 		<link href="../css/font-awesome.min.css" rel="stylesheet">
 		<!-- JavaScript -->
 		<script src="../js/jquery.min.js"></script>
-		<script src="../js/bootstrap.min.js"></script>   
+		<script src="../js/bootstrap.min.js"></script>
 	    <script src="../js/dygraph-combined.js"></script>
 		<script src="../js/cyths-sensors.js?v=1.2.0"></script>
 		<!-- i18n -->
 		<script src="../js/i18next.min.js"></script>
 		<script src="../js/i18nextXHRBackend.min.js"></script>
-		<script src="../js/jquery-i18next.min.js"></script>			
+		<script src="../js/jquery-i18next.min.js"></script>
 		<script>var i18nextLoadPath='../data/i18n/cyths.{{lng}}.json';</script>
 		<script src="../js/cyths-i18n.js"></script>
     </head>
@@ -39,7 +43,7 @@
 						</div>
 				  		<div id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav navbar-right">
-								<?php if( $_GET[ 'id' ] != "" ) echo ' <li><a href="."><span data-i18n="sensors.label">Sensors</span></a></li>'; ?>
+								<?php if( $sensorId != "" ) echo ' <li><a href="."><span data-i18n="sensors.label">Sensors</span></a></li>'; ?>
 					  			<li><a href="../display/crontab"><span data-i18n="crontab.label">Crontab</span></a></li>
 					  			<li><a href="../admin"><span data-i18n="admin.label">Admin</span></a></li>
 							</ul>
@@ -51,6 +55,6 @@
 				 <br/>
 			</div>
 		</div>
-		<?php echo '<span id="sensorId" sensorId="' .  $_GET[ 'id' ] . '"></span>'; ?>
+		<?php echo '<span id="sensorId" sensorId="' .  $sensorId . '"></span>'; ?>
     </body>
 </html>

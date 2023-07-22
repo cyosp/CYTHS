@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 6.1.1 (2023-07-22)
+ * Fix: Display all sensors graph instead of the asked one
+
 ##### 6.1.0 (2023-07-22)
  * Add endpoint to update CYTHS value
 
