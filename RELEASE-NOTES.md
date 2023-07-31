@@ -1,5 +1,9 @@
 Release notes
 -------------
+##### 6.2.0 (2023-07-31)
+ * Automate container image generation
+ * cyths-receiver: Check ttyS1 availability if ttyAMA0 doesn't exist
+
 ##### 6.1.1 (2023-07-22)
  * Fix: Display all sensors graph instead of the asked one
 

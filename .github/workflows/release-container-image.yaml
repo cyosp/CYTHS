@@ -1,0 +1,66 @@
+name: Release container image
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get lowercase repository name
+        id: repo
+        run: GITHUB_REPOSITORY=${GITHUB_REPOSITORY/***\//}; echo "LOWERCASE_REPOSITORY_NAME=${GITHUB_REPOSITORY,,}" >> $GITHUB_OUTPUT
+
+      - name: Get tag name
+        id: tag
+        run: echo "TAG_NAME=${GITHUB_REF/refs\/tags\//}" >> $GITHUB_OUTPUT
+
+      - name: Checkout code
+        uses: actions/checkout@v3.5.3
+
+      - name: Create GitHub release
+        id: release
+        uses: actions/create-release@v1.1.4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: ${{ steps.tag.outputs.NAME }}
+          draft: true
+
+      - name: Publish release with notes
+        uses: cyosp/publish-release-with-notes@1.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          id: ${{ steps.release.outputs.id }}
+          version: ${{ steps.tag.outputs.TAG_NAME }}
+          notes: ${{ github.workspace }}/RELEASE-NOTES.md
+
+      - name: Setup Docker QEMU
+        uses: docker/setup-qemu-action@v2.2.0
+        with:
+          platforms: linux/amd64,linux/arm/v7
+
+      - name: Setup Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2.9.1
+
+      - name: Login to DockerHub
+        uses: docker/login-action@v2.2.0
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Build and push Docker image to registry
+        uses: docker/build-push-action@v4.1.1
+        with:
+          builder: ${{ steps.buildx.outputs.name }}
+          context: software
+          file: software/podman/Containerfile
+          platforms: linux/amd64,linux/arm/v7
+          push: true
+          tags: cyosp/${{ steps.repo.outputs.LOWERCASE_REPOSITORY_NAME }}:${{ steps.tag.outputs.TAG_NAME }}
