@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 6.3.0 (2023-07-31)
+* Add arm64v8 container image generation
+
 ##### 6.2.0 (2023-07-31)
  * Automate container image generation
  * cyths-receiver: Check ttyS1 availability if ttyAMA0 doesn't exist

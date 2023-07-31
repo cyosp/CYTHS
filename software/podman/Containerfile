@@ -20,7 +20,7 @@ RUN apt update \
 
 # rc-rsl
 ADD bin/rc-rsl /usr/bin/rc-rsl
-RUN if [ $(arch | grep arm32v7) ]; then \
+RUN if [ $(arch | grep arm32v7) ] || [ $(arch | grep arm64v8) ]; then \
       curl https://github.com/cyosp/rc-rsl/releases/download/2.0.0/rc-rsl-armhf -o /usr/bin/rc-rsl; \
       echo "sha512:e06dfae44976c442783e97d4313d222fd301e7cea3057b304e45e376224b713c958963c0a41fe793cbb866c438697800e097e87525b948c78eb13f7a57fc1e35 /usr/bin/rc-rsl" | sha512sum --check; \
       strip /usr/bin/rc-rsl; \
