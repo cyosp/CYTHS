@@ -1,9 +1,14 @@
 #!/bin/bash
 
-if [ ! -r /dev/ttyAMA0 ]; then
-    echo "Serial port not found => wait forever"
-    sleep infinity
+SERIAL_DEVICE=/dev/ttyAMA0
+if [ ! -e $SERIAL_DEVICE ]; then
+    SERIAL_DEVICE=/dev/ttyS1
+    if [ ! -e $SERIAL_DEVICE ]; then
+      echo "Serial port not found => wait forever"
+      sleep infinity
+    fi
 fi
+echo "Serial port used: $SERIAL_DEVICE"
 
 # Wait a new RSL code
 while read LINE
@@ -16,6 +21,6 @@ do
 
 	cyths-update "$CODE" "$RECEIVED_DATE"
 
-done < <(cat /dev/ttyAMA0)
+done < <(cat $SERIAL_DEVICE)
 #done < <((stty 115200 cs8 -ixon; cat) < /dev/ttyACM0)
 
