@@ -1,15 +1,13 @@
 #!/bin/bash
 
-if [ $# -ne 2 ]
-then
-	echo "[$(basename $0)] takes two parameters: RSL code and associated date"
-	exit 1
+if [ $# -ne 2 ]; then
+  echo "[$(basename $0)] takes two parameters: RSL code and associated date"
+  exit 1
 fi
 
-if [ ! -e "/usr/bin/jq" ]
-then
-	echo "jq is missing. Please install it"
-	exit 1
+if [ ! -e "/usr/bin/jq" ]; then
+  echo "jq is missing. Please install it"
+  exit 1
 fi
 
 CODE=$1
@@ -39,39 +37,33 @@ REGISTRED="REGISTRED"
 # Load configuration in array
 # Line is driven by sensor identifier and REGISTRED value
 #
-for SENSOR_ID in $(echo -e $JSCON_CONFIG_VIA_JQ)
-do
-	# Manage only lines with a sensor identifier
-	if [ -n "$SENSOR_ID" ]
-	then
-		config[$SENSOR_ID]=$REGISTRED
-	fi
+for SENSOR_ID in $(echo -e $JSCON_CONFIG_VIA_JQ); do
+  # Manage only lines with a sensor identifier
+  if [ -n "$SENSOR_ID" ]; then
+    config[$SENSOR_ID]=$REGISTRED
+  fi
 done
 
-echo "$(date "+%Y-%m-%d %H:%M:%S")" >> $LOG_FILE_PATH
-echo "  - UPDATED: ${UPDATED_AT}" >> $LOG_FILE_PATH
+echo "$(date "+%Y-%m-%d %H:%M:%S")" >>$LOG_FILE_PATH
+echo "  - UPDATED: ${UPDATED_AT}" >>$LOG_FILE_PATH
 
 # Code is an integer
-if [[ $CODE =~ ^-?[0-9]+$ ]]
-then
-  echo "  - CODE: $CODE" >> $LOG_FILE_PATH
+if [[ $CODE =~ ^-?[0-9]+$ ]]; then
+  echo "  - CODE: $CODE" >>$LOG_FILE_PATH
 
   BIN_CODE=$(echo "obase=2; $CODE" | bc 2>&1)
   BIN_CODE_LENGTH=${#BIN_CODE}
-  if [ $BIN_CODE_LENGTH -lt 32 ]
-  then
+  if [ $BIN_CODE_LENGTH -lt 32 ]; then
     HOW_MANY_ZERO=$(expr 32 - $BIN_CODE_LENGTH)
     # Left 0 padding
-    for i in $(seq $HOW_MANY_ZERO)
-    do
+    for i in $(seq $HOW_MANY_ZERO); do
       BIN_CODE="0${BIN_CODE}"
     done
   fi
-  echo "  - BIN CODE: $BIN_CODE" >> $LOG_FILE_PATH
+  echo "  - BIN CODE: $BIN_CODE" >>$LOG_FILE_PATH
 
   SWITCH_ORDER_CODE=${BIN_CODE:4:4}
-  if [ "$SWITCH_ORDER_CODE" = "1111" ]
-  then
+  if [ "$SWITCH_ORDER_CODE" = "1111" ]; then
     # Code structure
     # [2 bits/battery level] + [2 bits/protocol version] + [4 bits/1111 <=> rsl code not used] + [7 bits/sensor code] + [7 bits/humidity] + [10 bits/temperature]
 
@@ -81,58 +73,54 @@ then
     BIN_HUMIDITY=${BIN_CODE:15:7}
     BIN_TEMPERATURE=${BIN_CODE:22:10}
 
+    # Get temperature in base 10
+    TEMPERATURE=$(echo "ibase=2; $BIN_TEMPERATURE" | bc 2>&1)
+    # Extract real temperature
+    TEMPERATURE=$(bc <<<"scale=1; ($TEMPERATURE-400)/10")
+    # Add missing 0 for: -.9 <= TEMPERATURE <= .9
+    #  => It allows to have: -0.9 <= TEMPERATURE <= 0.9
+    TEMPERATURE=$(echo $TEMPERATURE | sed "s|^\(-*\)\.|\10.|")
+
+    # Get humidity in base 10
+    HUMIDITY=$(echo "ibase=2; $BIN_HUMIDITY" | bc 2>&1)
+
+    BATTERY_LEVEL=$(echo "ibase=2; $BIN_BATTERY_LEVEL" | bc 2>&1)
+    BATTERY=$(awk -v BATTERY_LEVEL="$BATTERY_LEVEL" 'BEGIN{printf "%.0f\n", BATTERY_LEVEL*33.3}')
+
     # Get sensor code in base 10
     SENSOR_ID=$(echo "ibase=2; $BIN_SENSOR_CODE" | bc 2>&1)
 
-    if [ ${config[$SENSOR_ID]} == "$REGISTRED" ]
-    then
-      # Get temperature in base 10
-      TEMPERATURE=$(echo "ibase=2; $BIN_TEMPERATURE" | bc 2>&1)
-      # Extract real temperature
-      TEMPERATURE=$(bc <<< "scale=1; ($TEMPERATURE-400)/10")
-      # Add missing 0 for: -.9 <= TEMPERATURE <= .9
-      #  => It allows to have: -0.9 <= TEMPERATURE <= 0.9
-      TEMPERATURE=$(echo $TEMPERATURE | sed "s|^\(-*\)\.|\10.|")
+    echo "  - $TEMPERATURE° / $HUMIDITY%, battery: $BATTERY% for sensor: $SENSOR_ID" >>$LOG_FILE_PATH
 
-      # Get humidity in base 10
-      HUMIDITY=$(echo "ibase=2; $BIN_HUMIDITY" | bc 2>&1)
-
-      BATTERY_LEVEL=$(echo "ibase=2; $BIN_BATTERY_LEVEL" | bc 2>&1)
-      BATTERY=$(awk -v BATTERY_LEVEL="$BATTERY_LEVEL" 'BEGIN{printf "%.0f\n", BATTERY_LEVEL*33.3}')
-
-      echo "  - $TEMPERATURE° / $HUMIDITY%, battery: $BATTERY% for sensor: $SENSOR_ID" >> $LOG_FILE_PATH
-
+    if [ "${config[$SENSOR_ID]}" == "$REGISTRED" ]; then
       SENSOR_RRD_FILE_PATH="$RRD_FOLDER/${SENSOR_ID}.rrd"
-      if [ ! -f "$SENSOR_RRD_FILE_PATH" ]
-      then
-        echo "  - Create RRD DB: $SENSOR_RRD_FILE_PATH" >> $LOG_FILE_PATH
+      if [ ! -f "$SENSOR_RRD_FILE_PATH" ]; then
+        echo "  - Create RRD DB: $SENSOR_RRD_FILE_PATH" >>$LOG_FILE_PATH
         # 1 entry each 10 minutes
         # Keep 366 days
-        rrdtool create "$SENSOR_RRD_FILE_PATH" -s 600 -b $(date --date='1 day ago' +%s) DS:temperature:GAUGE:1200:-40:62.4 DS:humidity:GAUGE:1200:0:100 DS:battery:GAUGE:1200:0:100 RRA:AVERAGE:0.5:1:52704 2>&1 >> $LOG_FILE_PATH
+        rrdtool create "$SENSOR_RRD_FILE_PATH" -s 600 -b $(date --date='1 day ago' +%s) DS:temperature:GAUGE:1200:-40:62.4 DS:humidity:GAUGE:1200:0:100 DS:battery:GAUGE:1200:0:100 RRA:AVERAGE:0.5:1:52704 2>&1 >>$LOG_FILE_PATH
         # Wait all is up and running
         # Needed for rrdupdate
         sleep 1
       fi
 
       # Update RRD database
-      rrdupdate "$SENSOR_RRD_FILE_PATH" $(/bin/date --date=$UPDATED_AT +"%s"):$TEMPERATURE:$HUMIDITY:$BATTERY 2>&1 >> $LOG_FILE_PATH
-      if [ $? -eq 0 ]
-      then
-        echo "  - RRD updated" >> $LOG_FILE_PATH
+      rrdupdate "$SENSOR_RRD_FILE_PATH" $(/bin/date --date=$UPDATED_AT +"%s"):$TEMPERATURE:$HUMIDITY:$BATTERY 2>&1 >>$LOG_FILE_PATH
+      if [ $? -eq 0 ]; then
+        echo "  - RRD updated" >>$LOG_FILE_PATH
       else
-        echo "  - [ERROR] Fail to update RRD DB" >> $LOG_FILE_PATH
+        echo "  - [ERROR] Fail to update RRD DB" >>$LOG_FILE_PATH
         exit 1
       fi
 
       SENSOR_RRD_CSV_FILE="$CSV_FOLDER/${SENSOR_ID}.rrd.csv"
       # Convert RRD to CSV file
       # Keep only one week
-      rrd2csv.pl -s end-7day -e now "$SENSOR_RRD_FILE_PATH" | perl -pe 's/\s*0\.00\s*,\s*0\.00\s*,\s*0\.00/NaN,NaN,NaN/g' > "$SENSOR_RRD_CSV_FILE"
-      if [ $? -eq 0 ]
-      then
-        echo "  - CSV updated" >> $LOG_FILE_PATH
+      rrd2csv.pl -s end-7day -e now "$SENSOR_RRD_FILE_PATH" | perl -pe 's/\s*0\.00\s*,\s*0\.00\s*,\s*0\.00/NaN,NaN,NaN/g' >"$SENSOR_RRD_CSV_FILE"
+      if [ $? -eq 0 ]; then
+        echo "  - CSV updated" >>$LOG_FILE_PATH
       else
-        echo "  - [ERROR] Fail to update CSV" >> $LOG_FILE_PATH
+        echo "  - [ERROR] Fail to update CSV" >>$LOG_FILE_PATH
         exit 1
       fi
       # Delete header
@@ -140,21 +128,22 @@ then
       # Delete last line which is always a line with zero values
       sed -i '$ d' "$SENSOR_RRD_CSV_FILE"
 
-      OUTPUT=`curl -i --silent --data "sensorId=$SENSOR_ID&date=${UPDATED_AT:0:10}&time=${UPDATED_AT:11:8}&temperature=$TEMPERATURE&humidity=$HUMIDITY&battery=$BATTERY" "http://localhost/API/set/sensor/data/" 2>&1`
-      if [ `echo "$OUTPUT" | head -1 | grep " 200 " > /dev/null 2>&1; echo $?` -ne 0 ]
-      then
-        echo "  - [ERROR] Fail to update user interface. Details: $OUTPUT" >> $LOG_FILE_PATH
+      OUTPUT=$(curl -i --silent --data "sensorId=$SENSOR_ID&date=${UPDATED_AT:0:10}&time=${UPDATED_AT:11:8}&temperature=$TEMPERATURE&humidity=$HUMIDITY&battery=$BATTERY" "http://localhost/API/set/sensor/data/" 2>&1)
+      if [ $(
+        echo "$OUTPUT" | head -1 | grep " 200 " >/dev/null 2>&1
+        echo $?
+      ) -ne 0 ]; then
+        echo "  - [ERROR] Fail to update user interface. Details: $OUTPUT" >>$LOG_FILE_PATH
         exit 1
       else
-        echo "  - CYTHS updated" >> $LOG_FILE_PATH
+        echo "  - CYTHS updated" >>$LOG_FILE_PATH
       fi
     else
-      echo "  - Sensor identifier not registered in configuration: $SENSOR_ID" >> $LOG_FILE_PATH
+      echo "  - [WARN] Sensor not registered" >>$LOG_FILE_PATH
     fi
   else
-    echo "  - RSL code received: $CODE" >> $LOG_FILE_PATH
+    echo "  - RSL code received: $CODE" >>$LOG_FILE_PATH
   fi
 else
-  echo "  - VALUE RECEIVED: $CODE" >> $LOG_FILE_PATH
+  echo "  - VALUE RECEIVED: $CODE" >>$LOG_FILE_PATH
 fi
-

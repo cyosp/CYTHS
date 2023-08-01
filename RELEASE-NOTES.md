@@ -1,7 +1,10 @@
 Release notes
 -------------
+##### 6.3.1 (2023-08-01)
+ * cyths-update: Avoid Bash error if sensor value received is not registered
+
 ##### 6.3.0 (2023-07-31)
-* Add arm64v8 container image generation
+ * Add arm64v8 container image generation
 
 ##### 6.2.0 (2023-07-31)
  * Automate container image generation
