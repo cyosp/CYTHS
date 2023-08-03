@@ -44,8 +44,8 @@ $sensorId = $query[ 'id' ];
 				  		<div id="navbar" class="navbar-collapse collapse">
 							<ul class="nav navbar-nav navbar-right">
 								<?php if( $sensorId != "" ) echo ' <li><a href="."><span data-i18n="sensors.label">Sensors</span></a></li>'; ?>
-					  			<li><a href="../display/crontab"><span data-i18n="crontab.label">Crontab</span></a></li>
-					  			<li><a href="../admin"><span data-i18n="admin.label">Admin</span></a></li>
+					  			<li><a href="../display/crontab/"><span data-i18n="crontab.label">Crontab</span></a></li>
+					  			<li><a href="../admin/"><span data-i18n="admin.label">Admin</span></a></li>
 							</ul>
 				  		</div>
 					</div>

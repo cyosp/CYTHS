@@ -1,5 +1,9 @@
 Release notes
 -------------
+##### 6.4.0 (2023-08-03)
+ * Update to work behind a reverse proxy
+ * Build container image with empty cyths-update log file
+
 ##### 6.3.1 (2023-08-01)
  * cyths-update: Avoid Bash error if sensor value received is not registered
 
