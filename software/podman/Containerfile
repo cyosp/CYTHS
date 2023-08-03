@@ -45,7 +45,9 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 ADD www /var/www/html/cyths
 RUN mkdir -p /etc/cyths /var/lib/cyths/csv /var/lib/cyths/rrd \
   && ln -s /var/www/html/cyths/data/config.json /etc/cyths \
-  && ln -s /var/lib/cyths/csv /var/www/html/cyths/data/
+  && ln -s /var/lib/cyths/csv /var/www/html/cyths/data/ \
+  && mkdir -p /var/log/cyths \
+  && touch /var/log/cyths/cyths-update.log
 
 # PHP-FPM
 RUN sed -i -e 's/www-data/root/g' /etc/php/8.2/fpm/pool.d/www.conf
