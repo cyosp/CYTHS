@@ -1,8 +1,0 @@
-#!/bin/bash
-
-# Simulate execution without error of rc-rsl binary
-# Useful for non ARM32V7 or ARM64V8 architecture
-
-echo "Done"
-
-exit 0

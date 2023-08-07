@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 6.5.0 (2023-08-07)
+ *  Build container image with rc-rsl 2.1.0
+
 ##### 6.4.0 (2023-08-03)
  * Update to work behind a reverse proxy
  * Build container image with empty cyths-update log file

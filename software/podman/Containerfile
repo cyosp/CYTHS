@@ -16,16 +16,17 @@ RUN apt update \
       ca-certificates \
       zip \
       logrotate \
-      cron
+      cron \
+      libgpiod2
 
 # rc-rsl
-ADD bin/rc-rsl /usr/bin/rc-rsl
-RUN if [ $(arch | grep arm32v7) ] || [ $(arch | grep arm64v8) ]; then \
-      curl https://github.com/cyosp/rc-rsl/releases/download/2.0.0/rc-rsl-armhf -o /usr/bin/rc-rsl; \
-      echo "sha512:e06dfae44976c442783e97d4313d222fd301e7cea3057b304e45e376224b713c958963c0a41fe793cbb866c438697800e097e87525b948c78eb13f7a57fc1e35 /usr/bin/rc-rsl" | sha512sum --check; \
-      strip /usr/bin/rc-rsl; \
-    fi
-RUN chmod +x /usr/bin/rc-rsl
+RUN dist=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d= -f2) \
+    && curl -L https://github.com/cyosp/rc-rsl/releases/download/2.1.0/rc-rsl-$dist-$(arch) -o rc-rsl-$dist-$(arch) \
+    && curl -L https://github.com/cyosp/rc-rsl/releases/download/2.1.0/rc-rsl-SHA512.txt -o rc-rsl-SHA512.txt \
+    && grep rc-rsl-$dist-$(arch) rc-rsl-SHA512.txt | sha512sum -c \
+    && rm rc-rsl-SHA512.txt \
+    && mv rc-rsl-$dist-$(arch) /usr/bin/rc-rsl \
+    && chmod +x /usr/bin/rc-rsl
 
 # cyths-transmitter + cyths-receiver
 ADD bin/cyths-* /usr/local/bin
