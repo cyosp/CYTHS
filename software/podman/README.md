@@ -1,29 +1,35 @@
 # Podman instructions
 
-## Build
-```
+## Build in local
+```bash
 podman build .. -f Containerfile -t cyths
 ```
 
-## Run
+## Run from registry
 
-### On Raspberry Pi
+### On Raspberry Pi model 3 and Debian Bookworm
+ - Disable Bluetooth
+```bash
+sudo perl -i -pe "s/^(console.*)$/dtoverlay=disable-bt \1/" /boot/firmware/cmdline.txt
+```
  - Disable default process attached to the serial port
+```bash
+sudo systemctl stop serial-getty@ttyS1.service
+sudo systemctl mask serial-getty@ttyS1.service
 ```
-sudo systemctl stop serial-getty@ttyAMA0.service
-```
- - Add this option to `podman run` to allow container to access to serial port
-```
---device=/dev/ttyAMA0
+ - Map serial port and GPIO adding these options to `podman run`
+```bash
+--device=/dev/ttyS1
+--device=/dev/gpiochip0
 ```
 
 ### With no data
 ```
 podman run \
-    -d \
-    -p 8080:80 \
-    --name cyths \
-    cyths
+   -d \
+   -p 8080:80 \
+   --name cyths \
+   docker.io/cyosp/cyths:6.6.0
 ```
 
 ### Demo
@@ -35,5 +41,5 @@ podman run \
     -v ./demo/data/config.json:/etc/cyths/config.json \
     -v ./demo/data/csv:/var/lib/cyths/csv \
     --name cyths-demo \
-    cyths
+    docker.io/cyosp/cyths:6.6.0
 ```

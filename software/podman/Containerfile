@@ -64,7 +64,7 @@ RUN chmod 0644 /etc/cron.d/cyths \
       && mkdir -p /var/log/cyths
 
 EXPOSE 80
-VOLUME [ "/etc/cyths", "/var/lib/cyths" ]
+VOLUME [ "/etc/cyths", "/var/lib/cyths/csv", "/var/lib/cyths/rrd" ]
 
 # Supervisor
 RUN sed -i -e 's/^\(\[supervisord\]\)$/\1\nnodaemon=true/' /etc/supervisor/supervisord.conf
