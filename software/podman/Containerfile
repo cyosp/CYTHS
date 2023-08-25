@@ -28,7 +28,7 @@ RUN dist=$(cat /etc/os-release | grep VERSION_CODENAME | cut -d= -f2) \
     && mv rc-rsl-$dist-$(arch) /usr/bin/rc-rsl \
     && chmod +x /usr/bin/rc-rsl
 
-# cyths-transmitter + cyths-receiver
+# cyths-timezone + cyths-transmitter + cyths-receiver
 ADD bin/cyths-* /usr/local/bin
 RUN chmod +x /usr/local/bin/cyths*
 

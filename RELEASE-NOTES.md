@@ -1,7 +1,10 @@
 Release notes
 -------------
+##### 6.7.0 (2023-08-25)
+ * Set local time and time zone according to TZ variable
+
 ##### 6.6.0 (2023-08-07)
- *  Expose csv and rrd directories as container image volumes
+ * Expose csv and rrd directories as container image volumes
 
 ##### 6.5.0 (2023-08-07)
  *  Build container image with rc-rsl 2.1.0
