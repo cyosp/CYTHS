@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 6.8.0 (2023-09-28)
+ * Update endpoint can take several values
+
 ##### 6.7.0 (2023-08-25)
  * Set local time and time zone according to TZ variable
 
