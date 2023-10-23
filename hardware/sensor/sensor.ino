@@ -7,6 +7,9 @@
 // Value range: 1 - 127
 // #define STATIC_SENSOR_ID 51
 
+// Uncomment for flood sensor capability to V2 sensor
+// #define FLOOD_SENSOR_V2_ID 15
+
 // To reduce power consumption
 #include <avr/sleep.h>
 // For DHT sensor
@@ -45,10 +48,16 @@
   #define TRANSMITTER_433_PIN         3
   #define DHT_PIN                     4
 
-  #define UNUSED_PIN_1                0
-  #define UNUSED_PIN_2                1
-  #define UNUSED_PIN_3                2
-  #define UNUSED_PIN_4                5
+  #define FLOOD_POWER_PIN             0
+  #ifdef FLOOD_SENSOR_V2_ID
+    #define FLOOD_CHECK_PIN          A1 // Analogical pin 1 (A1) matches digital pin 2
+    const unsigned long floodSensorV2Id = FLOOD_SENSOR_V2_ID;
+  #else
+    #define FLOOD_CHECK_PIN           2
+  #endif
+
+  #define UNUSED_PIN_1                1
+  #define UNUSED_PIN_2                5
 #endif
 
 // Low power consumption values
@@ -90,29 +99,36 @@ void setup() {
 
   // Disable ADC
   ADCSRA = 0;
-  
+
   // Define pin states
   pinMode(DHT_PIN, INPUT);
   pinMode(UNUSED_PIN_1, OUTPUT);
   pinMode(UNUSED_PIN_2, OUTPUT);
-  pinMode(UNUSED_PIN_3, OUTPUT);
 
   // Set to low level unused pins
   digitalWrite(UNUSED_PIN_1, LOW);
   digitalWrite(UNUSED_PIN_2, LOW);
-  digitalWrite(UNUSED_PIN_3, LOW);
 
   #ifdef SENSOR_V1
     pinMode(POWER_DHT_AND_TRANSMITTER, OUTPUT);
     digitalWrite(POWER_DHT_AND_TRANSMITTER, HIGH);
+
+    pinMode(UNUSED_PIN_3, OUTPUT);
+    digitalWrite(UNUSED_PIN_3, LOW);
   #else
-    pinMode(UNUSED_PIN_4, OUTPUT);
-    digitalWrite(UNUSED_PIN_4, LOW);
+    pinMode(FLOOD_POWER_PIN, OUTPUT);
+    digitalWrite(FLOOD_POWER_PIN, LOW);
+    #ifdef FLOOD_SENSOR_V2_ID
+      pinMode(FLOOD_CHECK_PIN, INPUT);
+    #else
+      pinMode(FLOOD_CHECK_PIN, OUTPUT);
+      digitalWrite(FLOOD_CHECK_PIN, LOW);
+    #endif
   #endif
 
   mySwitch.enableTransmit( TRANSMITTER_433_PIN );
-  // Protocol: 2 <=> rc-rsl 
-  mySwitch.setProtocol( 2 ); 
+  // Protocol: 2 <=> rc-rsl
+  mySwitch.setProtocol( 2 );
   mySwitch.setRepeatTransmit( 5 );
 
   //
@@ -145,7 +161,7 @@ void setup() {
       // Init random generator with a DHT read
       DHT.read22( DHT_PIN );
       randomSeed( DHT.temperature * DHT.humidity );
-   
+
       sensorId = random( 1 , 127 );
       EEPROM.put( sensorIdInEEPROM , sensorId );
     }
@@ -158,6 +174,14 @@ void setup() {
 
   // Manage low energy
   setup_watchdog( WATCHDOG );
+}
+
+void switchAnalogToDigitalConverterOn() {
+  sbi( ADCSRA , ADEN );
+}
+
+void switchAnalogToDigitalConverterOff() {
+  cbi( ADCSRA , ADEN );
 }
 
 void loop() {
@@ -175,9 +199,9 @@ void loop() {
     } else {
         watchdogCount++;
     }
-      
+
     unsigned long chk = DHT.read22( DHT_PIN );
-    
+
     // Set microcontroller to low frequency
     setLowFreq();
 
@@ -199,7 +223,7 @@ void loop() {
     if(vccMapping<batteryLevel) {
       batteryLevel = vccMapping;
     }
-    
+
     unsigned long hum = (unsigned long) DHT.humidity;
     // Get temperature * 10
     unsigned long temp = (unsigned long) (DHT.temperature * 10.0 );
@@ -239,6 +263,26 @@ void loop() {
 
     setHighFreq();
     mySwitch.send( code , 32 );
+
+    #ifdef FLOOD_SENSOR_V2_ID
+      switchAnalogToDigitalConverterOn();
+      digitalWrite(FLOOD_POWER_PIN, HIGH);
+      delay( 100 );
+      int flood = analogRead(FLOOD_CHECK_PIN); // value is: 0 -> 1024
+      digitalWrite(FLOOD_POWER_PIN, LOW);
+      switchAnalogToDigitalConverterOff();
+
+      hum = map( flood , 0 , 1024 , 0 , 100 );
+      temp = map( flood , 0 , 1024 , 400 , 900 );
+
+      // Compute RSL code
+      code = batteryLevel << 30 | protocolAndCode << 24 | floodSensorV2Id << 17 | hum << 10 | temp;
+
+      delay( 1500 ); // Wait receiver has managed first code before to send flood info
+
+      mySwitch.send( code , 32 );
+    #endif
+
     setLowFreq();
   }
 
@@ -246,7 +290,7 @@ void loop() {
    system_sleep();
 }
 
-// Set system into the sleep state 
+// Set system into the sleep state
 // System wakes up when watchdog is timed out
 void system_sleep() {
   // Set sleep mode
@@ -269,13 +313,13 @@ void system_sleep() {
 void setup_watchdog( int ii ) {
   byte bb;
   int ww;
-  
+
   if( ii > 9 ) ii = 9;
   bb = ii & 7;
-  
+
   if( ii > 7 ) bb |= (1<<5);
   bb |= (1<<WDCE);
-  
+
   ww = bb;
 
   MCUSR &= ~(1<<WDRF);
@@ -295,9 +339,8 @@ ISR( WDT_vect ) {
 // Measure input microcontroller voltage against internal 1.1V
 // Return Vcc value in mV
 long readVcc() {
-  // switch Analog to Digitalconverter ON
-  sbi( ADCSRA , ADEN );                           
-  
+  switchAnalogToDigitalConverterOn();
+
   // Read 1.1V reference against Vcc
   // Set the reference to Vcc and the measurement to the internal 1.1V reference
   #if defined(__AVR_ATmega32U4__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__)
@@ -308,32 +351,31 @@ long readVcc() {
     ADMUX = _BV(MUX3) | _BV(MUX2);
   #else
     ADMUX = _BV(REFS0) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1);
-  #endif  
+  #endif
 
   // Wait for Vref to settle
   delay( 2 );
   // Start conversion
-  ADCSRA |= _BV(ADSC); 
+  ADCSRA |= _BV(ADSC);
   // Measuring
   while( bit_is_set( ADCSRA , ADSC ) );
 
-  // switch Analog to Digitalconverter OFF
-  cbi( ADCSRA , ADEN );    
-  
+  switchAnalogToDigitalConverterOff();
+
   // Must read ADCL first
   // It then locks ADCH
   uint8_t low  = ADCL;
-  // Unlock both 
-  uint8_t high = ADCH; 
- 
+  // Unlock both
+  uint8_t high = ADCH;
+
   long result = (high<<8) | low;
 
   // Calculate Vcc in mV
   // 1125300 = 1.1*1023*1000
-  result = 1125300L / result; 
+  result = 1125300L / result;
 
   // Return Vcc in mV
-  return result; 
+  return result;
 }
 
 // Set microcontroller to high frequency
