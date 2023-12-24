@@ -1,6 +1,6 @@
 var gpioController = "/dev/null";
 var controllerOffset = -1;
-var projectVersion = "6.8.0";
+var projectVersion = "6.9.0";
 var sensorsPageVersion = "1.4.0";
 
 var uiDisplayedToUser = true;
@@ -116,15 +116,25 @@ function trend(switchToDrive, previousSwitchToDrive, type) {
 const allInOneViewMode = "allInOneViewMode";
 const sensorViewMode = "sensorViewMode";
 const switchViewMode = "switchViewMode";
+const sensorAndSwitchViewMode = sensorViewMode + " " + switchViewMode;
 
-function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
+function addSwitch(switchToDrive, index, viewMode) {
+	let previousSwitchToDrive = previousConfig.switchesList[index];
+
+	let isSeparator = switchToDrive.label === undefined;
+
 	//
 	// Define switch id
 	//
 	var switchId = "switch-";
 	// There is no switch to drive, only a sensor attached
-	if( switchToDrive.channel == "" && switchToDrive.rcId == "" )	switchId += "sensor-" + switchToDrive.sensor.id;
-	else															switchId += switchToDrive.channel + "-" + switchToDrive.rcId;
+	if (isSeparator) {
+		switchId += "separator-" + switchToDrive.separator + "-" + index;
+	} else if (switchToDrive.channel == "" && switchToDrive.rcId == "") {
+		switchId += "sensor-" + switchToDrive.sensor.id;
+	} else {
+		switchId += switchToDrive.channel + "-" + switchToDrive.rcId;
+	}
 
 	let hasSwitchSensor = false;
 	let outdatedSensorDataClass = "";
@@ -150,9 +160,7 @@ function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
 		}
 	}
 
-	// Check switch info exists and is not empty
-	if( switchToDrive.info )
-	{
+	if (switchToDrive.info) {
 		//
 		// Resolve switch info variables
 		//
@@ -195,7 +203,7 @@ function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
 
 	let switchViewClass;
 	if (hasSwitchState && hasSwitchSensor) {
-		switchViewClass = sensorViewMode + " " + switchViewMode;
+		switchViewClass = sensorAndSwitchViewMode;
 	} else if (hasSwitchSensor) {
 		switchViewClass = sensorViewMode;
 	} else if (hasSwitchState) {
@@ -203,21 +211,25 @@ function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
 	}
 
 	const allInOneView = viewMode === allInOneViewMode;
-	const sensorView = viewMode === sensorViewMode && !hasSwitchState && hasSwitchSensor;
-	const switchView = viewMode === switchViewMode && hasSwitchState && !hasSwitchSensor;
+	const sensorView = viewMode === sensorViewMode
+		&& (!hasSwitchState && hasSwitchSensor || isSeparator && switchToDrive.separator === "sensor");
+	const switchView = viewMode === switchViewMode
+		&& (hasSwitchState && !hasSwitchSensor || isSeparator && switchToDrive.separator === "switch");
+	const sensorAndSwitchView = viewMode === sensorAndSwitchViewMode
+		&& (hasSwitchState && hasSwitchSensor || isSeparator && switchToDrive.separator === "sensorAndSwitch");
 
 	var switchObj = $('#' + switchId);
 	var switchInfoObj = $('#' + infoId);
 
 	// Add switch if it doesn't exist in the page and following view mode
-	if (switchObj.length === 0 && switchInfoObj.length === 0 && (allInOneView || sensorView || switchView)) {
+	if (switchObj.length === 0 && switchInfoObj.length === 0 && (allInOneView || sensorView || switchView || sensorAndSwitchView)) {
 		//
 		// Compute piece of HTML to insert
 		//
-		var switchesListToAdd = '<div class="col-xs-6 col-lg-3 switch ' + switchViewClass + '">';
+		var switchesListToAdd = '<div id="div-' + switchId + '" class="col-xs-6 col-lg-3 switch ' + switchViewClass + ' ' + (isSeparator ? 'separator' : '') + '">';
 		switchesListToAdd += '  <h2 class="h4">' + switchToDrive.label + '</h2>';
 		switchesListToAdd += '  <p>';
-		if (allInOneView || switchView) {
+		if (allInOneView || switchView || sensorAndSwitchView) {
 			switchesListToAdd += '    <input id="' + switchId + '"';
 			switchesListToAdd += ' name="' + switchId + '" rcId="' + switchToDrive.rcId + '" channel="' + switchToDrive.channel + '" type="checkbox" data-on-color="info" data-off-color="warning" data-size="normal" data-handle-width="50" ';
 			switchesListToAdd += state;
@@ -226,7 +238,7 @@ function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
 			switchesListToAdd += '>';
 		}
 		switchesListToAdd += '  </p>';
-		if (allInOneView || sensorView) {
+		if (allInOneView || sensorView || sensorAndSwitchView) {
 			switchesListToAdd += '  <h2 class="h6">';
 			// START : Manage info field
 			var infoTag = '<span id="' + infoId + '">' + switchToDrive.info + '</span>';
@@ -287,8 +299,9 @@ function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
 				switchObj.bootstrapSwitch('disabled', false);
 			});
 		});
-	} else if (switchObj.length !== 0 && (allInOneView || switchView)
-		|| switchInfoObj.length !== 0 && (allInOneView || sensorView)) {
+		return switchesListToAdd;
+	} else if (switchObj.length !== 0 && (allInOneView || switchView || sensorAndSwitchView)
+		|| switchInfoObj.length !== 0 && (allInOneView || sensorView || sensorAndSwitchView)) {
 		// Get switch state
 		var switchState = ( switchObj.bootstrapSwitch( "state" ) ? "on" : "off" );
 		if( switchObj.bootstrapSwitch( "indeterminate" ) )	switchState = "indeterminate";
@@ -323,6 +336,12 @@ function addSwitch(switchToDrive, previousSwitchToDrive, viewMode) {
 	}
 }
 
+function pushTo(obj, array) {
+	if (obj !== undefined) {
+		array.push(obj);
+	}
+}
+
 function loadUI()
 {
 	// Load UI only if displayed to user
@@ -352,19 +371,32 @@ function loadUI()
 			  //
 			  if (root.view === undefined || root.view.splitMode === undefined || root.view.splitMode === false) {
 				  $.each(root.switchesList, function (index, switchToDrive) {
-					  addSwitch(switchToDrive, previousConfig.switchesList[index], allInOneViewMode);
+					  addSwitch(switchToDrive, index, allInOneViewMode);
 				  });
 			  } else {
+				  let sensors = [];
 				  $.each(root.switchesList, function (index, switchToDrive) {
-					  addSwitch(switchToDrive, previousConfig.switchesList[index], sensorViewMode);
+					  pushTo(addSwitch(switchToDrive, index, sensorViewMode), sensors);
 				  });
-				  const delimiter = "delimiter";
-				  if ($('.' + sensorViewMode).length > 0 && $('#' + delimiter).length === 0) {
-					  $('<div id="' + delimiter + '" class="col-xs-12 col-lg-12"/>').insertBefore(".row");
+
+				  let sensorAndSwitches = [];
+				  $.each(root.switchesList, function (index, switchToDrive) {
+					  pushTo(addSwitch(switchToDrive, index, sensorAndSwitchViewMode), sensorAndSwitches);
+				  });
+
+				  let switches = [];
+				  $.each(root.switchesList, function (index, switchToDrive) {
+					  pushTo(addSwitch(switchToDrive, index, switchViewMode), switches);
+				  });
+
+				  let delimiter = "delimiter1";
+				  if (sensors.length > 0 && sensorAndSwitches.length > 0 && $('#' + delimiter).length === 0) {
+					  $('<div id="' + delimiter + '" class="col-xs-12 col-lg-12"/>').insertBefore($('#' + $(sensorAndSwitches[0]).attr('id')));
 				  }
-				  $.each(root.switchesList, function (index, switchToDrive) {
-					  addSwitch(switchToDrive, previousConfig.switchesList[index], switchViewMode);
-				  });
+				  delimiter = "delimiter2";
+				  if ((sensors.length > 0 || sensorAndSwitches.length > 0) && switches.length > 0 && $('#' + delimiter).length === 0) {
+					  $('<div id="' + delimiter + '" class="col-xs-12 col-lg-12"/>').insertBefore($('#' + $(switches[0]).attr('id')));
+				  }
 			  }
 			  previousConfig = root;
 		  },

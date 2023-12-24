@@ -9,6 +9,10 @@
 	background: #04B431;
 }*/
 
+.separator {
+	visibility: hidden;
+}
+
 .sensor-data-outdated-level-1, .sensor-data-outdated-level-1:hover {
 	color: #fdd835;
 }
@@ -29,7 +33,7 @@
 	color: #bf360c;
 }
 
-#delimiter {
+#delimiter1, #delimiter2 {
 	border-bottom: 1px solid #e7e7e7;
 }
 
@@ -38,7 +42,7 @@
 {
 	border-color: #cacaca;
     outline: 0 !important;
-    border-radius: 0 !important;   
+    border-radius: 0 !important;
     -webkit-box-shadow: none;
     box-shadow: none;
 }

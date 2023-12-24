@@ -1,5 +1,9 @@
 Release notes
 -------------
+##### 6.9.0 (2023-12-24)
+ * Add switch separator
+ * Add switch with sensor in splited view
+
 ##### 6.8.0 (2023-09-28)
  * Update endpoint can take several values
 

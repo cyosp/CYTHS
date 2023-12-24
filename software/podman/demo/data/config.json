@@ -2,37 +2,49 @@
     "gpioController": "\/dev\/gpiochip0",
     "controllerOffset": "17",
     "repeat": "6",
+    "view": {
+        "splitMode": true
+    },
     "switchesList": [
         {
-            "label": "Room 1",
-            "channel": "1",
-            "rcId": "123456",
-            "state": "off",
-            "crontab": [
-                {
-                    "cron": "0 19 * * *",
-                    "state": "on",
-                    "condition": "$..switchesList[*][?(@.id==10)].data.humidity : > 65"
-                },
-                {
-                    "cron": "0 6 * * *",
-                    "state": "off"
-                }
-            ],
-            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery}% ${sensor.data.time}",
+            "label": "Sensor 10",
+            "channel": "",
+            "rcId": "",
+            "state": "unknown",
             "sensor": {
                 "id": "10",
                 "data": {
-                    "date": "2019-02-02",
-                    "time": "14:01:25",
-                    "temperature": "12.0",
-                    "humidity": "82",
+                    "date": "2023-12-10",
+                    "time": "07:10:00",
+                    "temperature": "10.0",
+                    "humidity": "55",
                     "battery": "100"
                 }
-            }
+            },
+            "info": "${sensor.data.temperature}° ${sensor.data.temperature:trend} ${sensor.data.humidity}% ${sensor.data.humidity:trend} ${sensor.data.battery:indicator} ${sensor.data.time}"
         },
         {
-            "label": "Room 2",
+            "separator": "sensor"
+        },
+        {
+            "label": "Sensor 11",
+            "channel": "",
+            "rcId": "",
+            "state": "unknown",
+            "sensor": {
+                "id": "11",
+                "data": {
+                    "date": "2023-12-11",
+                    "time": "07:11:00",
+                    "temperature": "11.0",
+                    "humidity": "60",
+                    "battery": "100"
+                }
+            },
+            "info": "${sensor.data.temperature}° ${sensor.data.temperature:trend} ${sensor.data.humidity}% ${sensor.data.humidity:trend} ${sensor.data.battery:indicator} ${sensor.data.time}"
+        },
+        {
+            "label": "Sensor and switch 20",
             "channel": "2",
             "rcId": "123456",
             "state": "on",
@@ -40,30 +52,48 @@
             "sensor": {
                 "id": "20",
                 "data": {
-                    "date": "2019-02-02",
-                    "time": "14:02:10",
-                    "temperature": "17.6",
-                    "humidity": "58",
+                    "date": "2023-12-20",
+                    "time": "07:20:00",
+                    "temperature": "20.0",
+                    "humidity": "65",
                     "battery": "67"
                 }
             }
         },
         {
-            "label": "House basement",
+            "separator": "sensorAndSwitch"
+        },
+        {
+            "label": "Sensor and switch 21",
             "channel": "3",
-            "rcId": "123456",
-            "state": "unknown",
-            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery:indicator} ${sensor.data.battery}% ${sensor.data.time}",
+            "rcId": "654321",
+            "state": "off",
+            "info": "${sensor.data.temperature}\u00b0 \/ ${sensor.data.humidity}% ${sensor.data.battery:indicator} ${sensor.data.time}",
             "sensor": {
-                "id": "30",
+                "id": "21",
                 "data": {
-                    "date": "2019-02-02",
-                    "time": "14:03:58",
-                    "temperature": "12.3",
-                    "humidity": "65",
+                    "date": "2023-12-22",
+                    "time": "07:21:00",
+                    "temperature": "21.0",
+                    "humidity": "70",
                     "battery": "67"
                 }
             }
+        },
+        {
+            "label": "Switch 31",
+            "channel": "3",
+            "rcId": "112233",
+            "state": "off"
+        },
+        {
+            "separator": "switch"
+        },
+        {
+            "label": "Switch 32",
+            "channel": "4",
+            "rcId": "332211",
+            "state": "on"
         }
     ]
 }
