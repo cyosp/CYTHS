@@ -40,13 +40,15 @@
   #define POWER_DHT_AND_TRANSMITTER   0
   #define TRANSMITTER_433_PIN         1
   #define DHT_PIN                     2
+  #define STEP_UP_PIN                 3
 
-  #define UNUSED_PIN_1                3
-  #define UNUSED_PIN_2                4
-  #define UNUSED_PIN_3                5
+  #define UNUSED_PIN_1                4
+  #define UNUSED_PIN_2                5
 #else
   #define TRANSMITTER_433_PIN         3
   #define DHT_PIN                     4
+
+  #define STEP_UP_PIN                 0
 
   #define FLOOD_POWER_PIN             0
   #ifdef FLOOD_SENSOR_V2_ID
@@ -102,19 +104,18 @@ void setup() {
 
   // Define pin states
   pinMode(DHT_PIN, INPUT);
+  pinMode(STEP_UP_PIN, OUTPUT);
   pinMode(UNUSED_PIN_1, OUTPUT);
   pinMode(UNUSED_PIN_2, OUTPUT);
 
   // Set to low level unused pins
+  digitalWrite(STEP_UP_PIN, LOW);
   digitalWrite(UNUSED_PIN_1, LOW);
   digitalWrite(UNUSED_PIN_2, LOW);
 
   #ifdef SENSOR_V1
     pinMode(POWER_DHT_AND_TRANSMITTER, OUTPUT);
     digitalWrite(POWER_DHT_AND_TRANSMITTER, HIGH);
-
-    pinMode(UNUSED_PIN_3, OUTPUT);
-    digitalWrite(UNUSED_PIN_3, LOW);
   #else
     pinMode(FLOOD_POWER_PIN, OUTPUT);
     digitalWrite(FLOOD_POWER_PIN, LOW);
@@ -261,8 +262,10 @@ void loop() {
     // Compute RSL code
     unsigned long code = batteryLevel << 30 | protocolAndCode << 24 | sensorId << 17 | hum << 10 | temp;
 
+    digitalWrite(STEP_UP_PIN, HIGH);
     setHighFreq();
     mySwitch.send( code , 32 );
+    digitalWrite(STEP_UP_PIN, LOW);
 
     #ifdef FLOOD_SENSOR_V2_ID
       switchAnalogToDigitalConverterOn();
@@ -280,7 +283,9 @@ void loop() {
 
       delay( 1500 ); // Wait receiver has managed first code before to send flood info
 
+      digitalWrite(STEP_UP_PIN, HIGH);
       mySwitch.send( code , 32 );
+      digitalWrite(STEP_UP_PIN, LOW);
     #endif
 
     setLowFreq();

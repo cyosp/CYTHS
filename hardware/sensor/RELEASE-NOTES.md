@@ -1,5 +1,11 @@
 Release notes
 -------------
+##### 2.4.0 (2024-03-17)
+ * Add optional step up module
+
+##### 2.3.1 (2023-10-23)
+ * Add flood sensor capability to V2 sensor
+
 ##### 2.3.1 (2022-08-14)
  * Fix: Code not working for sensor V1.0
 
