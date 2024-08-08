@@ -45,7 +45,6 @@ for SENSOR_ID in $(echo -e $JSCON_CONFIG_VIA_JQ); do
 done
 
 echo "$(date "+%Y-%m-%d %H:%M:%S")" >>$LOG_FILE_PATH
-echo "  - UPDATED: ${UPDATED_AT}" >>$LOG_FILE_PATH
 
 # Code is an integer
 if [[ $CODE =~ ^-?[0-9]+$ ]]; then
@@ -90,7 +89,7 @@ if [[ $CODE =~ ^-?[0-9]+$ ]]; then
     # Get sensor code in base 10
     SENSOR_ID=$(echo "ibase=2; $BIN_SENSOR_CODE" | bc 2>&1)
 
-    echo "  - $TEMPERATURE° / $HUMIDITY%, battery: $BATTERY% for sensor: $SENSOR_ID" >>$LOG_FILE_PATH
+    echo "  - SENSOR $SENSOR_ID @ $UPDATED_AT => $TEMPERATURE° / $HUMIDITY%, battery: $BATTERY%" >>$LOG_FILE_PATH
 
     if [ "${config[$SENSOR_ID]}" == "$REGISTRED" ]; then
       SENSOR_RRD_FILE_PATH="$RRD_FOLDER/${SENSOR_ID}.rrd"

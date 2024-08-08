@@ -1,5 +1,8 @@
 Release notes
 -------------
+##### 6.10.0 (2024-08-08)
+ * cyths-update: Move updated date to sensor decoded info in a new log format 
+
 ##### 6.9.0 (2023-12-24)
  * Add switch separator
  * Add switch with sensor in splited view
